@@ -2,6 +2,7 @@
 import { Check, Info, Star, Shield, Award, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -39,18 +40,18 @@ const Pricing = () => {
 
         {/* Pricing Toggle */}
         <div className="flex justify-center items-center space-x-4 mb-12">
-          <span className={`text-lg ${!isYearly ? 'font-bold text-ozy' : 'text-gray-600'}`}>Mensuel</span>
+          <span className={`text-lg ${!isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Mensuel</span>
           <button 
             className="relative w-16 h-8 bg-gray-200 rounded-full p-1 transition duration-300 focus:outline-none"
             onClick={() => setIsYearly(!isYearly)}
           >
             <div
-              className={`absolute w-6 h-6 bg-ozy rounded-full shadow-md transform transition-transform duration-300 ${
+              className={`absolute w-6 h-6 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ${
                 isYearly ? 'translate-x-8' : 'translate-x-0'
               }`}
             />
           </button>
-          <span className={`text-lg ${isYearly ? 'font-bold text-ozy' : 'text-gray-600'}`}>Annuel <span className="text-green-600 text-sm ml-1">-17%</span></span>
+          <span className={`text-lg ${isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Annuel <span className="text-green-600 text-sm ml-1">-17%</span></span>
         </div>
 
         {/* Pricing Card */}
@@ -71,10 +72,18 @@ const Pricing = () => {
             <div className="p-8">
               {/* Pricing Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div className="text-center bg-ozy-light/30 p-6 rounded-xl">
-                  <span className="text-sm text-gray-500 uppercase font-semibold">Frais uniques de création</span>
-                  <div className="flex justify-center items-start mt-2">
-                    <span className="text-5xl font-bold text-ozy">99€</span>
+                <div className="text-center bg-ozy-light/30 p-6 rounded-xl flex flex-col h-full justify-between">
+                  <div>
+                    <span className="text-sm text-gray-500 uppercase font-semibold block">Frais uniques de création</span>
+                    <div className="flex justify-center items-center mt-2">
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center">
+                          <span className="text-lg line-through text-gray-400 mr-2">499€</span>
+                          <span className="text-5xl font-bold text-ozy">99€</span>
+                        </div>
+                        <span className="text-sm text-green-600 font-semibold mt-1">PROMO</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center justify-center">
@@ -88,18 +97,20 @@ const Pricing = () => {
                   </div>
                 </div>
                 
-                <div className="text-center bg-gradient-to-br from-ozy-light/40 to-ozy-light/10 p-6 rounded-xl">
-                  <div className="flex justify-center">
-                    <span className="text-sm text-gray-500 uppercase font-semibold">Abonnement {isYearly ? 'annuel' : 'mensuel'}</span>
-                    {isYearly && (
-                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                        Économisez 17%
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex justify-center items-start mt-2">
-                    <span className="text-5xl font-bold text-ozy">{isYearly ? yearlyPrice : monthlyPrice}€</span>
-                    <span className="text-gray-500 ml-2 mt-2">/ {isYearly ? 'an' : 'mois'}</span>
+                <div className="text-center bg-gradient-to-br from-ozy-light/40 to-ozy-light/10 p-6 rounded-xl flex flex-col h-full justify-between">
+                  <div>
+                    <div className="flex justify-center">
+                      <span className="text-sm text-gray-500 uppercase font-semibold">Abonnement {isYearly ? 'annuel' : 'mensuel'}</span>
+                      {isYearly && (
+                        <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                          Économisez 17%
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex justify-center items-start mt-2">
+                      <span className="text-5xl font-bold text-ozy">{isYearly ? yearlyPrice : monthlyPrice}€</span>
+                      <span className="text-gray-500 ml-2 mt-2">/ {isYearly ? 'an' : 'mois'}</span>
+                    </div>
                   </div>
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center justify-center">
@@ -151,7 +162,7 @@ const Pricing = () => {
               <div className="mt-10">
                 <a 
                   href="#form" 
-                  className="block w-full btn-primary text-center py-4 text-lg"
+                  className="block w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors rounded-full font-medium text-center py-4 text-lg"
                 >
                   Commencer Maintenant
                 </a>

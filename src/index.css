@@ -91,6 +91,10 @@
     @apply bg-white text-ozy border border-ozy hover:bg-ozy-light transition-colors px-6 py-3 rounded-full font-medium;
   }
   
+  .btn-blue {
+    @apply bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium;
+  }
+  
   .container-custom {
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }

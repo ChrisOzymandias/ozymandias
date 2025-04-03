@@ -14,6 +14,9 @@ const Index = () => {
       <Navbar />
       <Hero />
       
+      {/* Formulaire mis en avant */}
+      <WebsiteForm />
+      
       {/* Value Proposition */}
       <section className="py-16 bg-gradient-to-b from-white to-ozy-light">
         <div className="container-custom">
@@ -44,9 +47,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Formulaire mis en avant */}
-      <WebsiteForm />
       
       <Features />
       
@@ -94,7 +94,7 @@ const Index = () => {
           </div>
           
           <div className="text-center mt-12">
-            <a href="#form" className="btn-primary">Commencer Maintenant</a>
+            <a href="#form" className="btn-blue inline-flex items-center">Commencer Maintenant</a>
           </div>
         </div>
       </section>
@@ -195,7 +195,7 @@ const Index = () => {
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Rejoignez nos clients satisfaits et obtenez un site web optimisé en moins de 7 jours
           </p>
-          <a href="#form" className="bg-white text-ozy hover:bg-ozy-light transition-colors px-8 py-4 rounded-full font-medium text-lg">
+          <a href="#form" className="bg-blue-600 hover:bg-blue-700 text-white transition-colors px-8 py-4 rounded-full font-medium text-lg">
             Créer Mon Site Maintenant
           </a>
         </div>

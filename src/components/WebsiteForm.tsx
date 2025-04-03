@@ -1,7 +1,7 @@
-
 import { useState } from 'react';
-import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Tag } from 'lucide-react';
 import { toast } from '../components/ui/use-toast';
+import { Badge } from '../components/ui/badge';
 
 // Define the form steps
 const formSteps = [
@@ -164,6 +164,11 @@ const WebsiteForm = () => {
     <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30">
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
+        <div className="flex justify-center items-center mb-4">
+          <Badge variant="outline" className="text-sm bg-blue-500 text-white px-4 py-2 flex items-center gap-2">
+            <Tag size={16} /> PROMO: <span className="line-through text-gray-300 mr-1">499€</span> 99€
+          </Badge>
+        </div>
         <p className="section-subtitle text-center">
           Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
         </p>
@@ -175,7 +180,7 @@ const WebsiteForm = () => {
               {formSteps.map((step, index) => (
                 <div 
                   key={index} 
-                  className={`text-sm ${currentStep >= index ? 'text-ozy font-medium' : 'text-gray-400'}`}
+                  className={`text-sm ${currentStep >= index ? 'text-blue-600 font-medium' : 'text-gray-400'}`}
                 >
                   {step.title}
                 </div>
@@ -183,7 +188,7 @@ const WebsiteForm = () => {
             </div>
             <div className="w-full h-2 bg-gray-200 rounded-full">
               <div 
-                className="h-full bg-ozy rounded-full transition-all duration-300 ease-in-out"
+                className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
@@ -201,15 +206,15 @@ const WebsiteForm = () => {
                     <button
                       key={theme.id}
                       type="button"
-                      className={`p-4 border-2 rounded-xl flex items-center hover:border-ozy hover:bg-ozy-light/30 transition-all ${
-                        formData.theme === theme.id ? 'border-ozy bg-ozy-light/50' : 'border-gray-200'
+                      className={`p-4 border-2 rounded-xl flex items-center hover:border-blue-500 hover:bg-blue-50 transition-all ${
+                        formData.theme === theme.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
                       }`}
                       onClick={() => handleThemeSelect(theme.id)}
                     >
                       <span className="text-2xl mr-3">{theme.icon}</span>
                       <span className="font-medium">{theme.name}</span>
                       {formData.theme === theme.id && (
-                        <Check className="ml-auto h-5 w-5 text-ozy" />
+                        <Check className="ml-auto h-5 w-5 text-blue-500" />
                       )}
                     </button>
                   ))}
@@ -228,15 +233,15 @@ const WebsiteForm = () => {
                     <button
                       key={style.id}
                       type="button"
-                      className={`p-4 border-2 rounded-xl flex items-center hover:border-ozy hover:bg-ozy-light/30 transition-all ${
-                        formData.style === style.id ? 'border-ozy bg-ozy-light/50' : 'border-gray-200'
+                      className={`p-4 border-2 rounded-xl flex items-center hover:border-blue-500 hover:bg-blue-50 transition-all ${
+                        formData.style === style.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
                       }`}
                       onClick={() => handleStyleSelect(style.id)}
                     >
                       <span className="text-2xl mr-3">{style.icon}</span>
                       <span className="font-medium">{style.name}</span>
                       {formData.style === style.id && (
-                        <Check className="ml-auto h-5 w-5 text-ozy" />
+                        <Check className="ml-auto h-5 w-5 text-blue-500" />
                       )}
                     </button>
                   ))}
@@ -258,8 +263,8 @@ const WebsiteForm = () => {
                         feature.included 
                           ? 'border-green-200 bg-green-50 cursor-default'
                           : formData.features.includes(feature.id)
-                            ? 'border-ozy bg-ozy-light/50'
-                            : 'border-gray-200 hover:border-ozy hover:bg-ozy-light/30 cursor-pointer'
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-blue-500 hover:bg-blue-50 cursor-pointer'
                       }`}
                       onClick={() => !feature.included && handleFeatureToggle(feature.id)}
                     >
@@ -271,7 +276,7 @@ const WebsiteForm = () => {
                         </div>
                       )}
                       {!feature.included && formData.features.includes(feature.id) && (
-                        <Check className="ml-auto h-5 w-5 text-ozy" />
+                        <Check className="ml-auto h-5 w-5 text-blue-500" />
                       )}
                     </div>
                   ))}
@@ -299,7 +304,7 @@ const WebsiteForm = () => {
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ozy focus:border-ozy"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Votre nom et prénom"
                     />
                   </div>
@@ -312,7 +317,7 @@ const WebsiteForm = () => {
                       required
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ozy focus:border-ozy"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="votreemail@exemple.com"
                     />
                   </div>
@@ -324,7 +329,7 @@ const WebsiteForm = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ozy focus:border-ozy"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Votre numéro de téléphone"
                     />
                   </div>
@@ -336,7 +341,7 @@ const WebsiteForm = () => {
                       name="companyName"
                       value={formData.companyName}
                       onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ozy focus:border-ozy"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Nom de votre entreprise (si applicable)"
                     />
                   </div>
@@ -348,7 +353,7 @@ const WebsiteForm = () => {
                       required
                       value={formData.projectDetails}
                       onChange={handleInputChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-ozy focus:border-ozy"
+                      className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Décrivez brièvement votre projet et vos attentes..."
                     ></textarea>
                   </div>
@@ -366,7 +371,7 @@ const WebsiteForm = () => {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="flex items-center text-gray-600 hover:text-ozy transition-colors"
+                  className="flex items-center text-gray-600 hover:text-blue-500 transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Retour
@@ -380,7 +385,7 @@ const WebsiteForm = () => {
                   type="button"
                   onClick={nextStep}
                   disabled={!isStepValid()}
-                  className={`btn-primary ${
+                  className={`inline-flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium ${
                     !isStepValid() ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
@@ -391,7 +396,7 @@ const WebsiteForm = () => {
                 <button
                   type="submit"
                   disabled={!isStepValid()}
-                  className={`btn-primary ${
+                  className={`inline-flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium ${
                     !isStepValid() ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >

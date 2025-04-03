@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Search, Users, TrendingUp, Building, Hammer, Store, Star, ArrowRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 const SeoSection = () => {
   return (
@@ -120,7 +122,7 @@ const SeoSection = () => {
               </div>
               
               <div className="mt-8 text-center">
-                <a href="#form" className="btn-primary inline-flex items-center">
+                <a href="#form" className="bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium inline-flex items-center">
                   Démarrer mon projet <ArrowRight size={16} className="ml-2" />
                 </a>
               </div>
