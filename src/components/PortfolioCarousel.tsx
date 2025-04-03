@@ -1,12 +1,12 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem, 
-  CarouselPrevious, 
-  CarouselNext 
+  CarouselItem
 } from "@/components/ui/carousel";
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 const projects = [
   {
@@ -61,6 +61,11 @@ const projects = [
 ];
 
 const PortfolioCarousel = () => {
+  const autoplayOptions = {
+    delay: 4000,
+    rootNode: (emblaRoot: any) => emblaRoot.parentElement,
+  };
+
   return (
     <section className="py-20 bg-white" id="portfolio">
       <div className="container-custom">
@@ -73,12 +78,13 @@ const PortfolioCarousel = () => {
           </p>
         </div>
         
-        <div className="relative px-14 max-w-5xl mx-auto">
+        <div className="relative max-w-5xl mx-auto">
           <Carousel
             opts={{
               align: "start",
               loop: true,
             }}
+            plugins={[Autoplay(autoplayOptions)]}
             className="w-full"
           >
             <CarouselContent>
@@ -102,8 +108,6 @@ const PortfolioCarousel = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-0 bg-blue-600 text-white hover:bg-blue-700 border-none" />
-            <CarouselNext className="right-0 bg-blue-600 text-white hover:bg-blue-700 border-none" />
           </Carousel>
         </div>
         

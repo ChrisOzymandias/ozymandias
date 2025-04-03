@@ -1,4 +1,3 @@
-
 import { Check, Info, Star, Shield, Award, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -38,22 +37,25 @@ const Pricing = () => {
           Un prix transparent sans frais cachés pour une solution web complète et professionnelle
         </p>
 
-        {/* Pricing Toggle */}
+        {/* Pricing Toggle - Fixed alignment */}
         <div className="flex justify-center items-center space-x-4 mb-12">
           <span className={`text-lg ${!isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Mensuel</span>
-          <button 
-            className="relative w-16 h-8 bg-gray-200 rounded-full p-1 transition duration-300 focus:outline-none"
-            onClick={() => setIsYearly(!isYearly)}
-          >
-            <div
-              className={`absolute w-6 h-6 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ${
-                isYearly ? 'translate-x-8' : 'translate-x-0'
-              }`}
-            />
-          </button>
+          <div className="relative">
+            <button 
+              className="relative w-16 h-8 bg-gray-200 rounded-full p-1 transition duration-300 focus:outline-none"
+              onClick={() => setIsYearly(!isYearly)}
+            >
+              <div
+                className={`absolute top-1 w-6 h-6 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ${
+                  isYearly ? 'translate-x-8' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
           <span className={`text-lg ${isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Annuel <span className="text-green-600 text-sm ml-1">-17%</span></span>
         </div>
 
+        {/* Keep the rest of the component unchanged */}
         {/* Pricing Card */}
         <div className="max-w-5xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-[1.01] transition-all duration-300">
