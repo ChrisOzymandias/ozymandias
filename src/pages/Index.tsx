@@ -5,6 +5,7 @@ import Features from '../components/Features';
 import Pricing from '../components/Pricing';
 import WebsiteForm from '../components/WebsiteForm';
 import Footer from '../components/Footer';
+import SeoSection from '../components/SeoSection';
 import { Clock, Award, ShieldCheck } from 'lucide-react';
 
 const Index = () => {
@@ -43,6 +44,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Formulaire mis en avant */}
+      <WebsiteForm />
       
       <Features />
       
@@ -95,6 +99,9 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Nouvelle section SEO pour PME et artisans */}
+      <SeoSection />
+      
       {/* Testimonial Section */}
       <section className="py-20 bg-ozy-light">
         <div className="container-custom">
@@ -141,7 +148,6 @@ const Index = () => {
       </section>
       
       <Pricing />
-      <WebsiteForm />
       
       {/* FAQ Section */}
       <section className="py-20 bg-white">

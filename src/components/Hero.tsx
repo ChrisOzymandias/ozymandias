@@ -1,7 +1,10 @@
 
 import { ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="relative pt-20 pb-32 md:pt-32 md:pb-40 overflow-hidden bg-gradient-to-b from-white to-ozy-light">
       <div className="container-custom relative z-10">
@@ -28,16 +31,18 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="md:w-1/2 flex justify-center animate-fade-in" style={{ animationDelay: "0.7s" }}>
-            <div className="relative">
-              <div className="absolute inset-0 bg-ozy rounded-full opacity-10 animate-pulse-slow"></div>
-              <img 
-                src="/lovable-uploads/beba34e6-02d0-453b-83eb-2efd86d53196.png" 
-                alt="Ozymandias Web Agency" 
-                className="relative w-64 h-64 object-contain"
-              />
+          {!isMobile && (
+            <div className="md:w-1/2 flex justify-center animate-fade-in" style={{ animationDelay: "0.7s" }}>
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                <div className="absolute inset-0 bg-ozy/10 mix-blend-overlay"></div>
+                <img 
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" 
+                  alt="Femme heureuse de créer son site web" 
+                  className="w-full h-auto max-w-md object-cover transform hover:scale-105 transition-transform duration-700"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         
         <div className="mt-16 bg-white p-6 rounded-xl shadow-lg max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: "0.9s" }}>

@@ -161,7 +161,7 @@ const WebsiteForm = () => {
   };
 
   return (
-    <section id="form" className="py-20 bg-white">
+    <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30">
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
         <p className="section-subtitle text-center">
