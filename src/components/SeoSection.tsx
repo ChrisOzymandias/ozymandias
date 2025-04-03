@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Search, Users, TrendingUp, Building, Hammer, Store, Star } from 'lucide-react';
+import { Search, Users, TrendingUp, Building, Hammer, Store, Star, ArrowRight } from 'lucide-react';
 
 const SeoSection = () => {
   return (
