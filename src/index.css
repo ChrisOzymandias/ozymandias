@@ -114,4 +114,27 @@
   .text-gradient {
     @apply bg-gradient-to-r from-ozy to-ozy-dark bg-clip-text text-transparent;
   }
+  
+  /* Animation utilities */
+  .animate-fade-in {
+    @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Portfolio carousel styles */
+  .portfolio-card {
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .portfolio-card img {
+    @apply w-full h-auto transition-transform duration-500;
+  }
+  
+  .portfolio-card:hover img {
+    @apply scale-105;
+  }
 }

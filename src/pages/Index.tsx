@@ -6,6 +6,7 @@ import Pricing from '../components/Pricing';
 import WebsiteForm from '../components/WebsiteForm';
 import Footer from '../components/Footer';
 import SeoSection from '../components/SeoSection';
+import PortfolioCarousel from '../components/PortfolioCarousel';
 import { Clock, Award, ShieldCheck } from 'lucide-react';
 
 const Index = () => {
@@ -98,6 +99,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+      
+      {/* Portfolio Carousel */}
+      <PortfolioCarousel />
       
       {/* Nouvelle section SEO pour PME et artisans */}
       <SeoSection />

@@ -1,0 +1,120 @@
+
+import React from 'react';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselPrevious, 
+  CarouselNext 
+} from "@/components/ui/carousel";
+
+const projects = [
+  {
+    id: 1,
+    title: "David Plombier",
+    type: "Site de plomberie",
+    description: "Site web professionnel pour plombier chauffagiste",
+    image: "/lovable-uploads/28afebe9-5756-443d-a922-bb4b6981d6fe.png"
+  },
+  {
+    id: 2,
+    title: "Électricité Pro",
+    type: "Site d'électricien",
+    description: "L'Excellence en Électricité à votre service",
+    image: "/lovable-uploads/9b447a37-77e6-43ef-8bf3-6801728b44a8.png"
+  },
+  {
+    id: 3,
+    title: "OHM Tech Elec",
+    type: "Site d'électricien",
+    description: "Votre Expert en Solutions Électriques dans toute la France",
+    image: "/lovable-uploads/b963cc47-afa4-4ad5-9dbb-7201bf0dee28.png"
+  },
+  {
+    id: 4,
+    title: "LC Sport Santé",
+    type: "Site de coach sportif",
+    description: "Sport, Santé & Bien-être personnalisé",
+    image: "/lovable-uploads/6cf823c5-2749-4e3f-a059-8991ec8ccf4c.png"
+  },
+  {
+    id: 5,
+    title: "Julien Frery",
+    type: "Site de plombier",
+    description: "Votre plombier chauffagiste qualifié",
+    image: "/lovable-uploads/1d68fa9d-13e7-4907-93af-faead2526bfe.png"
+  },
+  {
+    id: 6,
+    title: "Innovations Électriques",
+    type: "Site d'électricien",
+    description: "L'Innovation Électrique à Votre Service",
+    image: "/lovable-uploads/34369910-3449-43d9-92f1-62e3bc6946e1.png"
+  },
+  {
+    id: 7,
+    title: "Cabinet Clément Brulin",
+    type: "Site de bien-être",
+    description: "Retrouvez votre équilibre physique et émotionnel",
+    image: "/lovable-uploads/102000b3-2025-4b41-a012-5eb0faeb4496.png"
+  }
+];
+
+const PortfolioCarousel = () => {
+  return (
+    <section className="py-20 bg-white" id="portfolio">
+      <div className="container-custom">
+        <div className="text-center mb-16">
+          <h2 className="section-title">
+            Nos <span className="text-gradient">Réalisations</span>
+          </h2>
+          <p className="section-subtitle">
+            Découvrez quelques-uns des sites web professionnels que nous avons créés pour nos clients
+          </p>
+        </div>
+        
+        <div className="relative px-14 max-w-5xl mx-auto">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {projects.map((project) => (
+                <CarouselItem key={project.id} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                  <div className="card-shadow rounded-xl overflow-hidden h-full flex flex-col bg-white border border-gray-200">
+                    <div className="relative pt-[56.25%] overflow-hidden bg-gray-100">
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      />
+                    </div>
+                    
+                    <div className="p-5 flex flex-col flex-grow">
+                      <span className="text-sm text-blue-600 font-semibold mb-1">{project.type}</span>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">{project.title}</h3>
+                      <p className="text-gray-600 text-sm flex-grow">{project.description}</p>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0 bg-blue-600 text-white hover:bg-blue-700 border-none" />
+            <CarouselNext className="right-0 bg-blue-600 text-white hover:bg-blue-700 border-none" />
+          </Carousel>
+        </div>
+        
+        <div className="mt-10 text-center">
+          <a href="#form" className="btn-blue inline-flex items-center">
+            Créer mon site maintenant
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default PortfolioCarousel;
