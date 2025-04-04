@@ -29,7 +29,7 @@ const Navbar = () => {
       <div className="container-custom flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img 
-            src="/lovable-uploads/beba34e6-02d0-453b-83eb-2efd86d53196.png" 
+            src="/lovable-uploads/a24f34e6-5866-4fb8-bda3-f4e10c503450.png" 
             alt="Ozymandias" 
             className="h-10 w-10 mr-2" 
           />
