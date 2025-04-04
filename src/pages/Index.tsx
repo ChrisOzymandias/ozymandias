@@ -115,7 +115,13 @@ const Index = () => {
             {/* Testimonial 1 */}
             <div className="bg-white p-8 rounded-xl shadow-md">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4 overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&q=80&w=50&h=50" 
+                    alt="Sophie Martin" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-bold">Sophie Martin</h4>
                   <p className="text-sm text-gray-600">Fleuriste</p>
@@ -127,7 +133,13 @@ const Index = () => {
             {/* Testimonial 2 */}
             <div className="bg-white p-8 rounded-xl shadow-md">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4 overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&q=80&w=50&h=50" 
+                    alt="Thomas Durand" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-bold">Thomas Durand</h4>
                   <p className="text-sm text-gray-600">Consultant</p>
@@ -139,7 +151,13 @@ const Index = () => {
             {/* Testimonial 3 */}
             <div className="bg-white p-8 rounded-xl shadow-md">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-full mr-4 overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&q=80&w=50&h=50" 
+                    alt="Émilie Legrand" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-bold">Émilie Legrand</h4>
                   <p className="text-sm text-gray-600">Photographe</p>

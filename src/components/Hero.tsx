@@ -44,17 +44,6 @@ const Hero = () => {
             </div>
           )}
         </div>
-        
-        <div className="mt-16 bg-white p-6 rounded-xl shadow-lg max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: "0.9s" }}>
-          <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">Ils nous font confiance</h3>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            <div className="text-gray-500">Client 1</div>
-            <div className="text-gray-500">Client 2</div>
-            <div className="text-gray-500">Client 3</div>
-            <div className="text-gray-500">Client 4</div>
-            <div className="text-gray-500">Client 5</div>
-          </div>
-        </div>
       </div>
       
       {/* Background decorations */}

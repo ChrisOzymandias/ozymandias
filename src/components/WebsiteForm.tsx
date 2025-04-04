@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { Check, ArrowRight, ArrowLeft, Tag } from 'lucide-react';
+
+import { useState, useEffect } from 'react';
+import { Check, ArrowRight, ArrowLeft, Tag, Star, Trophy } from 'lucide-react';
 import { toast } from '../components/ui/use-toast';
 import { Badge } from '../components/ui/badge';
+import { Progress } from '../components/ui/progress';
 
 // Define the form steps
 const formSteps = [
@@ -11,9 +13,9 @@ const formSteps = [
     description: 'Quel type de site souhaitez-vous créer ?',
   },
   {
-    id: 'style',
-    title: 'Style du site',
-    description: 'Quel design correspond le mieux à votre image ?',
+    id: 'profession',
+    title: 'Votre Profession',
+    description: 'Quel est votre secteur d\'activité ?',
   },
   {
     id: 'features',
@@ -37,14 +39,16 @@ const websiteThemes = [
   { id: 'event', name: 'Événement', icon: '📅' },
 ];
 
-// Website styles
-const websiteStyles = [
-  { id: 'modern', name: 'Moderne & Épuré', icon: '⚪' },
-  { id: 'creative', name: 'Créatif & Audacieux', icon: '🎨' },
-  { id: 'luxury', name: 'Premium & Élégant', icon: '✨' },
-  { id: 'tech', name: 'High-Tech & Innovant', icon: '💻' },
-  { id: 'fun', name: 'Fun & Décontracté', icon: '😊' },
-  { id: 'classic', name: 'Classique & Traditionnel', icon: '📜' },
+// Profession options for artisans and SMBs
+const professionOptions = [
+  { id: 'artisan', name: 'Artisan', icon: '🔨', examples: 'Menuisier, Plombier, Électricien...' },
+  { id: 'commerce', name: 'Commerçant', icon: '🏪', examples: 'Boutique, Restaurant, Épicerie...' },
+  { id: 'construction', name: 'Bâtiment & Construction', icon: '🏗️', examples: 'Maçon, Charpentier, Peintre...' },
+  { id: 'services', name: 'Services', icon: '💼', examples: 'Consultant, Coach, Formateur...' },
+  { id: 'beaute', name: 'Beauté & Bien-être', icon: '💇', examples: 'Coiffeur, Esthéticienne, Massage...' },
+  { id: 'sante', name: 'Santé', icon: '⚕️', examples: 'Médecin, Kiné, Ostéopathe...' },
+  { id: 'tech', name: 'Tech & Digital', icon: '💻', examples: 'Développeur, Designer, Marketing...' },
+  { id: 'autre', name: 'Autre secteur', icon: '🔍', examples: 'Précisez votre activité...' },
 ];
 
 // Website features
@@ -65,7 +69,7 @@ const WebsiteForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     theme: '',
-    style: '',
+    profession: '',
     features: [] as string[],
     name: '',
     email: '',
@@ -74,13 +78,47 @@ const WebsiteForm = () => {
     projectDetails: '',
   });
   const [progress, setProgress] = useState(25);
+  const [completionPoints, setCompletionPoints] = useState(0);
+  const [showCompletionToast, setShowCompletionToast] = useState(false);
+
+  useEffect(() => {
+    // Calculate completion points based on filled fields
+    let points = 0;
+    if (formData.theme) points += 25;
+    if (formData.profession) points += 25;
+    if (formData.features.length > 0) points += Math.min(formData.features.length * 5, 25);
+    if (formData.name && formData.email && formData.projectDetails) points += 25;
+    
+    setCompletionPoints(points);
+    
+    // Show completion toast when reaching milestones
+    if (points >= 75 && !showCompletionToast) {
+      toast({
+        title: "Presque terminé !",
+        description: "Vous êtes à 75% du chemin. Continuez pour finaliser votre demande !",
+      });
+      setShowCompletionToast(true);
+    }
+  }, [formData]);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
+    
+    // Show encouraging toast when selecting a theme
+    toast({
+      title: "Bon choix !",
+      description: "Ce type de site est parfait pour développer votre activité en ligne.",
+    });
   };
 
-  const handleStyleSelect = (styleId: string) => {
-    setFormData({ ...formData, style: styleId });
+  const handleProfessionSelect = (professionId: string) => {
+    setFormData({ ...formData, profession: professionId });
+    
+    // Show encouraging toast when selecting a profession
+    toast({
+      title: "Excellent !",
+      description: "Nous avons de l'expérience dans votre secteur d'activité.",
+    });
   };
 
   const handleFeatureToggle = (featureId: string) => {
@@ -90,10 +128,19 @@ const WebsiteForm = () => {
         features: formData.features.filter((id) => id !== featureId),
       });
     } else {
+      const newFeatures = [...formData.features, featureId];
       setFormData({
         ...formData,
-        features: [...formData.features, featureId],
+        features: newFeatures,
       });
+      
+      // Show encouraging toast after selecting several features
+      if (newFeatures.length === 3) {
+        toast({
+          title: "Super choix !",
+          description: "Ces fonctionnalités rendront votre site vraiment attractif !",
+        });
+      }
     }
   };
 
@@ -109,6 +156,18 @@ const WebsiteForm = () => {
     if (currentStep < formSteps.length - 1) {
       setCurrentStep(currentStep + 1);
       setProgress((currentStep + 2) * (100 / formSteps.length));
+      
+      // Show motivational toast when advancing steps
+      const stepMessages = [
+        "Vous avancez bien ! Continuons avec votre profession.",
+        "C'est parfait ! Personnalisons maintenant votre site.",
+        "Dernière étape ! Plus que quelques détails et c'est fini.",
+      ];
+      
+      toast({
+        title: "Étape complétée !",
+        description: stepMessages[currentStep],
+      });
     }
   };
 
@@ -124,7 +183,7 @@ const WebsiteForm = () => {
       case 0:
         return !!formData.theme;
       case 1:
-        return !!formData.style;
+        return !!formData.profession;
       case 2:
         return true; // Features step is always valid
       case 3:
@@ -137,10 +196,11 @@ const WebsiteForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate form submission
+    // Simulate form submission with celebratory toast
     toast({
-      title: "Formulaire envoyé !",
-      description: "Nous vous contacterons dans les plus brefs délais pour discuter de votre projet.",
+      title: "Félicitations ! 🎉",
+      description: "Votre demande a été envoyée avec succès. Nous vous contacterons très rapidement !",
+      variant: "default",
     });
     
     console.log('Form submitted:', formData);
@@ -148,7 +208,7 @@ const WebsiteForm = () => {
     // Reset form after submission
     setFormData({
       theme: '',
-      style: '',
+      profession: '',
       features: [],
       name: '',
       email: '',
@@ -158,6 +218,7 @@ const WebsiteForm = () => {
     });
     setCurrentStep(0);
     setProgress(25);
+    setShowCompletionToast(false);
   };
 
   return (
@@ -173,24 +234,31 @@ const WebsiteForm = () => {
           Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
         </p>
 
-        <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-8">
-          {/* Progress bar */}
+        <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          {/* Gamification elements */}
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-medium">Votre avancement</h3>
+            <div className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-yellow-500" />
+              <span className="font-bold text-blue-600">{completionPoints}/100 points</span>
+            </div>
+          </div>
+          
+          {/* Progress bar with animation */}
           <div className="mb-8">
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between mb-2 flex-wrap gap-2 md:gap-0">
               {formSteps.map((step, index) => (
                 <div 
                   key={index} 
-                  className={`text-sm ${currentStep >= index ? 'text-blue-600 font-medium' : 'text-gray-400'}`}
+                  className={`text-xs md:text-sm px-1.5 ${currentStep >= index ? 'text-blue-600 font-medium' : 'text-gray-400'}`}
                 >
                   {step.title}
                 </div>
               ))}
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full">
-              <div 
-                className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-in-out"
-                style={{ width: `${progress}%` }}
-              ></div>
+            <Progress value={progress} className="h-2" />
+            <div className="flex justify-end mt-2">
+              <span className="text-sm text-blue-600 font-medium">{progress}% complété</span>
             </div>
           </div>
 
@@ -219,33 +287,54 @@ const WebsiteForm = () => {
                     </button>
                   ))}
                 </div>
+                
+                {formData.theme && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
+                    <Star className="h-5 w-5 text-blue-500 mr-2" />
+                    <span className="text-sm text-blue-700">
+                      <span className="font-medium">+25 points</span> - Excellent choix !
+                    </span>
+                  </div>
+                )}
               </div>
             )}
 
-            {/* Step 2: Style Selection */}
+            {/* Step 2: Profession Selection (replaced Style) */}
             {currentStep === 1 && (
               <div className="space-y-6">
                 <h3 className="text-xl font-bold">{formSteps[currentStep].title}</h3>
                 <p className="text-gray-600">{formSteps[currentStep].description}</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                  {websiteStyles.map((style) => (
+                  {professionOptions.map((option) => (
                     <button
-                      key={style.id}
+                      key={option.id}
                       type="button"
-                      className={`p-4 border-2 rounded-xl flex items-center hover:border-blue-500 hover:bg-blue-50 transition-all ${
-                        formData.style === style.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                      className={`p-4 border-2 rounded-xl flex flex-col items-start hover:border-blue-500 hover:bg-blue-50 transition-all ${
+                        formData.profession === option.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
                       }`}
-                      onClick={() => handleStyleSelect(style.id)}
+                      onClick={() => handleProfessionSelect(option.id)}
                     >
-                      <span className="text-2xl mr-3">{style.icon}</span>
-                      <span className="font-medium">{style.name}</span>
-                      {formData.style === style.id && (
-                        <Check className="ml-auto h-5 w-5 text-blue-500" />
-                      )}
+                      <div className="flex items-center w-full">
+                        <span className="text-2xl mr-3">{option.icon}</span>
+                        <span className="font-medium">{option.name}</span>
+                        {formData.profession === option.id && (
+                          <Check className="ml-auto h-5 w-5 text-blue-500" />
+                        )}
+                      </div>
+                      <span className="text-xs text-gray-500 mt-2">{option.examples}</span>
                     </button>
                   ))}
                 </div>
+                
+                {formData.profession && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
+                    <Star className="h-5 w-5 text-blue-500 mr-2" />
+                    <span className="text-sm text-blue-700">
+                      <span className="font-medium">+25 points</span> - Votre site sera optimisé pour votre secteur !
+                    </span>
+                  </div>
+                )}
               </div>
             )}
 
@@ -281,6 +370,16 @@ const WebsiteForm = () => {
                     </div>
                   ))}
                 </div>
+                
+                {formData.features.length > 0 && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
+                    <Star className="h-5 w-5 text-blue-500 mr-2" />
+                    <span className="text-sm text-blue-700">
+                      <span className="font-medium">+{Math.min(formData.features.length * 5, 25)} points</span> - 
+                      {formData.features.length >= 3 ? " Superbe choix de fonctionnalités !" : " Chaque fonctionnalité améliore votre site !"}
+                    </span>
+                  </div>
+                )}
                 
                 <p className="text-sm text-gray-500 mt-4">
                   Les fonctionnalités marquées comme "Inclus" font partie du package de base.
@@ -358,6 +457,15 @@ const WebsiteForm = () => {
                     ></textarea>
                   </div>
                 </div>
+                
+                {formData.name && formData.email && formData.projectDetails && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
+                    <Star className="h-5 w-5 text-blue-500 mr-2" />
+                    <span className="text-sm text-blue-700">
+                      <span className="font-medium">+25 points</span> - Parfait ! Nous avons tout ce qu'il nous faut.
+                    </span>
+                  </div>
+                )}
                 
                 <p className="text-sm text-gray-500">
                   * Champs obligatoires
