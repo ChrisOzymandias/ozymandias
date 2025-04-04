@@ -36,8 +36,8 @@ const Hero = () => {
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <div className="absolute inset-0 bg-ozy/10 mix-blend-overlay"></div>
                 <img 
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" 
-                  alt="Femme heureuse de créer son site web" 
+                  src="/public/lovable-uploads/82fc4126-96fc-4266-89bc-dc4e681dacd8.png" 
+                  alt="Homme sur tablette créant son site web" 
                   className="w-full h-auto max-w-md object-cover transform hover:scale-105 transition-transform duration-700"
                 />
               </div>

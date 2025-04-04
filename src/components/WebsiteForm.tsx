@@ -1,8 +1,6 @@
 
-import { useState, useEffect } from 'react';
-import { Check, ArrowRight, ArrowLeft, Tag, Star, Trophy } from 'lucide-react';
-import { toast } from '../components/ui/use-toast';
-import { Badge } from '../components/ui/badge';
+import { useState } from 'react';
+import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Progress } from '../components/ui/progress';
 
 // Define the form steps
@@ -78,47 +76,13 @@ const WebsiteForm = () => {
     projectDetails: '',
   });
   const [progress, setProgress] = useState(25);
-  const [completionPoints, setCompletionPoints] = useState(0);
-  const [showCompletionToast, setShowCompletionToast] = useState(false);
-
-  useEffect(() => {
-    // Calculate completion points based on filled fields
-    let points = 0;
-    if (formData.theme) points += 25;
-    if (formData.profession) points += 25;
-    if (formData.features.length > 0) points += Math.min(formData.features.length * 5, 25);
-    if (formData.name && formData.email && formData.projectDetails) points += 25;
-    
-    setCompletionPoints(points);
-    
-    // Show completion toast when reaching milestones
-    if (points >= 75 && !showCompletionToast) {
-      toast({
-        title: "Presque terminé !",
-        description: "Vous êtes à 75% du chemin. Continuez pour finaliser votre demande !",
-      });
-      setShowCompletionToast(true);
-    }
-  }, [formData]);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
-    
-    // Show encouraging toast when selecting a theme
-    toast({
-      title: "Bon choix !",
-      description: "Ce type de site est parfait pour développer votre activité en ligne.",
-    });
   };
 
   const handleProfessionSelect = (professionId: string) => {
     setFormData({ ...formData, profession: professionId });
-    
-    // Show encouraging toast when selecting a profession
-    toast({
-      title: "Excellent !",
-      description: "Nous avons de l'expérience dans votre secteur d'activité.",
-    });
   };
 
   const handleFeatureToggle = (featureId: string) => {
@@ -133,14 +97,6 @@ const WebsiteForm = () => {
         ...formData,
         features: newFeatures,
       });
-      
-      // Show encouraging toast after selecting several features
-      if (newFeatures.length === 3) {
-        toast({
-          title: "Super choix !",
-          description: "Ces fonctionnalités rendront votre site vraiment attractif !",
-        });
-      }
     }
   };
 
@@ -156,18 +112,6 @@ const WebsiteForm = () => {
     if (currentStep < formSteps.length - 1) {
       setCurrentStep(currentStep + 1);
       setProgress((currentStep + 2) * (100 / formSteps.length));
-      
-      // Show motivational toast when advancing steps
-      const stepMessages = [
-        "Vous avancez bien ! Continuons avec votre profession.",
-        "C'est parfait ! Personnalisons maintenant votre site.",
-        "Dernière étape ! Plus que quelques détails et c'est fini.",
-      ];
-      
-      toast({
-        title: "Étape complétée !",
-        description: stepMessages[currentStep],
-      });
     }
   };
 
@@ -196,13 +140,6 @@ const WebsiteForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate form submission with celebratory toast
-    toast({
-      title: "Félicitations ! 🎉",
-      description: "Votre demande a été envoyée avec succès. Nous vous contacterons très rapidement !",
-      variant: "default",
-    });
-    
     console.log('Form submitted:', formData);
     
     // Reset form after submission
@@ -218,7 +155,6 @@ const WebsiteForm = () => {
     });
     setCurrentStep(0);
     setProgress(25);
-    setShowCompletionToast(false);
   };
 
   return (
@@ -226,24 +162,15 @@ const WebsiteForm = () => {
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
         <div className="flex justify-center items-center mb-4">
-          <Badge variant="outline" className="text-sm bg-blue-500 text-white px-4 py-2 flex items-center gap-2">
-            <Tag size={16} /> PROMO: <span className="line-through text-gray-300 mr-1">499€</span> 99€
-          </Badge>
+          <div className="text-sm bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-2">
+            PROMO: <span className="line-through text-gray-300 mr-1">499€</span> 99€
+          </div>
         </div>
         <p className="section-subtitle text-center">
           Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
         </p>
 
         <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 md:p-8">
-          {/* Gamification elements */}
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-medium">Votre avancement</h3>
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="font-bold text-blue-600">{completionPoints}/100 points</span>
-            </div>
-          </div>
-          
           {/* Progress bar with animation */}
           <div className="mb-8">
             <div className="flex justify-between mb-2 flex-wrap gap-2 md:gap-0">
@@ -287,19 +214,10 @@ const WebsiteForm = () => {
                     </button>
                   ))}
                 </div>
-                
-                {formData.theme && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
-                    <Star className="h-5 w-5 text-blue-500 mr-2" />
-                    <span className="text-sm text-blue-700">
-                      <span className="font-medium">+25 points</span> - Excellent choix !
-                    </span>
-                  </div>
-                )}
               </div>
             )}
 
-            {/* Step 2: Profession Selection (replaced Style) */}
+            {/* Step 2: Profession Selection */}
             {currentStep === 1 && (
               <div className="space-y-6">
                 <h3 className="text-xl font-bold">{formSteps[currentStep].title}</h3>
@@ -326,15 +244,6 @@ const WebsiteForm = () => {
                     </button>
                   ))}
                 </div>
-                
-                {formData.profession && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
-                    <Star className="h-5 w-5 text-blue-500 mr-2" />
-                    <span className="text-sm text-blue-700">
-                      <span className="font-medium">+25 points</span> - Votre site sera optimisé pour votre secteur !
-                    </span>
-                  </div>
-                )}
               </div>
             )}
 
@@ -370,16 +279,6 @@ const WebsiteForm = () => {
                     </div>
                   ))}
                 </div>
-                
-                {formData.features.length > 0 && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
-                    <Star className="h-5 w-5 text-blue-500 mr-2" />
-                    <span className="text-sm text-blue-700">
-                      <span className="font-medium">+{Math.min(formData.features.length * 5, 25)} points</span> - 
-                      {formData.features.length >= 3 ? " Superbe choix de fonctionnalités !" : " Chaque fonctionnalité améliore votre site !"}
-                    </span>
-                  </div>
-                )}
                 
                 <p className="text-sm text-gray-500 mt-4">
                   Les fonctionnalités marquées comme "Inclus" font partie du package de base.
@@ -457,15 +356,6 @@ const WebsiteForm = () => {
                     ></textarea>
                   </div>
                 </div>
-                
-                {formData.name && formData.email && formData.projectDetails && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-center">
-                    <Star className="h-5 w-5 text-blue-500 mr-2" />
-                    <span className="text-sm text-blue-700">
-                      <span className="font-medium">+25 points</span> - Parfait ! Nous avons tout ce qu'il nous faut.
-                    </span>
-                  </div>
-                )}
                 
                 <p className="text-sm text-gray-500">
                   * Champs obligatoires
