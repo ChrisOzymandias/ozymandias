@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { TablesInsert } from '@/integrations/supabase/types';
 
 export const useWebsiteForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -89,10 +90,12 @@ export const useWebsiteForm = () => {
         project_details: formData.projectDetails
       };
       
-      // Fixed TypeScript error by using the explicit type from Database
+      // Using type assertion with TablesInsert to fix TypeScript error
+      type WebsiteRequestInsert = TablesInsert<'website_requests'>;
+      
       const { error } = await supabase
         .from('website_requests')
-        .insert([requestData] as any); // Using type assertion to bypass the TypeScript error
+        .insert([requestData as WebsiteRequestInsert]);
       
       if (error) {
         console.error("Error submitting form:", error);
