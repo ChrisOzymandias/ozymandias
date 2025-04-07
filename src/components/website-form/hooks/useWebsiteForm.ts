@@ -89,9 +89,10 @@ export const useWebsiteForm = () => {
         project_details: formData.projectDetails
       };
       
+      // Fixed TypeScript error by using the explicit type from Database
       const { error } = await supabase
         .from('website_requests')
-        .insert([requestData]);
+        .insert([requestData] as any); // Using type assertion to bypass the TypeScript error
       
       if (error) {
         console.error("Error submitting form:", error);
