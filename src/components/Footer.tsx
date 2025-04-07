@@ -1,5 +1,5 @@
 
-import { Mail, MapPin, Phone, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, MapPin, Phone, Facebook, Twitter, Instagram, Linkedin, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -75,6 +75,12 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">Politique des Cookies</a>
+              </li>
+              <li>
+                <Link to="/admin/login" className="flex items-center text-gray-400 hover:text-ozy transition-colors">
+                  <ShieldCheck className="h-4 w-4 mr-2" />
+                  Espace Admin
+                </Link>
               </li>
             </ul>
           </div>
