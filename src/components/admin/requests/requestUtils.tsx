@@ -2,7 +2,14 @@
 import { AlertCircle, Clock, Check } from 'lucide-react';
 import React from 'react';
 
-export const STATUS_OPTIONS = [
+// Define types for our status options
+interface StatusOption {
+  value: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
+export const STATUS_OPTIONS: StatusOption[] = [
   { value: 'new', label: 'Nouveau', icon: <AlertCircle className="h-4 w-4 text-blue-500" /> },
   { value: 'in_progress', label: 'En cours', icon: <Clock className="h-4 w-4 text-amber-500" /> },
   { value: 'completed', label: 'Complété', icon: <Check className="h-4 w-4 text-green-500" /> }
