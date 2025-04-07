@@ -30,7 +30,7 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -41,7 +41,7 @@ const AdminLogin = () => {
       const { data: adminData, error: adminError } = await supabase
         .from('admins')
         .select('*')
-        .eq('user_id', (await supabase.auth.getUser()).data.user?.id || '');
+        .eq('user_id', data.user?.id || '');
       
       if (adminError) throw adminError;
       
@@ -77,12 +77,9 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
-      const { error: signUpError, data } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/admin/dashboard`
-        }
       });
       
       if (signUpError) throw signUpError;
@@ -94,15 +91,19 @@ const AdminLogin = () => {
           .insert([{ user_id: data.user.id }]);
         
         if (adminError) {
-          // Supprimer l'utilisateur si l'ajout à la table admin échoue
           throw adminError;
         }
+
+        toast({
+          title: 'Compte créé',
+          description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
+        });
+      } else {
+        toast({
+          title: 'Compte créé',
+          description: 'Votre compte administrateur a été créé. Veuillez vérifier votre email pour confirmer votre adresse.',
+        });
       }
-      
-      toast({
-        title: 'Compte créé',
-        description: 'Votre compte administrateur a été créé. Veuillez vérifier votre email pour confirmer votre adresse.',
-      });
     } catch (error: any) {
       setError(error.message || 'Une erreur s\'est produite lors de la création du compte');
     } finally {
