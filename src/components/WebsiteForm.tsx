@@ -1,7 +1,8 @@
-
 import { useState } from 'react';
 import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Progress } from '../components/ui/progress';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 // Define the form steps
 const formSteps = [
@@ -76,6 +77,7 @@ const WebsiteForm = () => {
     projectDetails: '',
   });
   const [progress, setProgress] = useState(25);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
@@ -137,24 +139,70 @@ const WebsiteForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('Form submitted:', formData);
+    if (isSubmitting) return;
     
-    // Reset form after submission
-    setFormData({
-      theme: '',
-      profession: '',
-      features: [],
-      name: '',
-      email: '',
-      phone: '',
-      companyName: '',
-      projectDetails: '',
-    });
-    setCurrentStep(0);
-    setProgress(25);
+    setIsSubmitting(true);
+    
+    try {
+      // Prepare the data for submission to Supabase
+      const requestData = {
+        theme: formData.theme,
+        profession: formData.profession,
+        features: formData.features,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        company_name: formData.companyName || null,
+        project_details: formData.projectDetails
+      };
+      
+      const { error } = await supabase
+        .from('website_requests')
+        .insert([requestData]);
+      
+      if (error) {
+        console.error("Error submitting form:", error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Show success message
+      toast({
+        title: "Demande envoyée !",
+        description: "Nous avons bien reçu votre demande et vous contacterons dans les plus brefs délais.",
+      });
+      
+      // Reset form after submission
+      setFormData({
+        theme: '',
+        profession: '',
+        features: [],
+        name: '',
+        email: '',
+        phone: '',
+        companyName: '',
+        projectDetails: '',
+      });
+      setCurrentStep(0);
+      setProgress(25);
+      
+    } catch (error) {
+      console.error("Error in form submission:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur inattendue est survenue. Veuillez réessayer ultérieurement.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -393,12 +441,12 @@ const WebsiteForm = () => {
               ) : (
                 <button
                   type="submit"
-                  disabled={!isStepValid()}
+                  disabled={!isStepValid() || isSubmitting}
                   className={`inline-flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium ${
-                    !isStepValid() ? 'opacity-50 cursor-not-allowed' : ''
+                    !isStepValid() || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
-                  Envoyer ma demande
+                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
                 </button>
               )}
             </div>
