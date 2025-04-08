@@ -12,20 +12,32 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
   const navigate = useNavigate();
 
   const isValidEmail = () => {
     return email.endsWith('@ozymandias.agency');
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+  const validateForm = () => {
+    if (!email || !password) {
+      setError('Veuillez remplir tous les champs');
+      return false;
+    }
     
     if (!isValidEmail()) {
       setError('Seules les adresses email @ozymandias.agency sont autorisées');
-      return;
+      return false;
     }
+    
+    setError(null);
+    return true;
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
     
     setLoading(true);
     
@@ -67,12 +79,8 @@ const AdminLogin = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     
-    if (!isValidEmail()) {
-      setError('Seules les adresses email @ozymandias.agency sont autorisées');
-      return;
-    }
+    if (!validateForm()) return;
     
     setLoading(true);
     
@@ -98,6 +106,7 @@ const AdminLogin = () => {
           title: 'Compte créé',
           description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
         });
+        setIsRegisterMode(false);
       } else {
         toast({
           title: 'Compte créé',
@@ -120,11 +129,11 @@ const AdminLogin = () => {
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Espace Administrateur</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Connectez-vous pour accéder au tableau de bord
+            {isRegisterMode ? 'Créez votre compte administrateur' : 'Connectez-vous pour accéder au tableau de bord'}
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-8 space-y-6" onSubmit={isRegisterMode ? handleRegister : handleLogin}>
           {error && (
             <div className="bg-red-50 text-red-700 p-3 rounded-md flex items-start">
               <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
@@ -180,28 +189,60 @@ const AdminLogin = () => {
           </div>
 
           <div className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full bg-ozy hover:bg-ozy-dark"
-              disabled={loading || !isValidEmail()}
-            >
-              {loading ? 'Chargement...' : 'Se connecter'}
-              <LogIn className="ml-2 h-4 w-4" />
-            </Button>
-            
-            <div className="text-center">
-              <span className="text-gray-500">ou</span>
-            </div>
-            
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              onClick={handleRegister}
-              disabled={loading || !isValidEmail()}
-            >
-              Créer un compte admin
-            </Button>
+            {!isRegisterMode ? (
+              <>
+                <Button
+                  type="submit"
+                  className="w-full bg-ozy hover:bg-ozy-dark"
+                  disabled={loading}
+                >
+                  {loading ? 'Chargement...' : 'Se connecter'}
+                  <LogIn className="ml-2 h-4 w-4" />
+                </Button>
+                
+                <div className="text-center">
+                  <span className="text-gray-500">ou</span>
+                </div>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setIsRegisterMode(true);
+                    setError(null);
+                  }}
+                >
+                  Créer un compte admin
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="submit"
+                  className="w-full bg-ozy hover:bg-ozy-dark"
+                  disabled={loading}
+                >
+                  {loading ? 'Chargement...' : 'Créer un compte'}
+                </Button>
+                
+                <div className="text-center">
+                  <span className="text-gray-500">ou</span>
+                </div>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setIsRegisterMode(false);
+                    setError(null);
+                  }}
+                >
+                  Retour à la connexion
+                </Button>
+              </>
+            )}
           </div>
         </form>
       </div>
