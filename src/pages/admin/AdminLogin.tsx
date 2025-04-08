@@ -18,12 +18,41 @@ const AdminLogin = () => {
   // Vérifier si l'utilisateur est déjà connecté et le rediriger
   useEffect(() => {
     const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        console.log("Session existe, redirection vers le dashboard...");
-        navigate('/admin/dashboard');
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("Erreur lors de la vérification de session:", error);
+          return;
+        }
+        
+        if (data.session) {
+          console.log("Session existe, vérification des droits admin...");
+          
+          // Vérifier si l'utilisateur est admin
+          const { data: adminData, error: adminError } = await supabase
+            .from('admins')
+            .select('*')
+            .eq('user_id', data.session.user.id);
+          
+          if (adminError) {
+            console.error("Erreur lors de la vérification admin:", adminError);
+            return;
+          }
+          
+          if (adminData && adminData.length > 0) {
+            console.log("Utilisateur admin confirmé, redirection vers le dashboard...");
+            navigate('/admin/dashboard');
+          } else {
+            console.warn("Utilisateur connecté mais pas admin");
+            await supabase.auth.signOut();
+          }
+        }
+      } catch (error) {
+        console.error("Erreur inattendue:", error);
       }
     };
+    
     checkSession();
   }, [navigate]);
 
@@ -61,19 +90,37 @@ const AdminLogin = () => {
       
       if (signInError) throw signInError;
       
+      // Vérifier si l'utilisateur est admin
+      const { data: adminData, error: adminError } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('user_id', data.user.id);
+      
+      if (adminError) {
+        throw adminError;
+      }
+      
+      if (!adminData || adminData.length === 0) {
+        throw new Error("Vous n'avez pas les droits d'administrateur");
+      }
+      
       toast({
         title: 'Connexion réussie',
         description: 'Vous êtes maintenant connecté à l\'espace administrateur',
       });
       
       // Redirection explicite avec un léger délai pour s'assurer que le toast est visible
-      setTimeout(() => {
-        console.log("Redirection vers le dashboard après connexion...");
-        navigate('/admin/dashboard');
-      }, 500);
+      console.log("Redirection vers le dashboard après connexion...");
+      navigate('/admin/dashboard');
       
     } catch (error: any) {
+      console.error("Erreur de connexion:", error);
       setError(error.message || 'Une erreur s\'est produite lors de la connexion');
+      
+      // Si l'utilisateur n'est pas admin, déconnectons-le
+      if (error.message?.includes("droits d'administrateur")) {
+        await supabase.auth.signOut();
+      }
     } finally {
       setLoading(false);
     }
@@ -105,16 +152,32 @@ const AdminLogin = () => {
         .insert([{ user_id: signUpData.user.id }]);
         
       if (adminError) {
+        console.error("Erreur lors de l'insertion admin:", adminError);
         throw adminError;
       }
 
       toast({
-        title: 'Compte créé',
+        title: 'Compte créé avec succès',
         description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
       });
       
-      setIsRegisterMode(false);
+      // Connecter automatiquement l'utilisateur
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      if (signInError) {
+        console.warn("Création réussie mais erreur de connexion automatique:", signInError);
+        setIsRegisterMode(false);
+        return;
+      }
+      
+      console.log("Compte créé et connexion réussie, redirection...");
+      navigate('/admin/dashboard');
+      
     } catch (error: any) {
+      console.error("Erreur d'inscription:", error);
       setError(error.message || 'Une erreur s\'est produite lors de la création du compte');
     } finally {
       setLoading(false);

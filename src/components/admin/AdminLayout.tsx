@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { toast } from '@/components/ui/use-toast';
 
 const AdminLayout = () => {
   const [user, setUser] = useState<any>(null);
@@ -22,36 +23,69 @@ const AdminLayout = () => {
   
   useEffect(() => {
     const checkAdmin = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
+      try {
+        setLoading(true);
+        // Vérifier si l'utilisateur est connecté
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError || !user) {
+          console.error("Erreur lors de la récupération de l'utilisateur:", userError);
+          navigate('/admin/login');
+          return;
+        }
+        
+        // Vérifier si l'utilisateur est administrateur
+        const { data: adminData, error: adminError } = await supabase
+          .from('admins')
+          .select('*')
+          .eq('user_id', user.id);
+        
+        if (adminError) {
+          console.error("Erreur lors de la vérification des droits admin:", adminError);
+          toast({
+            title: "Erreur d'accès",
+            description: "Impossible de vérifier vos droits d'administrateur.",
+            variant: "destructive",
+          });
+          await supabase.auth.signOut();
+          navigate('/admin/login');
+          return;
+        }
+        
+        if (!adminData || adminData.length === 0) {
+          console.warn("L'utilisateur n'est pas administrateur");
+          toast({
+            title: "Accès non autorisé",
+            description: "Vous n'avez pas les droits d'administrateur.",
+            variant: "destructive",
+          });
+          await supabase.auth.signOut();
+          navigate('/admin/login');
+          return;
+        }
+        
+        console.log("Utilisateur admin vérifié:", user.email);
+        setUser(user);
+      } catch (error) {
+        console.error("Erreur inattendue:", error);
         navigate('/admin/login');
-        return;
+      } finally {
+        setLoading(false);
       }
-      
-      const { data: adminData } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('user_id', user.id);
-      
-      if (!adminData || adminData.length === 0) {
-        await supabase.auth.signOut();
-        navigate('/admin/login');
-        return;
-      }
-      
-      setUser(user);
-      setLoading(false);
     };
     
     checkAdmin();
     
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Changement d'état d'authentification:", event);
         if (event === 'SIGNED_OUT') {
           navigate('/admin/login');
         } else if (session?.user) {
           setUser(session.user);
+          if (window.location.pathname === '/admin/login') {
+            navigate('/admin/dashboard');
+          }
         }
       }
     );
