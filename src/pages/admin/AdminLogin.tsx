@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Shield, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
@@ -14,6 +14,18 @@ const AdminLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const navigate = useNavigate();
+
+  // Vérifier si l'utilisateur est déjà connecté et le rediriger
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        console.log("Session existe, redirection vers le dashboard...");
+        navigate('/admin/dashboard');
+      }
+    };
+    checkSession();
+  }, [navigate]);
 
   const isValidEmail = () => {
     return email.endsWith('@ozymandias.agency');
@@ -54,7 +66,12 @@ const AdminLogin = () => {
         description: 'Vous êtes maintenant connecté à l\'espace administrateur',
       });
       
-      navigate('/admin/dashboard');
+      // Redirection explicite avec un léger délai pour s'assurer que le toast est visible
+      setTimeout(() => {
+        console.log("Redirection vers le dashboard après connexion...");
+        navigate('/admin/dashboard');
+      }, 500);
+      
     } catch (error: any) {
       setError(error.message || 'Une erreur s\'est produite lors de la connexion');
     } finally {
