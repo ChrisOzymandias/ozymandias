@@ -42,27 +42,12 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password
       });
       
-      if (error) throw error;
-      
-      // Vérifier si l'utilisateur est admin
-      const { data: adminData, error: adminError } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('user_id', data.user?.id || '');
-      
-      if (adminError) throw adminError;
-      
-      if (!adminData || adminData.length === 0) {
-        await supabase.auth.signOut();
-        setError('Vous n\'avez pas les droits administrateur');
-        setLoading(false);
-        return;
-      }
+      if (signInError) throw signInError;
       
       toast({
         title: 'Connexion réussie',
@@ -85,34 +70,33 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      // 1. Créer le compte d'utilisateur
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
       
       if (signUpError) throw signUpError;
       
-      // Créer un enregistrement dans la table admins
-      if (data.user) {
-        const { error: adminError } = await supabase
-          .from('admins')
-          .insert([{ user_id: data.user.id }]);
-        
-        if (adminError) {
-          throw adminError;
-        }
-
-        toast({
-          title: 'Compte créé',
-          description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
-        });
-        setIsRegisterMode(false);
-      } else {
-        toast({
-          title: 'Compte créé',
-          description: 'Votre compte administrateur a été créé. Veuillez vérifier votre email pour confirmer votre adresse.',
-        });
+      if (!signUpData.user) {
+        throw new Error('Une erreur s\'est produite lors de la création du compte');
       }
+      
+      // 2. Ajouter l'utilisateur à la table admins directement
+      const { error: adminError } = await supabase
+        .from('admins')
+        .insert([{ user_id: signUpData.user.id }]);
+        
+      if (adminError) {
+        throw adminError;
+      }
+
+      toast({
+        title: 'Compte créé',
+        description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
+      });
+      
+      setIsRegisterMode(false);
     } catch (error: any) {
       setError(error.message || 'Une erreur s\'est produite lors de la création du compte');
     } finally {
