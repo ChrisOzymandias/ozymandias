@@ -23,14 +23,22 @@ export const useSessionRedirect = () => {
           const { data: adminData, error: adminError } = await supabase
             .from('admins')
             .select('*')
-            .eq('user_id', data.session.user.id);
+            .eq('user_id', data.session.user.id)
+            .single();
           
           if (adminError) {
+            // Si erreur est "No rows found", l'utilisateur n'est pas admin
+            if (adminError.code === 'PGRST116') {
+              console.warn("Utilisateur connecté mais pas admin");
+              await supabase.auth.signOut();
+              return;
+            }
+            
             console.error("Erreur lors de la vérification admin:", adminError);
             return;
           }
           
-          if (adminData && adminData.length > 0) {
+          if (adminData) {
             console.log("Utilisateur admin confirmé, redirection vers le dashboard...");
             navigate('/admin/dashboard');
           } else {

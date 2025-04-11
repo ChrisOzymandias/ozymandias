@@ -18,18 +18,9 @@ const RegisterForm = ({ switchToLogin }: RegisterFormProps) => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const isValidEmail = () => {
-    return email.endsWith('@ozymandias.agency');
-  };
-
   const validateForm = () => {
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
-      return false;
-    }
-    
-    if (!isValidEmail()) {
-      setError('Seules les adresses email @ozymandias.agency sont autorisées');
       return false;
     }
     
@@ -125,11 +116,6 @@ const RegisterForm = ({ switchToLogin }: RegisterFormProps) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          {email && !isValidEmail() && (
-            <p className="mt-1 text-xs text-red-600">
-              Seules les adresses email @ozymandias.agency sont autorisées
-            </p>
-          )}
         </div>
         
         <div>
