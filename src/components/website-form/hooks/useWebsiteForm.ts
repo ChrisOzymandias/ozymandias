@@ -99,7 +99,8 @@ export const useWebsiteForm = () => {
       
       const { data, error } = await supabase
         .from('website_requests')
-        .insert([requestData as WebsiteRequestInsert]);
+        .insert([requestData as WebsiteRequestInsert])
+        .select();
       
       if (error) {
         console.error("Erreur détaillée lors de la soumission:", error);
@@ -111,7 +112,7 @@ export const useWebsiteForm = () => {
         return;
       }
       
-      console.log("Formulaire soumis avec succès:", data);
+      console.log("Formulaire soumis avec succès, réponse:", data);
       
       // Show success message
       toast({

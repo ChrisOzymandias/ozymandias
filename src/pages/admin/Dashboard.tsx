@@ -1,3 +1,4 @@
+
 import { Card } from '@/components/ui/card';
 import { FileText, User, Clock, DollarSign, Users, BarChart2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -15,44 +16,38 @@ const Dashboard = () => {
     estimatedRevenue: 0
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
       setLoading(true);
+      setError(null);
+      
       try {
         console.log("Tentative de récupération des statistiques...");
         
         // Récupérer toutes les demandes
         const { data: allRequests, error: allRequestsError } = await supabase
           .from('website_requests')
-          .select('status');
+          .select('status, email');
         
         if (allRequestsError) {
           console.error("Erreur lors de la récupération des demandes:", allRequestsError);
+          setError(`Erreur: ${allRequestsError.message}`);
           throw allRequestsError;
         }
         
         console.log("Demandes récupérées pour les stats:", allRequests);
-        
-        // Récupérer les clients uniques (par email)
-        const { data: clients, error: clientsError } = await supabase
-          .from('website_requests')
-          .select('email');
-        
-        if (clientsError) {
-          console.error("Erreur lors de la récupération des clients:", clientsError);
-          throw clientsError;
-        }
-        
-        // Calcul des clients uniques
-        const uniqueEmails = clients?.map(c => c.email) || [];
-        const uniqueClients = new Set(uniqueEmails).size;
         
         // Calculer les statistiques
         const totalRequests = allRequests?.length || 0;
         const newRequests = allRequests?.filter(req => req.status === 'new').length || 0;
         const inProgressRequests = allRequests?.filter(req => req.status === 'in_progress').length || 0;
         const completedRequests = allRequests?.filter(req => req.status === 'completed').length || 0;
+        
+        // Calcul des clients uniques
+        const uniqueEmails = allRequests?.map(c => c.email) || [];
+        const uniqueClients = new Set(uniqueEmails).size;
         
         // Estimation des revenus basée sur les demandes complétées
         // Hypothèse: 99€ de création + 49€/mois de maintenance
@@ -69,8 +64,9 @@ const Dashboard = () => {
         });
         
         console.log("Statistiques calculées avec succès");
-      } catch (error) {
+      } catch (error: any) {
         console.error('Erreur lors du chargement des statistiques:', error);
+        setError(`Erreur: ${error.message || 'Une erreur est survenue'}`);
       } finally {
         setLoading(false);
       }
@@ -121,6 +117,12 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+      
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+          {error}
+        </div>
+      )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (

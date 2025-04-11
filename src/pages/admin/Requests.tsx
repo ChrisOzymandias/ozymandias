@@ -13,6 +13,7 @@ import RequestQuoteDialog from '@/components/admin/requests/RequestQuoteDialog';
 const Requests = () => {
   const [requests, setRequests] = useState<WebsiteRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<WebsiteRequest | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -31,6 +32,8 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     setLoading(true);
+    setError(null);
+    
     try {
       console.log("Tentative de récupération des demandes...");
       
@@ -41,6 +44,7 @@ const Requests = () => {
       
       if (error) {
         console.error('Erreur détaillée:', error);
+        setError(`Erreur: ${error.message}`);
         throw error;
       }
       
@@ -56,8 +60,9 @@ const Requests = () => {
       }));
       
       setRequests(enhancedData || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors du chargement des demandes:', error);
+      setError(`Erreur: ${error.message || 'Une erreur est survenue'}`);
       toast({
         title: 'Erreur',
         description: 'Une erreur est survenue lors du chargement des demandes.',
@@ -187,6 +192,12 @@ const Requests = () => {
           {loading ? 'Chargement...' : 'Actualiser'}
         </Button>
       </div>
+      
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+          {error}
+        </div>
+      )}
       
       <RequestsTable 
         requests={requests}
