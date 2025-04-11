@@ -76,6 +76,7 @@ export const useWebsiteForm = () => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
+    console.log("Soumission du formulaire avec les données:", formData);
     
     try {
       // Prepare the data for submission
@@ -87,18 +88,21 @@ export const useWebsiteForm = () => {
         email: formData.email,
         phone: formData.phone || null,
         company_name: formData.companyName || null,
-        project_details: formData.projectDetails
+        project_details: formData.projectDetails,
+        status: 'new'
       };
+      
+      console.log("Données formatées pour l'insertion:", requestData);
       
       // Using type assertion with TablesInsert to fix TypeScript error
       type WebsiteRequestInsert = TablesInsert<'website_requests'>;
       
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('website_requests')
         .insert([requestData as WebsiteRequestInsert]);
       
       if (error) {
-        console.error("Error submitting form:", error);
+        console.error("Erreur détaillée lors de la soumission:", error);
         toast({
           title: "Erreur",
           description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
@@ -106,6 +110,8 @@ export const useWebsiteForm = () => {
         });
         return;
       }
+      
+      console.log("Formulaire soumis avec succès:", data);
       
       // Show success message
       toast({
@@ -119,7 +125,7 @@ export const useWebsiteForm = () => {
       setProgress(25);
       
     } catch (error) {
-      console.error("Error in form submission:", error);
+      console.error("Erreur technique lors de la soumission:", error);
       toast({
         title: "Erreur",
         description: "Une erreur inattendue est survenue. Veuillez réessayer ultérieurement.",

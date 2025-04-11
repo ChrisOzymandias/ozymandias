@@ -32,12 +32,19 @@ const Requests = () => {
   const fetchRequests = async () => {
     setLoading(true);
     try {
+      console.log("Tentative de récupération des demandes...");
+      
       const { data, error } = await supabase
         .from('website_requests')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur détaillée:', error);
+        throw error;
+      }
+      
+      console.log("Demandes récupérées:", data);
       
       // Ajouter des propriétés simulées pour le suivi et les devis
       const enhancedData = data?.map(request => ({

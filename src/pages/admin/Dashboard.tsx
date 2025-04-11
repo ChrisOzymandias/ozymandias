@@ -1,4 +1,3 @@
-
 import { Card } from '@/components/ui/card';
 import { FileText, User, Clock, DollarSign, Users, BarChart2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -21,23 +20,33 @@ const Dashboard = () => {
     const fetchStats = async () => {
       setLoading(true);
       try {
+        console.log("Tentative de récupération des statistiques...");
+        
         // Récupérer toutes les demandes
         const { data: allRequests, error: allRequestsError } = await supabase
           .from('website_requests')
           .select('status');
         
-        if (allRequestsError) throw allRequestsError;
+        if (allRequestsError) {
+          console.error("Erreur lors de la récupération des demandes:", allRequestsError);
+          throw allRequestsError;
+        }
+        
+        console.log("Demandes récupérées pour les stats:", allRequests);
         
         // Récupérer les clients uniques (par email)
         const { data: clients, error: clientsError } = await supabase
           .from('website_requests')
-          .select('email')
-          .order('email');
+          .select('email');
         
-        if (clientsError) throw clientsError;
+        if (clientsError) {
+          console.error("Erreur lors de la récupération des clients:", clientsError);
+          throw clientsError;
+        }
         
         // Calcul des clients uniques
-        const uniqueClients = new Set(clients?.map(c => c.email) || []).size;
+        const uniqueEmails = clients?.map(c => c.email) || [];
+        const uniqueClients = new Set(uniqueEmails).size;
         
         // Calculer les statistiques
         const totalRequests = allRequests?.length || 0;
@@ -58,6 +67,8 @@ const Dashboard = () => {
           totalClients: uniqueClients,
           estimatedRevenue: initialRevenue + recurringRevenue
         });
+        
+        console.log("Statistiques calculées avec succès");
       } catch (error) {
         console.error('Erreur lors du chargement des statistiques:', error);
       } finally {
@@ -117,7 +128,44 @@ const Dashboard = () => {
             <div key={i} className="h-32 bg-gray-200 animate-pulse rounded-lg"></div>
           ))
         ) : (
-          statCards.map((stat, index) => (
+          [
+            {
+              title: 'Demandes Totales',
+              value: stats.totalRequests,
+              icon: <FileText className="h-8 w-8 text-blue-500" />,
+              color: 'bg-blue-100'
+            },
+            {
+              title: 'Nouvelles Demandes',
+              value: stats.newRequests,
+              icon: <User className="h-8 w-8 text-green-500" />,
+              color: 'bg-green-100'
+            },
+            {
+              title: 'En Cours',
+              value: stats.inProgressRequests,
+              icon: <Clock className="h-8 w-8 text-amber-500" />,
+              color: 'bg-amber-100'
+            },
+            {
+              title: 'Clients',
+              value: stats.totalClients,
+              icon: <Users className="h-8 w-8 text-indigo-500" />,
+              color: 'bg-indigo-100'
+            },
+            {
+              title: 'Complétées',
+              value: stats.completedRequests,
+              icon: <FileText className="h-8 w-8 text-purple-500" />,
+              color: 'bg-purple-100'
+            },
+            {
+              title: 'Revenu Estimé',
+              value: `${stats.estimatedRevenue}€`,
+              icon: <DollarSign className="h-8 w-8 text-emerald-500" />,
+              color: 'bg-emerald-100'
+            }
+          ].map((stat, index) => (
             <Card key={index} className="p-6">
               <div className="flex items-start justify-between">
                 <div>
