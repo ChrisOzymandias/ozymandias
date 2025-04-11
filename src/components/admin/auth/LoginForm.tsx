@@ -43,39 +43,17 @@ const LoginForm = ({ switchToRegister }: LoginFormProps) => {
       
       if (signInError) throw signInError;
       
-      // Vérifier si l'utilisateur est admin
-      const { data: adminData, error: adminError } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('user_id', data.user.id);
-      
-      if (adminError) {
-        throw adminError;
-      }
-      
-      if (!adminData || adminData.length === 0) {
-        throw new Error("Vous n'avez pas les droits d'administrateur");
-      }
-      
       toast({
         title: 'Connexion réussie',
         description: 'Vous êtes maintenant connecté à l\'espace administrateur',
       });
       
-      // Redirection explicite avec un léger délai pour s'assurer que le toast est visible
-      console.log("Redirection vers le dashboard après connexion...");
-      setTimeout(() => {
-        navigate('/admin/dashboard');
-      }, 500);
+      // Redirection vers le dashboard
+      navigate('/admin/dashboard');
       
     } catch (error: any) {
       console.error("Erreur de connexion:", error);
       setError(error.message || 'Une erreur s\'est produite lors de la connexion');
-      
-      // Si l'utilisateur n'est pas admin, déconnectons-le
-      if (error.message?.includes("droits d'administrateur")) {
-        await supabase.auth.signOut();
-      }
     } finally {
       setLoading(false);
     }

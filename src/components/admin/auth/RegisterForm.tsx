@@ -48,7 +48,7 @@ const RegisterForm = ({ switchToLogin }: RegisterFormProps) => {
         throw new Error('Une erreur s\'est produite lors de la création du compte');
       }
       
-      // 2. Ajouter l'utilisateur à la table admins directement
+      // 2. Ajouter l'utilisateur à la table admins
       const { error: adminError } = await supabase
         .from('admins')
         .insert([{ user_id: signUpData.user.id }]);
@@ -60,25 +60,16 @@ const RegisterForm = ({ switchToLogin }: RegisterFormProps) => {
 
       toast({
         title: 'Compte créé avec succès',
-        description: 'Votre compte administrateur a été créé. Veuillez vous connecter.',
+        description: 'Votre compte administrateur a été créé',
       });
       
       // Connecter automatiquement l'utilisateur
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      await supabase.auth.signInWithPassword({
         email,
         password
       });
       
-      if (signInError) {
-        console.warn("Création réussie mais erreur de connexion automatique:", signInError);
-        switchToLogin();
-        return;
-      }
-      
-      console.log("Compte créé et connexion réussie, redirection...");
-      setTimeout(() => {
-        navigate('/admin/dashboard');
-      }, 500);
+      navigate('/admin/dashboard');
       
     } catch (error: any) {
       console.error("Erreur d'inscription:", error);
