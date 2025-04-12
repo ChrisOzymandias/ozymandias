@@ -9,11 +9,17 @@ import RequestDetailsDialog from '@/components/admin/requests/RequestDetailsDial
 import RequestStatusDialog from '@/components/admin/requests/RequestStatusDialog';
 import RequestFollowupDialog from '@/components/admin/requests/RequestFollowupDialog';
 import RequestQuoteDialog from '@/components/admin/requests/RequestQuoteDialog';
+import { useRequestsData } from '@/hooks/admin/useRequestsData';
 
 const Requests = () => {
-  const [requests, setRequests] = useState<WebsiteRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    requests, 
+    loading, 
+    error, 
+    fetchRequests, 
+    updateRequestStatus 
+  } = useRequestsData();
+  
   const [selectedRequest, setSelectedRequest] = useState<WebsiteRequest | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -26,86 +32,20 @@ const Requests = () => {
   const [recurringAmount, setRecurringAmount] = useState('49');
   const [quoteNotes, setQuoteNotes] = useState('');
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
-  const fetchRequests = async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      console.log("Tentative de récupération des demandes...");
-      
-      const { data, error } = await supabase
-        .from('website_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) {
-        console.error('Erreur détaillée:', error);
-        setError(`Erreur: ${error.message}`);
-        throw error;
-      }
-      
-      console.log("Demandes récupérées:", data);
-      
-      // Ajouter des propriétés simulées pour le suivi et les devis
-      const enhancedData = data?.map(request => ({
-        ...request,
-        quote_sent: ['in_progress', 'completed'].includes(request.status),
-        quote_accepted: request.status === 'completed',
-        followup_date: request.status === 'in_progress' ? 
-          new Date(new Date().setDate(new Date().getDate() + 2)).toISOString() : undefined
-      }));
-      
-      setRequests(enhancedData || []);
-    } catch (error: any) {
-      console.error('Erreur lors du chargement des demandes:', error);
-      setError(`Erreur: ${error.message || 'Une erreur est survenue'}`);
-      toast({
-        title: 'Erreur',
-        description: 'Une erreur est survenue lors du chargement des demandes.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleStatusChange = async (value: string) => {
     if (!selectedRequest) return;
     
     setCurrentStatus(value);
+    const success = await updateRequestStatus(selectedRequest.id, value);
     
-    try {
-      const { error } = await supabase
-        .from('website_requests')
-        .update({ status: value })
-        .eq('id', selectedRequest.id);
-      
-      if (error) throw error;
-      
-      // Mettre à jour la liste des demandes
-      setRequests(requests.map(request => 
-        request.id === selectedRequest.id 
-          ? { 
-              ...request, 
-              status: value,
-              quote_sent: ['in_progress', 'completed'].includes(value),
-              quote_accepted: value === 'completed'
-            } 
-          : request
-      ));
-      
+    if (success) {
       toast({
         title: 'Statut mis à jour',
         description: `Le statut a été changé en "${value === 'new' ? 'Nouveau' : value === 'in_progress' ? 'En cours' : 'Complété'}"`,
       });
       
       setIsEditOpen(false);
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut:', error);
+    } else {
       toast({
         title: 'Erreur',
         description: 'Une erreur est survenue lors de la mise à jour du statut.',
@@ -118,11 +58,7 @@ const Requests = () => {
     if (!selectedRequest) return;
     
     // Simuler la sauvegarde du suivi
-    setRequests(requests.map(request => 
-      request.id === selectedRequest.id 
-        ? { ...request, followup_date: new Date(followupDate).toISOString() } 
-        : request
-    ));
+    fetchRequests(); // Refresh data
     
     toast({
       title: 'Suivi programmé',
@@ -135,17 +71,7 @@ const Requests = () => {
   const handleSendQuote = () => {
     if (!selectedRequest) return;
     
-    // Simuler l'envoi du devis et mettre à jour le statut
-    setRequests(requests.map(request => 
-      request.id === selectedRequest.id 
-        ? { 
-            ...request, 
-            status: 'in_progress', 
-            quote_sent: true,
-            followup_date: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString()
-          } 
-        : request
-    ));
+    fetchRequests(); // Refresh data
     
     toast({
       title: 'Devis envoyé',

@@ -1,7 +1,6 @@
 
 import { WebsiteRequest } from '@/types/requests';
-import { AlertCircle, Clock, Check, Eye, Edit2, Phone, Calendar, FilePlus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Clock } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -11,6 +10,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { getStatusBadge } from '@/components/admin/requests/requestUtils';
+import TableActions from '@/components/admin/requests/TableActions';
 
 interface RequestsTableProps {
   requests: WebsiteRequest[];
@@ -38,54 +38,6 @@ const RequestsTable = ({
       hour: '2-digit',
       minute: '2-digit'
     }).format(date);
-  };
-
-  const renderRequestActions = (request: WebsiteRequest) => {
-    return (
-      <div className="flex justify-end space-x-1">
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => onViewDetails(request)}
-          title="Voir détails"
-        >
-          <Eye className="h-4 w-4" />
-        </Button>
-        
-        {!request.quote_sent && (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
-            onClick={() => onCreateQuote(request)}
-            title="Créer un devis"
-          >
-            <FilePlus className="h-4 w-4" />
-          </Button>
-        )}
-        
-        {request.quote_sent && !request.quote_accepted && (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="text-amber-600 hover:text-amber-700 hover:bg-amber-50"
-            onClick={() => onFollowup(request)}
-            title="Programmer un suivi"
-          >
-            <Phone className="h-4 w-4" />
-          </Button>
-        )}
-        
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => onEditRequest(request)}
-          title="Modifier le statut"
-        >
-          <Edit2 className="h-4 w-4" />
-        </Button>
-      </div>
-    );
   };
 
   return (
@@ -129,21 +81,25 @@ const RequestsTable = ({
                   <div className="flex flex-col space-y-1">
                     {getStatusBadge(request.status)}
                     {request.quote_sent && (
-                      <span className="text-xs text-gray-500 flex items-center">
-                        <FilePlus className="h-3 w-3 mr-1" /> 
+                      <span className="text-xs text-gray-500">
                         Devis envoyé
                       </span>
                     )}
                     {request.followup_date && (
-                      <span className="text-xs text-gray-500 flex items-center">
-                        <Calendar className="h-3 w-3 mr-1" />
+                      <span className="text-xs text-gray-500">
                         Suivi: {new Date(request.followup_date).toLocaleDateString('fr-FR')}
                       </span>
                     )}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {renderRequestActions(request)}
+                  <TableActions
+                    request={request}
+                    onViewDetails={onViewDetails}
+                    onEditRequest={onEditRequest}
+                    onFollowup={onFollowup}
+                    onCreateQuote={onCreateQuote}
+                  />
                 </TableCell>
               </TableRow>
             ))
