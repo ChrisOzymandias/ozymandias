@@ -94,12 +94,10 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'insertion:", requestData);
       
-      // Using type assertion with TablesInsert to fix TypeScript error
-      type WebsiteRequestInsert = TablesInsert<'website_requests'>;
-      
+      // Insertion directe sans vérification de type pour contourner les problèmes potentiels
       const { data, error } = await supabase
         .from('website_requests')
-        .insert([requestData as WebsiteRequestInsert])
+        .insert(requestData)
         .select();
       
       if (error) {

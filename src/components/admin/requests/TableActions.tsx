@@ -1,6 +1,6 @@
 
 import { WebsiteRequest } from '@/types/requests';
-import { Eye, FilePlus, Phone, Edit2 } from 'lucide-react';
+import { Eye, FilePlus, Phone, Edit2, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface TableActionsProps {
