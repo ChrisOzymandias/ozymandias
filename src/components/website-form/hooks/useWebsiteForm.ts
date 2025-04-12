@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { TablesInsert } from '@/integrations/supabase/types';
 
 export const useWebsiteForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -94,7 +93,7 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'insertion:", requestData);
       
-      // Insertion directe sans vérification de type pour contourner les problèmes potentiels
+      // Insert the data
       const { data, error } = await supabase
         .from('website_requests')
         .insert(requestData)
@@ -107,7 +106,7 @@ export const useWebsiteForm = () => {
           description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
           variant: "destructive"
         });
-        return;
+        throw error;
       }
       
       console.log("Formulaire soumis avec succès, réponse:", data);
@@ -123,7 +122,7 @@ export const useWebsiteForm = () => {
       setCurrentStep(0);
       setProgress(25);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erreur technique lors de la soumission:", error);
       toast({
         title: "Erreur",

@@ -22,7 +22,7 @@ export const useRequestsData = () => {
         .order('created_at', { ascending: false });
       
       if (error) {
-        console.error('Erreur détaillée:', error);
+        console.error('Erreur détaillée lors de la récupération des demandes:', error);
         setError(`Erreur: ${error.message}`);
         throw error;
       }
@@ -61,6 +61,11 @@ export const useRequestsData = () => {
       
       if (error) {
         console.error('Erreur lors de la mise à jour du statut:', error);
+        toast({
+          title: 'Erreur',
+          description: `Échec de la mise à jour: ${error.message}`,
+          variant: 'destructive',
+        });
         return false;
       }
       
@@ -82,6 +87,33 @@ export const useRequestsData = () => {
       return false;
     }
   };
+
+  const deleteRequest = async (requestId: string): Promise<boolean> => {
+    try {
+      const { error } = await supabase
+        .from('website_requests')
+        .delete()
+        .eq('id', requestId);
+      
+      if (error) {
+        console.error('Erreur lors de la suppression de la demande:', error);
+        toast({
+          title: 'Erreur',
+          description: `Échec de la suppression: ${error.message}`,
+          variant: 'destructive',
+        });
+        return false;
+      }
+      
+      // Mettre à jour la liste des demandes
+      setRequests(requests.filter(request => request.id !== requestId));
+      
+      return true;
+    } catch (error) {
+      console.error('Exception lors de la suppression de la demande:', error);
+      return false;
+    }
+  };
   
   useEffect(() => {
     fetchRequests();
@@ -92,6 +124,7 @@ export const useRequestsData = () => {
     loading,
     error,
     fetchRequests,
-    updateRequestStatus
+    updateRequestStatus,
+    deleteRequest
   };
 };

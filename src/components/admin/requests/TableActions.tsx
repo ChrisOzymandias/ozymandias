@@ -9,6 +9,7 @@ interface TableActionsProps {
   onEditRequest: (request: WebsiteRequest) => void;
   onFollowup: (request: WebsiteRequest) => void;
   onCreateQuote: (request: WebsiteRequest) => void;
+  onDeleteRequest?: (request: WebsiteRequest) => void;
 }
 
 const TableActions = ({
@@ -16,7 +17,8 @@ const TableActions = ({
   onViewDetails,
   onEditRequest,
   onFollowup,
-  onCreateQuote
+  onCreateQuote,
+  onDeleteRequest
 }: TableActionsProps) => {
   return (
     <div className="flex justify-end space-x-1">
@@ -61,6 +63,18 @@ const TableActions = ({
       >
         <Edit2 className="h-4 w-4" />
       </Button>
+      
+      {onDeleteRequest && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+          onClick={() => onDeleteRequest(request)}
+          title="Supprimer la demande"
+        >
+          <Trash className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
