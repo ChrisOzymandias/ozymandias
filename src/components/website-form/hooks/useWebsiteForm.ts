@@ -9,6 +9,7 @@ export const useWebsiteForm = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [progress, setProgress] = useState(25);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
@@ -75,6 +76,8 @@ export const useWebsiteForm = () => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
+    setSubmissionError(null);
+    
     console.log("Soumission du formulaire avec les données:", formData);
     
     try {
@@ -93,7 +96,7 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'insertion:", requestData);
       
-      // Insert the data
+      // Insertion directe dans la table website_requests sans utiliser l'API RPC
       const { data, error } = await supabase
         .from('website_requests')
         .insert(requestData)
@@ -101,11 +104,14 @@ export const useWebsiteForm = () => {
       
       if (error) {
         console.error("Erreur détaillée lors de la soumission:", error);
+        setSubmissionError(error.message);
+        
         toast({
           title: "Erreur",
-          description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
+          description: `Problème lors de l'envoi du formulaire: ${error.message}`,
           variant: "destructive"
         });
+        
         throw error;
       }
       
@@ -124,11 +130,6 @@ export const useWebsiteForm = () => {
       
     } catch (error: any) {
       console.error("Erreur technique lors de la soumission:", error);
-      toast({
-        title: "Erreur",
-        description: "Une erreur inattendue est survenue. Veuillez réessayer ultérieurement.",
-        variant: "destructive"
-      });
     } finally {
       setIsSubmitting(false);
     }
@@ -139,6 +140,7 @@ export const useWebsiteForm = () => {
     formData,
     progress,
     isSubmitting,
+    submissionError,
     formSteps,
     handleThemeSelect,
     handleProfessionSelect,
