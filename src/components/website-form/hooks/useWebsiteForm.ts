@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 export const useWebsiteForm = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [progress, setProgress] = useState(25);
@@ -127,6 +129,9 @@ export const useWebsiteForm = () => {
       setFormData(initialFormData);
       setCurrentStep(0);
       setProgress(25);
+      
+      // Rediriger vers la page de remerciement
+      navigate('/merci');
       
     } catch (error: any) {
       console.error("Erreur technique lors de la soumission:", error);

@@ -28,7 +28,12 @@ const WebsiteForm = () => {
   } = useWebsiteForm();
 
   return (
-    <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30">
+    <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30 relative">
+      {/* Badge en haut à droite */}
+      <div className="absolute top-4 right-4 md:top-8 md:right-12 rotate-6 transform bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg z-10">
+        <span className="text-xs md:text-sm font-bold">Gratuit & Sans Engagement</span>
+      </div>
+      
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
         <div className="flex justify-center items-center mb-4">
@@ -39,10 +44,15 @@ const WebsiteForm = () => {
         <p className="section-subtitle text-center">
           Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
           <br />
-          <span className="font-bold text-blue-600">Demandez la maquette de votre site gratuitement !!</span>
+          <span className="font-bold text-blue-600 text-lg">Demandez la maquette de votre site gratuitement !!</span>
         </p>
 
-        <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 md:p-8">
+        <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 md:p-8 relative">
+          {/* Étiquette "Gratuit" */}
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-1 rounded-full font-semibold text-sm">
+            Maquette gratuite
+          </div>
+          
           {/* Progress bar with animation */}
           <div className="mb-8">
             <div className="flex justify-between mb-2 flex-wrap gap-2 md:gap-0">
@@ -147,7 +157,7 @@ const WebsiteForm = () => {
                     !isStepValid() || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
-                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
+                  {isSubmitting ? 'Envoi en cours...' : 'Obtenir ma maquette gratuite'}
                 </button>
               )}
             </div>

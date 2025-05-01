@@ -12,12 +12,16 @@ import ProcessSection from '../components/ProcessSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FaqSection from '../components/FaqSection';
 import CtaSection from '../components/CtaSection';
+import SocialProof from '../components/SocialProof';
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      
+      {/* Social Proof */}
+      <SocialProof />
       
       {/* Formulaire mis en avant */}
       <WebsiteForm />
