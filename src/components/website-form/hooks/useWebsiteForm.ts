@@ -96,7 +96,7 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'insertion:", requestData);
       
-      // Insertion directe dans la table website_requests sans utiliser l'API RPC
+      // Insertion directe dans la table website_requests
       const { data, error } = await supabase
         .from('website_requests')
         .insert(requestData)

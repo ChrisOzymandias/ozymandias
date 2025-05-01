@@ -38,6 +38,8 @@ const WebsiteForm = () => {
         </div>
         <p className="section-subtitle text-center">
           Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
+          <br />
+          <span className="font-bold text-blue-600">Demandez la maquette de votre site gratuitement !!</span>
         </p>
 
         <div className="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-xl p-6 md:p-8">
