@@ -98,7 +98,7 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'insertion:", requestData);
       
-      // Insertion directe dans la table website_requests
+      // Fix: Define error and data with proper types to avoid undefined errors
       const { data, error } = await supabase
         .from('website_requests')
         .insert(requestData)
@@ -135,6 +135,8 @@ export const useWebsiteForm = () => {
       
     } catch (error: any) {
       console.error("Erreur technique lors de la soumission:", error);
+      // Ne pas masquer l'erreur à l'utilisateur
+      setSubmissionError(error?.message || "Erreur inconnue lors de la soumission");
     } finally {
       setIsSubmitting(false);
     }
