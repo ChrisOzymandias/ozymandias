@@ -4,7 +4,7 @@ import { FormData } from './constants';
 
 interface InfoFormProps {
   formData: FormData;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   stepTitle: string;
   stepDescription: string;
 }
@@ -73,33 +73,51 @@ const InfoForm: React.FC<InfoFormProps> = ({
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Budget approximatif</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Avez-vous déjà un site web ?</label>
           <select
-            name="budget"
-            value={formData.budget}
+            name="hasExistingWebsite"
+            value={formData.hasExistingWebsite}
             onChange={onInputChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Sélectionnez votre budget</option>
-            <option value="moins-500">Moins de 500€</option>
-            <option value="500-1000">Entre 500€ et 1000€</option>
-            <option value="1000-2000">Entre 1000€ et 2000€</option>
-            <option value="plus-2000">Plus de 2000€</option>
+            <option value="">Sélectionnez une option</option>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+            <option value="oui-refonte">Oui, mais il a besoin d'une refonte</option>
           </select>
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Délai souhaité</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Qu'attendez-vous de votre site web ?</label>
           <select
-            name="timeline"
-            value={formData.timeline}
+            name="websiteExpectation"
+            value={formData.websiteExpectation}
             onChange={onInputChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Sélectionnez votre délai</option>
-            <option value="urgent">Urgent (moins de 2 semaines)</option>
-            <option value="normal">Normal (2-4 semaines)</option>
-            <option value="flexible">Flexible (plus d'1 mois)</option>
+            <option value="">Sélectionnez votre objectif principal</option>
+            <option value="contacts">Plus de contacts/prospects</option>
+            <option value="visibilite">Plus de visibilité</option>
+            <option value="ventes">Plus de ventes directes</option>
+            <option value="image">Améliorer mon image professionnelle</option>
+            <option value="autre">Autre objectif</option>
+          </select>
+        </div>
+        
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Quand souhaitez-vous que votre site soit en ligne ?</label>
+          <select
+            name="launchTimeline"
+            value={formData.launchTimeline}
+            onChange={onInputChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Sélectionnez votre délai souhaité</option>
+            <option value="urgent">Dès que possible (urgent)</option>
+            <option value="1mois">Dans le mois qui vient</option>
+            <option value="3mois">Dans les 3 prochains mois</option>
+            <option value="6mois">Dans les 6 prochains mois</option>
+            <option value="nodate">Pas de date précise</option>
           </select>
         </div>
       </div>

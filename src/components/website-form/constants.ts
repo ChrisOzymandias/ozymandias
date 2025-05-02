@@ -67,8 +67,9 @@ export interface FormData {
   email: string;
   phone: string;
   companyName: string;
-  budget: string;
-  timeline: string;
+  hasExistingWebsite: string;
+  websiteExpectation: string;
+  launchTimeline: string;
   projectDetails: string; // Gardé pour compatibilité
 }
 
@@ -80,7 +81,8 @@ export const initialFormData: FormData = {
   email: '',
   phone: '',
   companyName: '',
-  budget: '',
-  timeline: '',
+  hasExistingWebsite: '',
+  websiteExpectation: '',
+  launchTimeline: '',
   projectDetails: '', // Gardé pour compatibilité
 };

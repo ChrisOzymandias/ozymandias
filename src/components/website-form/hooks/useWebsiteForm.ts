@@ -68,7 +68,7 @@ export const useWebsiteForm = () => {
       case 2:
         return true; // Features step is always valid
       case 3:
-        return !!formData.name && !!formData.email && !!formData.phone; // Téléphone est maintenant obligatoire
+        return !!formData.name && !!formData.email && !!formData.phone;
       default:
         return false;
     }
@@ -94,8 +94,9 @@ export const useWebsiteForm = () => {
         email: formData.email,
         phone: formData.phone,
         company_name: formData.companyName || null,
-        budget: formData.budget || null,
-        timeline: formData.timeline || null,
+        has_existing_website: formData.hasExistingWebsite || null,
+        website_expectation: formData.websiteExpectation || null,
+        launch_timeline: formData.launchTimeline || null,
         status: 'new',
         submission_date: new Date().toISOString(),
         source: window.location.href
