@@ -11,8 +11,8 @@ const CtaSection = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-r from-ozy to-ozy-dark text-white relative overflow-hidden">
-      {/* Élément décoratif */}
+    <section className="py-16 md:py-20 bg-gradient-to-r from-ozy to-ozy-dark text-white relative overflow-hidden">
+      {/* Éléments décoratifs */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-white"></div>
         <div className="absolute bottom-10 right-10 w-24 h-24 rounded-full bg-white"></div>

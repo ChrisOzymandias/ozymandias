@@ -41,9 +41,7 @@ const WebsiteForm = () => {
             PROMO: <span className="line-through text-gray-300 mr-1">499€</span> 99€
           </div>
         </div>
-        <p className="section-subtitle text-center">
-          Répondez à quelques questions pour nous aider à comprendre vos besoins et commencer la création de votre site
-          <br />
+        <p className="section-subtitle text-center mb-10">
           <span className="font-bold text-blue-600 text-lg">Demandez la maquette de votre site gratuitement !!</span>
         </p>
 

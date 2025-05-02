@@ -102,17 +102,17 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'envoi au webhook:", requestData);
       
-      // Envoi des données au webhook Make
-      const response = await fetch(MAKE_WEBHOOK_URL, {
+      // Envoi des données au webhook Make avec mode no-cors
+      await fetch(MAKE_WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
-        mode: 'no-cors' // Utilisation du mode no-cors pour éviter les problèmes CORS
+        mode: 'no-cors' // Nécessaire pour éviter les erreurs CORS avec les webhooks externes
       });
       
-      console.log("Réponse du webhook:", response);
+      console.log("Données envoyées avec succès au webhook");
       
       // Afficher un message de succès
       toast({
@@ -120,16 +120,19 @@ export const useWebsiteForm = () => {
         description: "Nous avons bien reçu votre demande et vous contacterons dans les plus brefs délais.",
       });
       
-      // Réinitialiser le formulaire après la soumission
+      // Réinitialiser le formulaire
       setFormData(initialFormData);
       setCurrentStep(0);
       setProgress(25);
       
-      // Rediriger vers la page de remerciement
-      navigate('/merci');
+      // Redirection vers la page de remerciement après un court délai
+      setTimeout(() => {
+        console.log("Redirection vers /merci");
+        navigate('/merci');
+      }, 500);
       
-    } catch (error: any) {
-      console.error("Erreur technique lors de la soumission:", error);
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error);
       setSubmissionError("Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer.");
       
       toast({

@@ -80,7 +80,7 @@ const SocialProof = () => {
   ];
 
   return (
-    <section className="py-6 md:py-10 bg-blue-600 text-white overflow-hidden">
+    <section className="py-8 md:py-12 bg-blue-600 text-white overflow-hidden mt-[-1px] mb-[-1px]">
       <div className={`${isMobile ? "px-4" : ""} relative`}>
         <div 
           ref={containerRef}
