@@ -37,7 +37,7 @@ export const useWebsiteForm = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -68,7 +68,7 @@ export const useWebsiteForm = () => {
       case 2:
         return true; // Features step is always valid
       case 3:
-        return !!formData.name && !!formData.email && !!formData.projectDetails;
+        return !!formData.name && !!formData.email && !!formData.phone; // Téléphone est maintenant obligatoire
       default:
         return false;
     }
@@ -92,9 +92,10 @@ export const useWebsiteForm = () => {
         features: formData.features,
         name: formData.name,
         email: formData.email,
-        phone: formData.phone || null,
+        phone: formData.phone,
         company_name: formData.companyName || null,
-        project_details: formData.projectDetails,
+        budget: formData.budget || null,
+        timeline: formData.timeline || null,
         status: 'new',
         submission_date: new Date().toISOString(),
         source: window.location.href

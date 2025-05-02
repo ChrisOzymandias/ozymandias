@@ -19,7 +19,7 @@ export const formSteps = [
   {
     id: 'info',
     title: 'Vos informations',
-    description: 'Parlez-nous un peu de vous et de votre projet',
+    description: 'Vos coordonnées pour recevoir votre maquette gratuite',
   },
 ];
 
@@ -67,7 +67,9 @@ export interface FormData {
   email: string;
   phone: string;
   companyName: string;
-  projectDetails: string;
+  budget: string;
+  timeline: string;
+  projectDetails: string; // Gardé pour compatibilité
 }
 
 export const initialFormData: FormData = {
@@ -78,5 +80,7 @@ export const initialFormData: FormData = {
   email: '',
   phone: '',
   companyName: '',
-  projectDetails: '',
+  budget: '',
+  timeline: '',
+  projectDetails: '', // Gardé pour compatibilité
 };

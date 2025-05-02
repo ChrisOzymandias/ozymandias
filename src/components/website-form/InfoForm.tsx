@@ -48,10 +48,11 @@ const InfoForm: React.FC<InfoFormProps> = ({
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone *</label>
           <input
             type="tel"
             name="phone"
+            required
             value={formData.phone}
             onChange={onInputChange}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -71,16 +72,35 @@ const InfoForm: React.FC<InfoFormProps> = ({
           />
         </div>
         
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Détails du projet *</label>
-          <textarea
-            name="projectDetails"
-            required
-            value={formData.projectDetails}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Budget approximatif</label>
+          <select
+            name="budget"
+            value={formData.budget}
             onChange={onInputChange}
-            className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Décrivez brièvement votre projet et vos attentes..."
-          ></textarea>
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Sélectionnez votre budget</option>
+            <option value="moins-500">Moins de 500€</option>
+            <option value="500-1000">Entre 500€ et 1000€</option>
+            <option value="1000-2000">Entre 1000€ et 2000€</option>
+            <option value="plus-2000">Plus de 2000€</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Délai souhaité</label>
+          <select
+            name="timeline"
+            value={formData.timeline}
+            onChange={onInputChange}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Sélectionnez votre délai</option>
+            <option value="urgent">Urgent (moins de 2 semaines)</option>
+            <option value="normal">Normal (2-4 semaines)</option>
+            <option value="flexible">Flexible (plus d'1 mois)</option>
+          </select>
         </div>
       </div>
       
