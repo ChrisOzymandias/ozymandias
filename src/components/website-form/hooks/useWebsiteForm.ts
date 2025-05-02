@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+
+// URL du webhook Make
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 export const useWebsiteForm = () => {
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ export const useWebsiteForm = () => {
     console.log("Soumission du formulaire avec les données:", formData);
     
     try {
-      // Prepare the data for submission
+      // Préparer les données pour l'envoi au webhook Make
       const requestData = {
         theme: formData.theme,
         profession: formData.profession,
@@ -93,39 +95,32 @@ export const useWebsiteForm = () => {
         phone: formData.phone || null,
         company_name: formData.companyName || null,
         project_details: formData.projectDetails,
-        status: 'new'
+        status: 'new',
+        submission_date: new Date().toISOString(),
+        source: window.location.href
       };
       
-      console.log("Données formatées pour l'insertion:", requestData);
+      console.log("Données formatées pour l'envoi au webhook:", requestData);
       
-      // Fix: Define error and data with proper types to avoid undefined errors
-      const { data, error } = await supabase
-        .from('website_requests')
-        .insert(requestData)
-        .select();
+      // Envoi des données au webhook Make
+      const response = await fetch(MAKE_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+        mode: 'no-cors' // Utilisation du mode no-cors pour éviter les problèmes CORS
+      });
       
-      if (error) {
-        console.error("Erreur détaillée lors de la soumission:", error);
-        setSubmissionError(error.message);
-        
-        toast({
-          title: "Erreur",
-          description: `Problème lors de l'envoi du formulaire: ${error.message}`,
-          variant: "destructive"
-        });
-        
-        throw error;
-      }
+      console.log("Réponse du webhook:", response);
       
-      console.log("Formulaire soumis avec succès, réponse:", data);
-      
-      // Show success message
+      // Afficher un message de succès
       toast({
         title: "Demande envoyée !",
         description: "Nous avons bien reçu votre demande et vous contacterons dans les plus brefs délais.",
       });
       
-      // Reset form after submission
+      // Réinitialiser le formulaire après la soumission
       setFormData(initialFormData);
       setCurrentStep(0);
       setProgress(25);
@@ -135,8 +130,13 @@ export const useWebsiteForm = () => {
       
     } catch (error: any) {
       console.error("Erreur technique lors de la soumission:", error);
-      // Ne pas masquer l'erreur à l'utilisateur
-      setSubmissionError(error?.message || "Erreur inconnue lors de la soumission");
+      setSubmissionError("Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer.");
+      
+      toast({
+        title: "Erreur",
+        description: "Problème lors de l'envoi du formulaire. Veuillez réessayer ultérieurement.",
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }
