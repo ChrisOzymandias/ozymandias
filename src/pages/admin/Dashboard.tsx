@@ -1,202 +1,206 @@
 
-import { Card } from '@/components/ui/card';
-import { FileText, User, Clock, DollarSign, Users, BarChart2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import RevenueChart from '@/components/admin/RevenueChart';
-import CustomerStats from '@/components/admin/CustomerStats';
+import { WebsiteRequest } from '@/types/requests';
+import { Card } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({
-    totalRequests: 0,
-    newRequests: 0,
-    inProgressRequests: 0,
-    completedRequests: 0,
-    totalClients: 0,
-    estimatedRevenue: 0
-  });
+  const [requests, setRequests] = useState<WebsiteRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      setLoading(true);
-      setError(null);
+  // Fetch all website requests
+  const fetchRequests = async () => {
+    setLoading(true);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('website_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
       
-      try {
-        console.log("Tentative de récupération des statistiques...");
-        
-        // Récupérer toutes les demandes
-        const { data: allRequests, error: allRequestsError } = await supabase
-          .from('website_requests')
-          .select('status, email');
-        
-        if (allRequestsError) {
-          console.error("Erreur lors de la récupération des demandes:", allRequestsError);
-          setError(`Erreur: ${allRequestsError.message}`);
-          throw allRequestsError;
+      if (fetchError) throw fetchError;
+      
+      setRequests(data || []);
+    } catch (err: any) {
+      console.error('Erreur lors de la récupération des demandes:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Listen for real-time updates
+  useEffect(() => {
+    fetchRequests();
+
+    // Subscribe to changes
+    const channel = supabase
+      .channel('website_requests_changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'website_requests' }, 
+        (payload) => {
+          console.log('Changement détecté:', payload);
+          fetchRequests();
         }
-        
-        console.log("Demandes récupérées pour les stats:", allRequests);
-        
-        // Calculer les statistiques
-        const totalRequests = allRequests?.length || 0;
-        const newRequests = allRequests?.filter(req => req.status === 'new').length || 0;
-        const inProgressRequests = allRequests?.filter(req => req.status === 'in_progress').length || 0;
-        const completedRequests = allRequests?.filter(req => req.status === 'completed').length || 0;
-        
-        // Calcul des clients uniques
-        const uniqueEmails = allRequests?.map(c => c.email) || [];
-        const uniqueClients = new Set(uniqueEmails).size;
-        
-        // Estimation des revenus basée sur les demandes complétées
-        // Hypothèse: 99€ de création + 49€/mois de maintenance
-        const initialRevenue = completedRequests * 99;
-        const recurringRevenue = completedRequests * 49;
-        
-        setStats({
-          totalRequests,
-          newRequests,
-          inProgressRequests,
-          completedRequests,
-          totalClients: uniqueClients,
-          estimatedRevenue: initialRevenue + recurringRevenue
-        });
-        
-        console.log("Statistiques calculées avec succès");
-      } catch (error: any) {
-        console.error('Erreur lors du chargement des statistiques:', error);
-        setError(`Erreur: ${error.message || 'Une erreur est survenue'}`);
-      } finally {
-        setLoading(false);
-      }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
-    
-    fetchStats();
   }, []);
 
-  const statCards = [
-    {
-      title: 'Demandes Totales',
-      value: stats.totalRequests,
-      icon: <FileText className="h-8 w-8 text-blue-500" />,
-      color: 'bg-blue-100'
-    },
-    {
-      title: 'Nouvelles Demandes',
-      value: stats.newRequests,
-      icon: <User className="h-8 w-8 text-green-500" />,
-      color: 'bg-green-100'
-    },
-    {
-      title: 'En Cours',
-      value: stats.inProgressRequests,
-      icon: <Clock className="h-8 w-8 text-amber-500" />,
-      color: 'bg-amber-100'
-    },
-    {
-      title: 'Clients',
-      value: stats.totalClients,
-      icon: <Users className="h-8 w-8 text-indigo-500" />,
-      color: 'bg-indigo-100'
-    },
-    {
-      title: 'Complétées',
-      value: stats.completedRequests,
-      icon: <FileText className="h-8 w-8 text-purple-500" />,
-      color: 'bg-purple-100'
-    },
-    {
-      title: 'Revenu Estimé',
-      value: `${stats.estimatedRevenue}€`,
-      icon: <DollarSign className="h-8 w-8 text-emerald-500" />,
-      color: 'bg-emerald-100'
+  // Update request status
+  const updateRequestStatus = async (id: string, status: string) => {
+    try {
+      const { error: updateError } = await supabase
+        .from('website_requests')
+        .update({ status })
+        .eq('id', id);
+      
+      if (updateError) throw updateError;
+      
+      // Update local state
+      setRequests(requests.map(req => 
+        req.id === id ? { ...req, status } : req
+      ));
+      
+      toast({
+        title: "Succès",
+        description: "Statut mis à jour avec succès",
+      });
+    } catch (err: any) {
+      console.error('Erreur lors de la mise à jour du statut:', err);
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour le statut",
+        variant: "destructive"
+      });
     }
-  ];
+  };
+
+  // Format date for display
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
-      
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Demandes de site web</h1>
+        <Button onClick={fetchRequests}>Actualiser</Button>
+      </div>
+
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
           {error}
         </div>
       )}
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <Card>
         {loading ? (
-          Array(6).fill(0).map((_, i) => (
-            <div key={i} className="h-32 bg-gray-200 animate-pulse rounded-lg"></div>
-          ))
+          <div className="flex justify-center items-center p-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : requests.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            Aucune demande trouvée
+          </div>
         ) : (
-          [
-            {
-              title: 'Demandes Totales',
-              value: stats.totalRequests,
-              icon: <FileText className="h-8 w-8 text-blue-500" />,
-              color: 'bg-blue-100'
-            },
-            {
-              title: 'Nouvelles Demandes',
-              value: stats.newRequests,
-              icon: <User className="h-8 w-8 text-green-500" />,
-              color: 'bg-green-100'
-            },
-            {
-              title: 'En Cours',
-              value: stats.inProgressRequests,
-              icon: <Clock className="h-8 w-8 text-amber-500" />,
-              color: 'bg-amber-100'
-            },
-            {
-              title: 'Clients',
-              value: stats.totalClients,
-              icon: <Users className="h-8 w-8 text-indigo-500" />,
-              color: 'bg-indigo-100'
-            },
-            {
-              title: 'Complétées',
-              value: stats.completedRequests,
-              icon: <FileText className="h-8 w-8 text-purple-500" />,
-              color: 'bg-purple-100'
-            },
-            {
-              title: 'Revenu Estimé',
-              value: `${stats.estimatedRevenue}€`,
-              icon: <DollarSign className="h-8 w-8 text-emerald-500" />,
-              color: 'bg-emerald-100'
-            }
-          ].map((stat, index) => (
-            <Card key={index} className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-gray-500 font-medium">{stat.title}</p>
-                  <p className="text-3xl font-bold mt-2">{stat.value}</p>
-                </div>
-                <div className={`p-3 rounded-full ${stat.color}`}>
-                  {stat.icon}
-                </div>
-              </div>
-            </Card>
-          ))
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Téléphone</TableHead>
+                  <TableHead>Type de site</TableHead>
+                  <TableHead>Profession</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Montant (€)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {requests.map((request) => (
+                  <TableRow key={request.id}>
+                    <TableCell className="whitespace-nowrap">
+                      {formatDate(request.created_at)}
+                    </TableCell>
+                    <TableCell>{request.name}</TableCell>
+                    <TableCell>{request.email}</TableCell>
+                    <TableCell>{request.phone || '-'}</TableCell>
+                    <TableCell>{request.theme}</TableCell>
+                    <TableCell>{request.profession}</TableCell>
+                    <TableCell>
+                      <Select 
+                        value={request.status} 
+                        onValueChange={(value) => updateRequestStatus(request.id, value)}
+                      >
+                        <SelectTrigger className="w-32">
+                          <SelectValue placeholder="Statut" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="new">Nouveau</SelectItem>
+                          <SelectItem value="contacted">Contacté</SelectItem>
+                          <SelectItem value="quote_sent">Devis envoyé</SelectItem>
+                          <SelectItem value="quote_accepted">Devis accepté</SelectItem>
+                          <SelectItem value="in_progress">En cours</SelectItem>
+                          <SelectItem value="completed">Terminé</SelectItem>
+                          <SelectItem value="lost">Perdu</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        className="w-24"
+                        placeholder="€"
+                        value={request.quote_amount || ''}
+                        onChange={async (e) => {
+                          const amount = e.target.value ? parseInt(e.target.value) : null;
+                          try {
+                            await supabase
+                              .from('website_requests')
+                              .update({ quote_amount: amount })
+                              .eq('id', request.id);
+                            
+                            // Update local state
+                            setRequests(requests.map(req => 
+                              req.id === request.id ? { ...req, quote_amount: amount } : req
+                            ));
+                          } catch (err) {
+                            console.error('Erreur lors de la mise à jour du montant:', err);
+                          }
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         )}
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Revenus Mensuels</h3>
-          <RevenueChart completedRequests={stats.completedRequests} />
-        </Card>
-        
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Conversion Clients</h3>
-          <CustomerStats 
-            totalRequests={stats.totalRequests}
-            completedRequests={stats.completedRequests}
-          />
-        </Card>
-      </div>
+      </Card>
     </div>
   );
 };

@@ -14,4 +14,8 @@ export interface WebsiteRequest {
   quote_accepted?: boolean;
   followup_date?: string;
   created_at: string;
+  quote_amount?: number | null;
+  has_existing_website?: string | null;
+  website_expectation?: string | null;
+  launch_timeline?: string | null;
 }

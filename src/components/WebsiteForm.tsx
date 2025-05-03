@@ -7,6 +7,7 @@ import FeaturesSelection from './website-form/FeaturesSelection';
 import InfoForm from './website-form/InfoForm';
 import { useWebsiteForm } from './website-form/hooks/useWebsiteForm';
 import { Alert, AlertDescription } from './ui/alert';
+
 const WebsiteForm = () => {
   const {
     currentStep,
@@ -24,6 +25,7 @@ const WebsiteForm = () => {
     isStepValid,
     handleSubmit
   } = useWebsiteForm();
+  
   return <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30 relative mt-16">
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
@@ -93,4 +95,5 @@ const WebsiteForm = () => {
       </div>
     </section>;
 };
+
 export default WebsiteForm;

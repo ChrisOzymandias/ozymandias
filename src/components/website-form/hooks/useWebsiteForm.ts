@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 // URL du webhook Make
 const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
@@ -114,7 +115,31 @@ export const useWebsiteForm = () => {
         mode: 'no-cors' // Nécessaire pour éviter les erreurs CORS avec les webhooks externes
       });
       
-      console.log("Données envoyées avec succès au webhook");
+      // Enregistrer les données dans Supabase pour le tableau de bord
+      const { error: supabaseError } = await supabase
+        .from('website_requests')
+        .insert([
+          {
+            theme: formData.theme,
+            profession: formData.profession,
+            features: formData.features,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company_name: formData.companyName || null,
+            has_existing_website: formData.hasExistingWebsite || null,
+            website_expectation: formData.websiteExpectation || null,
+            launch_timeline: formData.launchTimeline || null,
+            status: 'new',
+            project_details: formData.websiteExpectation || ''  // Utiliser l'attente comme détails du projet pour compatibilité
+          }
+        ]);
+      
+      if (supabaseError) {
+        console.error("Erreur lors de l'enregistrement dans Supabase:", supabaseError);
+      }
+      
+      console.log("Données envoyées avec succès");
       
       // Afficher un message de succès
       toast({
@@ -127,10 +152,10 @@ export const useWebsiteForm = () => {
       setCurrentStep(0);
       setProgress(25);
       
-      // Redirection vers la page de remerciement après un court délai
+      // Redirection vers la page de remerciement avec un state pour éviter le problème de rafraîchissement
       setTimeout(() => {
         console.log("Redirection vers /merci");
-        navigate('/merci');
+        navigate('/merci', { state: { fromForm: true } });
       }, 500);
       
     } catch (error) {
