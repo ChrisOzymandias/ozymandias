@@ -33,39 +33,51 @@ export type Database = {
           created_at: string
           email: string
           features: string[] | null
+          has_existing_website: string | null
           id: string
+          launch_timeline: string | null
           name: string
           phone: string | null
           profession: string
           project_details: string
+          quote_amount: number | null
           status: string
           theme: string
+          website_expectation: string | null
         }
         Insert: {
           company_name?: string | null
           created_at?: string
           email: string
           features?: string[] | null
+          has_existing_website?: string | null
           id?: string
+          launch_timeline?: string | null
           name: string
           phone?: string | null
           profession: string
           project_details: string
+          quote_amount?: number | null
           status?: string
           theme: string
+          website_expectation?: string | null
         }
         Update: {
           company_name?: string | null
           created_at?: string
           email?: string
           features?: string[] | null
+          has_existing_website?: string | null
           id?: string
+          launch_timeline?: string | null
           name?: string
           phone?: string | null
           profession?: string
           project_details?: string
+          quote_amount?: number | null
           status?: string
           theme?: string
+          website_expectation?: string | null
         }
         Relationships: []
       }
