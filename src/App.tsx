@@ -7,6 +7,9 @@ import NotFound from './pages/NotFound';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './pages/admin/AdminLogin';
 import Dashboard from './pages/admin/Dashboard';
+import Requests from './pages/admin/Requests';
+import Clients from './pages/admin/Clients';
+import Settings from './pages/admin/Settings';
 
 function App() {
   // Use a custom component to handle the redirect based on location
@@ -29,6 +32,9 @@ function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="requests" element={<Requests />} />
+        <Route path="clients" element={<Clients />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
