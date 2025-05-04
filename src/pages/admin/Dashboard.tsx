@@ -15,9 +15,8 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { useIncomingWebhook } from '@/hooks/use-webhook';
 import { WebsiteRequest } from '@/types/requests';
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { RefreshCw, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle } from 'lucide-react';
 
 // URL du webhook Make - utilisé pour tout le site
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
@@ -160,7 +159,7 @@ const Dashboard = () => {
           >
             {(loading || isLoadingFromWebhook) ? (
               <>
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                 Chargement...
               </>
             ) : (
@@ -293,3 +292,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
