@@ -17,14 +17,14 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { useIncomingWebhook } from '@/hooks/use-webhook';
 
-// URL du webhook pour récupérer les données (à remplacer par votre URL réelle)
-const REQUESTS_WEBHOOK_URL = 'https://hook.eu2.make.com/get-client-data';
+// URL du webhook - maintenant utilisation de la même URL pour tout
+const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 const Dashboard = () => {
   const [requests, setRequests] = useState<WebsiteRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [webhookUrl, setWebhookUrl] = useState<string>(REQUESTS_WEBHOOK_URL || '');
+  const [webhookUrl, setWebhookUrl] = useState<string>(WEBHOOK_URL || '');
   
   // Utiliser notre hook personnalisé pour le webhook entrant
   const { receiveFromWebhook, isLoading: isLoadingFromWebhook } = useIncomingWebhook({

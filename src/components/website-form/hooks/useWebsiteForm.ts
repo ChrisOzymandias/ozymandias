@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
@@ -6,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useOutgoingWebhook } from '@/hooks/use-webhook';
 
-// URL du webhook Make
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
+// URL du webhook Make - maintenant la même pour toutes les fonctionnalités
+const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 export const useWebsiteForm = () => {
   const navigate = useNavigate();
@@ -18,7 +17,7 @@ export const useWebsiteForm = () => {
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   
   // Utiliser notre hook personnalisé pour le webhook sortant
-  const { sendToWebhook, isLoading: isSendingToWebhook } = useOutgoingWebhook(MAKE_WEBHOOK_URL);
+  const { sendToWebhook, isLoading: isSendingToWebhook } = useOutgoingWebhook(WEBHOOK_URL);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
