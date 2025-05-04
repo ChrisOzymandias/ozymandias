@@ -1,5 +1,5 @@
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface RevenueChartProps {
   completedRequests: number;
@@ -13,7 +13,7 @@ const RevenueChart = ({ completedRequests }: RevenueChartProps) => {
   // Générer des données avec une distribution normale autour du nombre actuel
   const generateMonthlyData = () => {
     const data = [];
-    const baseRevenue = completedRequests * 49; // Maintenance mensuelle
+    const baseRevenue = Math.max(1, completedRequests) * 49; // Maintenance mensuelle
     
     for (let i = 5; i >= 0; i--) {
       const monthIndex = (currentMonth - i + 12) % 12;
@@ -24,7 +24,7 @@ const RevenueChart = ({ completedRequests }: RevenueChartProps) => {
       data.push({
         name: months[monthIndex],
         revenue: monthlyRevenue,
-        creation: i === 0 ? completedRequests * 99 : Math.round(completedRequests * 99 * (factor - 0.1))
+        creation: i === 0 ? Math.max(1, completedRequests) * 99 : Math.round(Math.max(1, completedRequests) * 99 * (factor - 0.1))
       });
     }
     
@@ -40,10 +40,11 @@ const RevenueChart = ({ completedRequests }: RevenueChartProps) => {
           data={data}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip formatter={(value) => [`${value} €`, '']} />
+          <Legend />
           <Bar name="Création de site" dataKey="creation" fill="#8884d8" />
           <Bar name="Maintenance" dataKey="revenue" fill="#82ca9d" />
         </BarChart>

@@ -1,6 +1,5 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { Card } from '@/components/ui/card';
 
 interface CustomerStatsProps {
   totalRequests: number;
@@ -17,14 +16,14 @@ const CustomerStats = ({ totalRequests, completedRequests }: CustomerStatsProps)
   
   // Données pour le graphique
   const data = [
-    { name: 'Convertis', value: completedRequests },
-    { name: 'Non convertis', value: inProgressRequests }
+    { name: 'Convertis', value: Math.max(1, completedRequests) },
+    { name: 'Non convertis', value: Math.max(1, inProgressRequests) }
   ];
   
   const COLORS = ['#4ade80', '#93c5fd'];
 
   // Projections de revenus
-  const projectionMonthly = completedRequests * 49;
+  const projectionMonthly = Math.max(1, completedRequests) * 49;
   const projectionYearly = projectionMonthly * 12;
 
   return (

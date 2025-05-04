@@ -90,10 +90,15 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
         url += '&action=get_requests';
       }
       
+      // Ajout d'un cache-buster pour éviter la mise en cache
+      url += `&_t=${Date.now()}`;
+      
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store',
+          'Pragma': 'no-cache'
         }
       });
       
@@ -133,7 +138,7 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
       const mockData = [
         {
           id: "1",
-          name: "Jean Dupont (mode hors ligne)",
+          name: "Jean Dupont (mode démo)",
           email: "jean@example.com",
           phone: "0601020304",
           theme: "e-commerce",
@@ -141,13 +146,37 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
           status: "new",
           created_at: new Date().toISOString(),
           features: ["contact-form", "gallery"]
+        },
+        {
+          id: "2",
+          name: "Marie Martin (mode démo)",
+          email: "marie@example.com",
+          phone: "0612345678",
+          theme: "portfolio",
+          profession: "photographe",
+          status: "quote_sent",
+          quote_amount: 450,
+          created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+          features: ["gallery", "contact-form"]
+        },
+        {
+          id: "3",
+          name: "Paul Durand (mode démo)",
+          email: "paul@example.com",
+          phone: "0687654321",
+          theme: "business",
+          profession: "consultant",
+          status: "completed",
+          quote_amount: 990,
+          created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+          features: ["blog", "contact-form", "newsletter"]
         }
       ];
       
       toast({
-        title: "Mode hors ligne",
-        description: "Impossible de récupérer les données du webhook. Mode démonstration activé.",
-        variant: "destructive",
+        title: "Mode démonstration",
+        description: "Impossible de récupérer les données du webhook. Affichage des données de démonstration.",
+        variant: "warning",
       });
       
       if (options?.onSuccess) {
