@@ -1,7 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { WebsiteRequest } from '@/types/requests';
 import { Card } from '@/components/ui/card';
 import {
   Table,
@@ -16,8 +14,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { useIncomingWebhook } from '@/hooks/use-webhook';
+import { WebsiteRequest } from '@/types/requests';
 
-// URL du webhook - maintenant utilisation de la même URL pour tout
+// URL du webhook Make - maintenant la même pour toutes les fonctionnalités
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 const Dashboard = () => {
@@ -31,6 +30,7 @@ const Dashboard = () => {
     onSuccess: (data) => {
       if (Array.isArray(data)) {
         setRequests(data);
+        console.log("Données reçues du webhook Make:", data);
       } else {
         console.error("Les données reçues du webhook ne sont pas un tableau:", data);
       }
@@ -40,84 +40,83 @@ const Dashboard = () => {
     }
   });
 
-  // Fetch all website requests
+  // Fetch all website requests from webhook
   const fetchRequests = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // Si un webhook URL est défini, essayer de récupérer les données depuis le webhook
-      if (webhookUrl) {
-        const webhookData = await receiveFromWebhook(webhookUrl);
-        if (webhookData) {
-          setLoading(false);
-          return; // Les données ont été définies dans le hook
-        }
+      console.log("Tentative de récupération des données depuis le webhook Make...");
+      const webhookData = await receiveFromWebhook(webhookUrl);
+      
+      if (webhookData) {
+        console.log("Données récupérées depuis le webhook Make:", webhookData);
+        setLoading(false);
+      } else {
+        throw new Error("Aucune donnée reçue du webhook Make");
       }
-      
-      // Fallback: récupérer les données depuis Supabase si le webhook échoue
-      console.log("Récupération des demandes depuis Supabase...");
-      const { data, error: fetchError } = await supabase
-        .from('website_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (fetchError) throw fetchError;
-      
-      setRequests(data || []);
     } catch (err: any) {
       console.error('Erreur lors de la récupération des demandes:', err);
-      setError(err.message);
+      setError(`Erreur: ${err.message || "Une erreur inconnue s'est produite"}`);
+      toast({
+        title: "Erreur",
+        description: "Impossible de récupérer les données depuis Make. Vérifiez l'URL du webhook.",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Listen for real-time updates
+  // Load data when component mounts
   useEffect(() => {
     fetchRequests();
-
-    // Subscribe to changes
-    const channel = supabase
-      .channel('website_requests_changes')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'website_requests' }, 
-        (payload) => {
-          console.log('Changement détecté:', payload);
-          fetchRequests();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
 
-  // Update request status
+  // Update request status via webhook
   const updateRequestStatus = async (id: string, status: string) => {
     try {
-      const { error: updateError } = await supabase
-        .from('website_requests')
-        .update({ status })
-        .eq('id', id);
+      // Préparer les données pour l'envoi au webhook Make
+      const requestData = {
+        action: 'update_status',
+        id: id,
+        status: status
+      };
       
-      if (updateError) throw updateError;
+      console.log("Envoi de la mise à jour de statut au webhook Make:", requestData);
       
-      // Update local state
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'no-cors', // Pour éviter les problèmes CORS
+        body: JSON.stringify(requestData),
+      });
+      
+      // Avec mode: 'no-cors', nous ne pouvons pas accéder au corps de la réponse
+      // On considère donc que l'envoi a réussi et on met à jour l'interface
+      
+      // Update local state optimistically
       setRequests(requests.map(req => 
         req.id === id ? { ...req, status } : req
       ));
       
       toast({
         title: "Succès",
-        description: "Statut mis à jour avec succès",
+        description: "Demande de mise à jour du statut envoyée",
       });
+      
+      // Actualiser les données après un court délai pour obtenir la mise à jour
+      setTimeout(() => {
+        fetchRequests();
+      }, 2000);
+      
     } catch (err: any) {
       console.error('Erreur lors de la mise à jour du statut:', err);
       toast({
         title: "Erreur",
-        description: "Impossible de mettre à jour le statut",
+        description: "Impossible d'envoyer la mise à jour au webhook Make",
         variant: "destructive"
       });
     }
@@ -168,7 +167,7 @@ const Dashboard = () => {
           </div>
         ) : requests.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
-            Aucune demande trouvée
+            Aucune demande trouvée. Vérifiez l'URL du webhook ou assurez-vous que des données sont disponibles dans Make.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -224,17 +223,37 @@ const Dashboard = () => {
                         onChange={async (e) => {
                           const amount = e.target.value ? parseInt(e.target.value) : null;
                           try {
-                            await supabase
-                              .from('website_requests')
-                              .update({ quote_amount: amount })
-                              .eq('id', request.id);
+                            // Envoyer la mise à jour du montant au webhook Make
+                            await fetch(webhookUrl, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              mode: 'no-cors',
+                              body: JSON.stringify({
+                                action: 'update_amount',
+                                id: request.id,
+                                quote_amount: amount
+                              }),
+                            });
                             
-                            // Update local state
+                            // Update local state optimistically
                             setRequests(requests.map(req => 
                               req.id === request.id ? { ...req, quote_amount: amount } : req
                             ));
+                            
+                            // Actualiser après un court délai
+                            setTimeout(() => {
+                              fetchRequests();
+                            }, 2000);
+                            
                           } catch (err) {
                             console.error('Erreur lors de la mise à jour du montant:', err);
+                            toast({
+                              title: "Erreur",
+                              description: "Impossible de mettre à jour le montant via le webhook",
+                              variant: "destructive"
+                            });
                           }
                         }}
                       />

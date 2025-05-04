@@ -5,10 +5,6 @@ project_id = "tqmceiupqjgkxesfuyuq"
   enabled = true
   tables = ["public.website_requests"]
 
-[functions.sync-webhook]
-  verify_jwt = true
-  path = "supabase/functions/sync-webhook"
-
 [api]
   port = 54321
   schemas = ["public", "storage", "auth"]

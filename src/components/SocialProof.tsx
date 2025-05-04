@@ -96,7 +96,7 @@ const SocialProof = () => {
             ref={contentRef}
             className={isMobile ? "" : "flex whitespace-nowrap"}
           >
-            {/* Afficher uniquement une copie des métriques sur mobile, trois copies pour l'effet de défilement sur desktop */}
+            {/* Afficher les métriques une seule fois sur mobile */}
             {metrics.map((metric, index) => (
               <div 
                 key={index} 
@@ -107,7 +107,7 @@ const SocialProof = () => {
                   }
                 `}
               >
-                <div className="flex flex-col items-center text-center">
+                <div className="flex flex-col items-center text-center w-full">
                   <div className="flex items-center justify-center mb-2">
                     {metric.icon}
                     <span className="font-bold text-2xl">{metric.value}</span>
@@ -123,7 +123,7 @@ const SocialProof = () => {
                 key={`desktop-${index}`} 
                 className="transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
               >
-                <div className="flex flex-col items-center text-center">
+                <div className="flex flex-col items-center text-center w-full">
                   <div className="flex items-center justify-center mb-2">
                     {metric.icon}
                     <span className="font-bold text-2xl">{metric.value}</span>

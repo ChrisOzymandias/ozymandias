@@ -1,8 +1,8 @@
+
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { useOutgoingWebhook } from '@/hooks/use-webhook';
 
 // URL du webhook Make - maintenant la même pour toutes les fonctionnalités
@@ -113,30 +113,6 @@ export const useWebsiteForm = () => {
       
       if (!webhookResult) {
         throw new Error("Échec de l'envoi des données au webhook");
-      }
-      
-      // Enregistrer les données dans Supabase pour le tableau de bord
-      const { error: supabaseError } = await supabase
-        .from('website_requests')
-        .insert([
-          {
-            theme: formData.theme,
-            profession: formData.profession,
-            features: formData.features,
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            company_name: formData.companyName || null,
-            has_existing_website: formData.hasExistingWebsite || null,
-            website_expectation: formData.websiteExpectation || null,
-            launch_timeline: formData.launchTimeline || null,
-            status: 'new',
-            project_details: formData.websiteExpectation || ''  // Utiliser l'attente comme détails du projet pour compatibilité
-          }
-        ]);
-      
-      if (supabaseError) {
-        console.error("Erreur lors de l'enregistrement dans Supabase:", supabaseError);
       }
       
       console.log("Données envoyées avec succès");
