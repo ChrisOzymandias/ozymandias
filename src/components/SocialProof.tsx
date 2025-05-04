@@ -118,7 +118,7 @@ const SocialProof = () => {
             ))}
             
             {/* Afficher les duplications uniquement sur desktop */}
-            {!isMobile && metrics.concat(metrics).map((metric, index) => (
+            {!isMobile && metrics.map((metric, index) => (
               <div 
                 key={`desktop-${index}`} 
                 className="transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"

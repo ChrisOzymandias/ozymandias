@@ -74,7 +74,7 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
         description: "URL du webhook non définie",
         variant: "destructive",
       });
-      return null;
+      return [];
     }
 
     setIsLoading(true);
@@ -82,81 +82,54 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
       console.log(`Tentative de récupération de données depuis Make: ${webhookUrl}`);
       
       // Pour récupérer des données du webhook Make, on utilise une requête GET
-      // Note: Dans la réalité, Make devrait renvoyer les données en réponse à une requête POST
-      // ou via un webhook de callback, mais nous simulons ici une récupération via GET
-      const response = await fetch(webhookUrl + "?action=get_requests", {
+      // avec un paramètre action pour indiquer ce qu'on veut
+      let url = webhookUrl;
+      if (!url.includes('?')) {
+        url += '?action=get_requests';
+      } else if (!url.includes('action=')) {
+        url += '&action=get_requests';
+      }
+      
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
-        // Ne pas utiliser no-cors ici pour pouvoir accéder aux données de la réponse
+        }
       });
       
       console.log("Réponse du webhook:", response);
       
-      // Pour gérer le mode no-cors si nécessaire
-      if (response.type === 'opaque') {
-        console.log("Réponse opaque reçue (mode no-cors)");
-        // Dans le cas d'une réponse opaque, nous ne pouvons pas accéder au corps
-        // Simuler des données pour tester l'interface
-        const mockData = [
-          {
-            id: "1",
-            name: "Jean Dupont",
-            email: "jean@example.com",
-            phone: "0601020304",
-            theme: "e-commerce",
-            profession: "restaurateur",
-            status: "new",
-            created_at: new Date().toISOString(),
-            features: ["contact-form", "gallery"]
-          },
-          {
-            id: "2",
-            name: "Marie Martin",
-            email: "marie@example.com",
-            phone: "0607080910",
-            theme: "portfolio",
-            profession: "photographe",
-            status: "contacted",
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-            features: ["blog", "gallery"]
-          }
-        ];
-        
-        if (options?.onSuccess) {
-          options.onSuccess(mockData);
-        }
-        
-        return mockData;
-      }
-      
-      // Si la réponse n'est pas opaque, essayer de récupérer les données JSON
+      // Gérer les erreurs HTTP
       if (!response.ok) {
+        console.log("Erreur HTTP détectée, statut:", response.status);
         throw new Error(`Erreur HTTP ${response.status}`);
       }
       
-      const data = await response.json();
-      console.log("Données reçues du webhook:", data);
-      
-      if (options?.onSuccess) {
-        options.onSuccess(data);
+      // Essayer de récupérer les données JSON
+      try {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          const data = await response.json();
+          console.log("Données reçues du webhook:", data);
+          
+          if (options?.onSuccess) {
+            options.onSuccess(data);
+          }
+          
+          return data;
+        } else {
+          console.log("La réponse n'est pas au format JSON");
+          throw new Error("Format de réponse non supporté");
+        }
+      } catch (jsonError) {
+        console.log("Erreur lors de l'analyse du JSON:", jsonError);
+        throw new Error("Impossible de traiter la réponse du webhook");
       }
-      
-      return data;
     } catch (error) {
       console.error("Erreur lors de la récupération depuis le webhook:", error);
-      toast({
-        title: "Erreur",
-        description: "Échec de la récupération des données du webhook",
-        variant: "destructive",
-      });
       
-      if (options?.onError && error instanceof Error) {
-        options.onError(error);
-      }
-      
-      // Simuler des données pour tester l'interface en cas d'erreur
+      // Générer des données de démonstration pour permettre l'affichage du dashboard
+      // même en cas d'échec de la récupération des données
       const mockData = [
         {
           id: "1",
@@ -171,8 +144,18 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
         }
       ];
       
+      toast({
+        title: "Mode hors ligne",
+        description: "Impossible de récupérer les données du webhook. Mode démonstration activé.",
+        variant: "destructive",
+      });
+      
       if (options?.onSuccess) {
         options.onSuccess(mockData);
+      }
+      
+      if (options?.onError && error instanceof Error) {
+        options.onError(error);
       }
       
       return mockData;

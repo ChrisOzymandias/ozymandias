@@ -15,8 +15,11 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { useIncomingWebhook } from '@/hooks/use-webhook';
 import { WebsiteRequest } from '@/types/requests';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
-// URL du webhook Make - maintenant la même pour toutes les fonctionnalités
+// URL du webhook Make - utilisé pour tout le site
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 const Dashboard = () => {
@@ -24,19 +27,23 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [webhookUrl, setWebhookUrl] = useState<string>(WEBHOOK_URL || '');
+  const [webhookStatus, setWebhookStatus] = useState<'idle' | 'success' | 'error'>('idle');
   
-  // Utiliser notre hook personnalisé pour le webhook entrant
+  // Utiliser notre hook personnalisé pour le webhook entrant avec feedback amélioré
   const { receiveFromWebhook, isLoading: isLoadingFromWebhook } = useIncomingWebhook({
     onSuccess: (data) => {
       if (Array.isArray(data)) {
         setRequests(data);
+        setWebhookStatus('success');
         console.log("Données reçues du webhook Make:", data);
       } else {
         console.error("Les données reçues du webhook ne sont pas un tableau:", data);
+        setWebhookStatus('error');
       }
     },
     onError: (error) => {
       setError(error.message);
+      setWebhookStatus('error');
     }
   });
 
@@ -44,6 +51,7 @@ const Dashboard = () => {
   const fetchRequests = async () => {
     setLoading(true);
     setError(null);
+    setWebhookStatus('idle');
     
     try {
       console.log("Tentative de récupération des données depuis le webhook Make...");
@@ -60,7 +68,7 @@ const Dashboard = () => {
       setError(`Erreur: ${err.message || "Une erreur inconnue s'est produite"}`);
       toast({
         title: "Erreur",
-        description: "Impossible de récupérer les données depuis Make. Vérifiez l'URL du webhook.",
+        description: "Impossible de récupérer les données depuis Make. Mode démonstration activé.",
         variant: "destructive"
       });
     } finally {
@@ -148,16 +156,31 @@ const Dashboard = () => {
           <Button 
             onClick={fetchRequests}
             disabled={loading || isLoadingFromWebhook}
+            variant={webhookStatus === 'error' ? 'destructive' : 'default'}
           >
-            {(loading || isLoadingFromWebhook) ? 'Chargement...' : 'Actualiser'}
+            {(loading || isLoadingFromWebhook) ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Chargement...
+              </>
+            ) : (
+              <>Actualiser</>
+            )}
           </Button>
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
-          {error}
-        </div>
+      {webhookStatus === 'error' && (
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Problème de connexion au webhook</AlertTitle>
+          <AlertDescription>
+            Impossible de récupérer les données depuis Make. Les données affichées sont en mode démonstration.
+            <p className="text-xs mt-1">
+              Vérifiez que votre scénario Make est correctement configuré pour répondre aux requêtes GET avec le paramètre "action=get_requests".
+            </p>
+          </AlertDescription>
+        </Alert>
       )}
 
       <Card>
