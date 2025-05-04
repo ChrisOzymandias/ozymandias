@@ -1,1 +1,20 @@
+
 project_id = "tqmceiupqjgkxesfuyuq"
+
+[realtime]
+  enabled = true
+  tables = ["public.website_requests"]
+
+[functions.sync-webhook]
+  verify_jwt = true
+  path = "supabase/functions/sync-webhook"
+
+[api]
+  port = 54321
+  schemas = ["public", "storage", "auth"]
+  extra_search_path = ["public", "extensions"]
+  max_rows = 1000
+
+[db]
+  port = 54322
+  major_version = 15

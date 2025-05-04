@@ -94,34 +94,39 @@ const SocialProof = () => {
         >
           <div 
             ref={contentRef}
-            className={`
-              ${isMobile 
-                ? "" 
-                : "flex whitespace-nowrap"
-              }
-            `}
+            className={isMobile ? "" : "flex whitespace-nowrap"}
           >
-            {/* Dupliquer les éléments pour un défilement sans fin */}
-            {[...metrics, ...metrics, ...metrics].map((metric, index) => (
-              <div 
-                key={index} 
-                className={`
-                  flex items-center justify-center
-                  ${isMobile 
-                    ? "bg-blue-700/30 rounded-lg p-4" 
-                    : "transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
-                  }
-                `}
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    {metric.icon}
-                    <span className="font-bold text-2xl">{metric.value}</span>
+            {/* Show only one copy of metrics on mobile, three copies for desktop scrolling effect */}
+            {isMobile 
+              ? metrics.map((metric, index) => (
+                <div 
+                  key={index} 
+                  className="bg-blue-700/30 rounded-lg p-4"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      {metric.icon}
+                      <span className="font-bold text-2xl">{metric.value}</span>
+                    </div>
+                    <p className="text-sm">{metric.label}</p>
                   </div>
-                  <p className="text-sm">{metric.label}</p>
                 </div>
-              </div>
-            ))}
+              ))
+              : [...metrics, ...metrics, ...metrics].map((metric, index) => (
+                <div 
+                  key={index} 
+                  className="transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      {metric.icon}
+                      <span className="font-bold text-2xl">{metric.value}</span>
+                    </div>
+                    <p className="text-sm">{metric.label}</p>
+                  </div>
+                </div>
+              ))
+            }
           </div>
         </div>
         

@@ -4,6 +4,7 @@ import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useOutgoingWebhook } from '@/hooks/use-webhook';
 
 // URL du webhook Make
 const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
@@ -15,6 +16,9 @@ export const useWebsiteForm = () => {
   const [progress, setProgress] = useState(25);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  
+  // Utiliser notre hook personnalisé pour le webhook sortant
+  const { sendToWebhook, isLoading: isSendingToWebhook } = useOutgoingWebhook(MAKE_WEBHOOK_URL);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
@@ -105,15 +109,12 @@ export const useWebsiteForm = () => {
       
       console.log("Données formatées pour l'envoi au webhook:", requestData);
       
-      // Envoi des données au webhook Make avec mode no-cors
-      await fetch(MAKE_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-        mode: 'no-cors' // Nécessaire pour éviter les erreurs CORS avec les webhooks externes
-      });
+      // Envoyer les données au webhook en utilisant notre hook personnalisé
+      const webhookResult = await sendToWebhook(requestData);
+      
+      if (!webhookResult) {
+        throw new Error("Échec de l'envoi des données au webhook");
+      }
       
       // Enregistrer les données dans Supabase pour le tableau de bord
       const { error: supabaseError } = await supabase
@@ -176,7 +177,7 @@ export const useWebsiteForm = () => {
     currentStep,
     formData,
     progress,
-    isSubmitting,
+    isSubmitting: isSubmitting || isSendingToWebhook,
     submissionError,
     formSteps,
     handleThemeSelect,

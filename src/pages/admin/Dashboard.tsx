@@ -15,16 +15,48 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
+import { useIncomingWebhook } from '@/hooks/use-webhook';
+
+// URL du webhook pour récupérer les données (à remplacer par votre URL réelle)
+const REQUESTS_WEBHOOK_URL = 'https://hook.eu2.make.com/get-client-data';
 
 const Dashboard = () => {
   const [requests, setRequests] = useState<WebsiteRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [webhookUrl, setWebhookUrl] = useState<string>(REQUESTS_WEBHOOK_URL || '');
+  
+  // Utiliser notre hook personnalisé pour le webhook entrant
+  const { receiveFromWebhook, isLoading: isLoadingFromWebhook } = useIncomingWebhook({
+    onSuccess: (data) => {
+      if (Array.isArray(data)) {
+        setRequests(data);
+      } else {
+        console.error("Les données reçues du webhook ne sont pas un tableau:", data);
+      }
+    },
+    onError: (error) => {
+      setError(error.message);
+    }
+  });
 
   // Fetch all website requests
   const fetchRequests = async () => {
     setLoading(true);
+    setError(null);
+    
     try {
+      // Si un webhook URL est défini, essayer de récupérer les données depuis le webhook
+      if (webhookUrl) {
+        const webhookData = await receiveFromWebhook(webhookUrl);
+        if (webhookData) {
+          setLoading(false);
+          return; // Les données ont été définies dans le hook
+        }
+      }
+      
+      // Fallback: récupérer les données depuis Supabase si le webhook échoue
+      console.log("Récupération des demandes depuis Supabase...");
       const { data, error: fetchError } = await supabase
         .from('website_requests')
         .select('*')
@@ -107,7 +139,20 @@ const Dashboard = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Demandes de site web</h1>
-        <Button onClick={fetchRequests}>Actualiser</Button>
+        <div className="flex space-x-2">
+          <Input 
+            placeholder="URL du webhook de données" 
+            value={webhookUrl} 
+            onChange={(e) => setWebhookUrl(e.target.value)} 
+            className="w-80"
+          />
+          <Button 
+            onClick={fetchRequests}
+            disabled={loading || isLoadingFromWebhook}
+          >
+            {(loading || isLoadingFromWebhook) ? 'Chargement...' : 'Actualiser'}
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -117,7 +162,7 @@ const Dashboard = () => {
       )}
 
       <Card>
-        {loading ? (
+        {loading || isLoadingFromWebhook ? (
           <div className="flex justify-center items-center p-12">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
           </div>
