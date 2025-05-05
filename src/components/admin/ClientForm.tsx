@@ -23,11 +23,11 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { CheckIcon, ChevronDown } from 'lucide-react';
+import { CheckIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { WebsiteRequest } from '@/types/requests';
 
-// List of available features for selection
+// Liste des fonctionnalités disponibles pour la sélection
 const AVAILABLE_FEATURES = [
   { value: 'contact-form', label: 'Formulaire de contact' },
   { value: 'blog', label: 'Blog' },
@@ -40,7 +40,7 @@ const AVAILABLE_FEATURES = [
   { value: 'faq', label: 'FAQ' },
 ];
 
-// Theme options for websites
+// Options de thème pour les sites web
 const THEME_OPTIONS = [
   { value: 'business', label: 'Site d\'entreprise' },
   { value: 'e-commerce', label: 'E-commerce' },
@@ -49,7 +49,7 @@ const THEME_OPTIONS = [
   { value: 'one-page', label: 'Page unique' },
 ];
 
-// Status options for website requests
+// Options de statut pour les demandes de site web
 const STATUS_OPTIONS = [
   { value: 'new', label: 'Nouveau' },
   { value: 'contacted', label: 'Contacté' },
@@ -60,7 +60,7 @@ const STATUS_OPTIONS = [
   { value: 'lost', label: 'Perdu' },
 ];
 
-// Form schema validation
+// Schéma de validation du formulaire
 const formSchema = z.object({
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
   email: z.string().email("Adresse email invalide"),
@@ -70,9 +70,8 @@ const formSchema = z.object({
   theme: z.string().min(1, "Sélectionnez un thème"),
   project_details: z.string().min(10, "Décrivez le projet en quelques mots"),
   status: z.string().default("new"),
-  quote_amount: z.union([z.number().int().positive().optional(), z.literal("")]).transform(val => 
-    val === "" ? null : val
-  ),
+  quote_amount: z.union([z.number().int().positive().optional(), z.literal("")])
+    .transform(val => val === "" ? undefined : typeof val === "string" ? parseInt(val, 10) : val),
   features: z.array(z.string()).optional(),
 });
 
@@ -94,7 +93,7 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData ? {
       ...initialData,
-      quote_amount: initialData.quote_amount || "",
+      quote_amount: initialData.quote_amount || undefined,
     } : {
       name: "",
       email: "",
@@ -104,7 +103,7 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
       theme: "",
       project_details: "",
       status: "new",
-      quote_amount: "",
+      quote_amount: undefined,
       features: [],
     },
   });
@@ -131,11 +130,6 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
       // Set features from state
       data.features = selectedFeatures;
 
-      // Convert empty string to null for quote_amount
-      if (data.quote_amount === "") {
-        data.quote_amount = null;
-      }
-
       let result;
       
       if (initialData?.id) {
@@ -143,7 +137,16 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
         result = await supabase
           .from('website_requests')
           .update({
-            ...data,
+            name: data.name,
+            email: data.email,
+            phone: data.phone || null,
+            company_name: data.company_name || null,
+            profession: data.profession,
+            theme: data.theme,
+            project_details: data.project_details,
+            status: data.status,
+            features: data.features,
+            quote_amount: data.quote_amount,
             updated_at: new Date().toISOString(),
           })
           .eq('id', initialData.id);
@@ -158,7 +161,16 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
         result = await supabase
           .from('website_requests')
           .insert({
-            ...data,
+            name: data.name,
+            email: data.email,
+            phone: data.phone || null,
+            company_name: data.company_name || null,
+            profession: data.profession,
+            theme: data.theme,
+            project_details: data.project_details,
+            status: data.status,
+            features: data.features,
+            quote_amount: data.quote_amount,
             created_at: new Date().toISOString(),
           });
           
@@ -326,7 +338,7 @@ const ClientForm = ({ onSuccess, initialData }: ClientFormProps) => {
                     type="number" 
                     placeholder="450" 
                     {...field}
-                    value={field.value === null ? "" : field.value}
+                    value={field.value === undefined ? "" : field.value}
                     onChange={(e) => {
                       const value = e.target.value;
                       field.onChange(value === "" ? "" : Number(value));

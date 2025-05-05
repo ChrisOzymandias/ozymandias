@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CustomerStats from '@/components/admin/CustomerStats';
 import RevenueChart from '@/components/admin/RevenueChart';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import ClientForm from '@/components/admin/ClientForm';
 
 const Dashboard = () => {
@@ -104,20 +104,6 @@ const Dashboard = () => {
         quote_amount: 990,
         created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
         features: ["blog", "contact-form", "newsletter"]
-      },
-      {
-        id: "4",
-        name: "Sophie Leroy (démo)",
-        email: "sophie@example.com",
-        phone: "0633445566",
-        company_name: "Boutique Fleurie",
-        project_details: "Site e-commerce pour ma boutique de fleurs",
-        theme: "e-commerce",
-        profession: "fleuriste",
-        status: "in_progress",
-        quote_amount: 750,
-        created_at: new Date(Date.now() - 86400000 * 15).toISOString(),
-        features: ["shop", "contact-form", "gallery"]
       }
     ];
   };
@@ -178,11 +164,6 @@ const Dashboard = () => {
 
   // Calculate total revenue
   const totalRevenue = requests.reduce((sum, req) => sum + (req.quote_amount || 0), 0);
-  
-  // Calculate conversion rate
-  const conversionRate = quoteSentRequests > 0 
-    ? Math.round((quoteAcceptedRequests / quoteSentRequests) * 100) 
-    : 0;
   
   return (
     <div className="space-y-6">
@@ -254,11 +235,11 @@ const Dashboard = () => {
             
             <Card className="bg-gradient-to-br from-green-50 to-green-100 hover:shadow-lg transition-shadow">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Taux conversion</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">Conversion</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold">{conversionRate}%</div>
+                  <div className="text-2xl font-bold">{quoteSentRequests > 0 ? Math.round((quoteAcceptedRequests / quoteSentRequests) * 100) : 0}%</div>
                   <TrendingUp className="h-8 w-8 text-green-500" />
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
@@ -292,7 +273,7 @@ const Dashboard = () => {
                   <CreditCard className="h-8 w-8 text-amber-500" />
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  ~{Math.round(totalRevenue / (completedRequests || 1))}€ par projet
+                  {completedRequests > 0 ? `~${Math.round(totalRevenue / completedRequests)}€ par projet` : '0€ par projet'}
                 </p>
               </CardContent>
             </Card>
@@ -324,89 +305,13 @@ const Dashboard = () => {
         </TabsContent>
         
         <TabsContent value="clients">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Gestion des clients</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex justify-center items-center p-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
-              ) : requests.length === 0 ? (
-                <div className="text-center py-10">
-                  <p className="text-muted-foreground mb-4">Aucun client trouvé</p>
-                  <Button onClick={() => setClientFormOpen(true)}>
-                    Ajouter votre premier client
-                  </Button>
-                </div>
-              ) : (
-                <div className="rounded-md border">
-                  <div className="relative w-full overflow-auto">
-                    <table className="w-full caption-bottom text-sm">
-                      <thead className="[&_tr]:border-b">
-                        <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nom</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Téléphone</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Profession</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Statut</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Devis</th>
-                          <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="[&_tr:last-child]:border-0">
-                        {requests.map((client) => (
-                          <tr key={client.id} className="border-b transition-colors hover:bg-muted/50">
-                            <td className="p-4 align-middle font-medium">{client.name}</td>
-                            <td className="p-4 align-middle">{client.email}</td>
-                            <td className="p-4 align-middle">{client.phone || '-'}</td>
-                            <td className="p-4 align-middle">{client.profession}</td>
-                            <td className="p-4 align-middle">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                client.status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                client.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                                client.status === 'quote_sent' ? 'bg-purple-100 text-purple-800' :
-                                client.status === 'quote_accepted' ? 'bg-indigo-100 text-indigo-800' :
-                                client.status === 'new' ? 'bg-gray-100 text-gray-800' :
-                                'bg-amber-100 text-amber-800'
-                              }`}>
-                                {client.status === 'completed' ? 'Terminé' :
-                                 client.status === 'in_progress' ? 'En cours' :
-                                 client.status === 'quote_sent' ? 'Devis envoyé' :
-                                 client.status === 'quote_accepted' ? 'Devis accepté' :
-                                 client.status === 'new' ? 'Nouveau' : 
-                                 'Contacté'}
-                              </span>
-                            </td>
-                            <td className="p-4 align-middle">{client.quote_amount ? `${client.quote_amount}€` : '-'}</td>
-                            <td className="p-4 align-middle">
-                              <div className="flex space-x-2">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  onClick={() => handleEditClient(client)}
-                                >
-                                  Modifier
-                                </Button>
-                                <Button 
-                                  variant="destructive" 
-                                  size="sm" 
-                                  onClick={() => handleRemoveClient(client.id)}
-                                >
-                                  Supprimer
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <ClientsTable 
+            clients={requests}
+            loading={loading}
+            onAddClient={() => setClientFormOpen(true)}
+            onEditClient={handleEditClient}
+            onRemoveClient={handleRemoveClient}
+          />
         </TabsContent>
       </Tabs>
       
@@ -426,6 +331,102 @@ const Dashboard = () => {
         </DialogContent>
       </Dialog>
     </div>
+  );
+};
+
+interface ClientsTableProps {
+  clients: WebsiteRequest[];
+  loading: boolean;
+  onAddClient: () => void;
+  onEditClient: (client: WebsiteRequest) => void;
+  onRemoveClient: (id: string) => void;
+}
+
+const ClientsTable = ({ clients, loading, onAddClient, onEditClient, onRemoveClient }: ClientsTableProps) => {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Gestion des clients</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="flex justify-center items-center p-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : clients.length === 0 ? (
+          <div className="text-center py-10">
+            <p className="text-muted-foreground mb-4">Aucun client trouvé</p>
+            <Button onClick={onAddClient}>
+              Ajouter votre premier client
+            </Button>
+          </div>
+        ) : (
+          <div className="rounded-md border">
+            <div className="relative w-full overflow-auto">
+              <table className="w-full caption-bottom text-sm">
+                <thead className="[&_tr]:border-b">
+                  <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nom</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Téléphone</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Profession</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Statut</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Devis</th>
+                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="[&_tr:last-child]:border-0">
+                  {clients.map((client) => (
+                    <tr key={client.id} className="border-b transition-colors hover:bg-muted/50">
+                      <td className="p-4 align-middle font-medium">{client.name}</td>
+                      <td className="p-4 align-middle">{client.email}</td>
+                      <td className="p-4 align-middle">{client.phone || '-'}</td>
+                      <td className="p-4 align-middle">{client.profession}</td>
+                      <td className="p-4 align-middle">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          client.status === 'completed' ? 'bg-green-100 text-green-800' : 
+                          client.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
+                          client.status === 'quote_sent' ? 'bg-purple-100 text-purple-800' :
+                          client.status === 'quote_accepted' ? 'bg-indigo-100 text-indigo-800' :
+                          client.status === 'new' ? 'bg-gray-100 text-gray-800' :
+                          'bg-amber-100 text-amber-800'
+                        }`}>
+                          {client.status === 'completed' ? 'Terminé' :
+                           client.status === 'in_progress' ? 'En cours' :
+                           client.status === 'quote_sent' ? 'Devis envoyé' :
+                           client.status === 'quote_accepted' ? 'Devis accepté' :
+                           client.status === 'new' ? 'Nouveau' : 
+                           client.status === 'lost' ? 'Perdu' : 'Contacté'}
+                        </span>
+                      </td>
+                      <td className="p-4 align-middle">{client.quote_amount ? `${client.quote_amount}€` : '-'}</td>
+                      <td className="p-4 align-middle">
+                        <div className="flex space-x-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => onEditClient(client)}
+                          >
+                            Modifier
+                          </Button>
+                          <Button 
+                            variant="destructive" 
+                            size="sm" 
+                            onClick={() => onRemoveClient(client.id)}
+                          >
+                            Supprimer
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
