@@ -176,7 +176,7 @@ export const useIncomingWebhook = (options?: WebhookOptions) => {
       toast({
         title: "Mode démonstration",
         description: "Impossible de récupérer les données du webhook. Affichage des données de démonstration.",
-        variant: "warning",
+        variant: "default", // Changed from "warning" to "default" to fix the type error
       });
       
       if (options?.onSuccess) {

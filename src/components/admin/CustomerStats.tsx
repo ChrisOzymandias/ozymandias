@@ -14,7 +14,7 @@ const CustomerStats = ({ totalRequests, completedRequests }: CustomerStatsProps)
     ? Math.round((completedRequests / totalRequests) * 100) 
     : 0;
   
-  // Données pour le graphique
+  // Données pour le graphique - utiliser au moins 1 pour éviter les erreurs de graphique
   const data = [
     { name: 'Convertis', value: Math.max(1, completedRequests) },
     { name: 'Non convertis', value: Math.max(1, inProgressRequests) }
@@ -46,7 +46,7 @@ const CustomerStats = ({ totalRequests, completedRequests }: CustomerStatsProps)
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value) => [`${value} demandes`, '']}
+              formatter={(value: any) => [`${value} demandes`, '']}
             />
             <Legend />
           </PieChart>

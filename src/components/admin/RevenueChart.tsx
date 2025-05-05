@@ -43,7 +43,7 @@ const RevenueChart = ({ completedRequests }: RevenueChartProps) => {
           <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip formatter={(value) => [`${value} €`, '']} />
+          <Tooltip formatter={(value: any) => [`${value} €`, '']} />
           <Legend />
           <Bar name="Création de site" dataKey="creation" fill="#8884d8" />
           <Bar name="Maintenance" dataKey="revenue" fill="#82ca9d" />
