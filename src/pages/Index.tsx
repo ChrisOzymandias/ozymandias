@@ -20,35 +20,37 @@ const Index = () => {
       <Navbar />
       <Hero />
       
-      {/* Social Proof */}
+      {/* Social Proof - Building immediate credibility */}
       <SocialProof />
       
-      {/* Formulaire mis en avant */}
-      <WebsiteForm />
-      
-      {/* Value Proposition */}
+      {/* Value Proposition - Core benefits */}
       <ValueProposition />
       
+      {/* Formulaire mis en avant - Primary conversion element */}
+      <WebsiteForm />
+      
+      {/* Features - More details after basic value is established */}
       <Features />
       
-      {/* Process Section */}
+      {/* Process Section - Show simplicity */}
       <ProcessSection />
       
-      {/* Portfolio Carousel */}
+      {/* Portfolio Carousel - Visual proof */}
       <PortfolioCarousel />
+      
+      {/* Testimonials - Social validation */}
+      <TestimonialsSection />
       
       {/* Nouvelle section SEO pour PME et artisans */}
       <SeoSection />
       
-      {/* Testimonial Section */}
-      <TestimonialsSection />
-      
+      {/* Pricing information */}
       <Pricing />
       
-      {/* FAQ Section */}
+      {/* FAQ Section - Address remaining objections */}
       <FaqSection />
       
-      {/* CTA Section */}
+      {/* CTA Section - Final conversion opportunity */}
       <CtaSection />
       
       <Footer />

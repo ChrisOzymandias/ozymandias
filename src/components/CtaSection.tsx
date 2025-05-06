@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 const CtaSection = () => {
   const scrollToForm = () => {
@@ -21,7 +21,7 @@ const CtaSection = () => {
       <div className="container-custom text-center relative z-10">
         {/* Badge promotion */}
         <div className="inline-block bg-yellow-400 text-blue-900 px-4 py-1 rounded-full font-bold mb-6 animate-pulse">
-          Offre limitée !
+          Offre limitée - Dernières places !
         </div>
         
         <h2 className="text-3xl md:text-4xl font-bold mb-6">Prêt à lancer votre site web professionnel ?</h2>
@@ -32,17 +32,55 @@ const CtaSection = () => {
           de votre futur site web en moins de 48h
         </p>
         
+        <div className="max-w-xl mx-auto mb-10 grid grid-cols-2 md:grid-cols-2 gap-3 text-left">
+          <div className="flex items-start">
+            <Check className="h-5 w-5 mr-2 text-green-300 flex-shrink-0 mt-0.5" />
+            <span>Site livré en 7 jours</span>
+          </div>
+          <div className="flex items-start">
+            <Check className="h-5 w-5 mr-2 text-green-300 flex-shrink-0 mt-0.5" />
+            <span>Optimisé pour convertir</span>
+          </div>
+          <div className="flex items-start">
+            <Check className="h-5 w-5 mr-2 text-green-300 flex-shrink-0 mt-0.5" />
+            <span>Hébergement inclus</span>
+          </div>
+          <div className="flex items-start">
+            <Check className="h-5 w-5 mr-2 text-green-300 flex-shrink-0 mt-0.5" />
+            <span>Support technique gratuit</span>
+          </div>
+        </div>
+        
         <button 
           onClick={scrollToForm} 
           className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white transition-all 
                      px-8 py-4 rounded-full font-medium text-lg inline-flex items-center shadow-lg hover:shadow-xl 
                      transform hover:-translate-y-1"
         >
-          Obtenir Ma Maquette Gratuite 
+          Obtenir Ma Maquette Gratuite Maintenant
           <ArrowRight className="ml-2 h-5 w-5 animate-bounce-horizontal" />
         </button>
         
-        <p className="mt-6 text-sm opacity-80">Sans engagement - Aucune carte de crédit requise</p>
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center text-sm gap-4 opacity-80">
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Sans engagement
+          </div>
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Aucune carte de crédit requise
+          </div>
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Réponse en 48h maximum
+          </div>
+        </div>
       </div>
     </section>
   );
