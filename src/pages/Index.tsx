@@ -13,18 +13,23 @@ import TestimonialsSection from '../components/TestimonialsSection';
 import FaqSection from '../components/FaqSection';
 import CtaSection from '../components/CtaSection';
 import SocialProof from '../components/SocialProof';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="min-h-screen">
       <Navbar />
       <Hero />
       
-      {/* Social Proof - Building immediate credibility */}
+      {/* Social Proof - Building immediate credibility (desktop only) */}
       <SocialProof />
       
       {/* Value Proposition - Core benefits */}
-      <ValueProposition />
+      <div className={isMobile ? "mt-[-40px] relative z-10" : ""}>
+        <ValueProposition />
+      </div>
       
       {/* Formulaire mis en avant - Primary conversion element */}
       <WebsiteForm />

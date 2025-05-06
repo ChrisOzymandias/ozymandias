@@ -22,8 +22,9 @@ const Hero = () => {
             </h1>
             
             <p className="text-lg text-gray-700 mb-4 max-w-lg mx-auto md:mx-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              Création de site web tout compris à partir de <span className="font-bold text-ozy">99€</span>. 
-              Satisfaction garantie ou remboursé !
+              Forfait tout compris avec <span className="font-bold">adresse email professionnelle</span>.
+              <br className="hidden sm:block" /> 
+              <span className="font-bold text-ozy">Satisfaction garantie ou remboursé !</span>
             </p>
             
             <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-6 text-blue-700 max-w-lg mx-auto md:mx-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
@@ -63,8 +64,8 @@ const Hero = () => {
       <div className="absolute top-0 right-0 w-1/3 h-96 bg-ozy-light rounded-bl-full opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-64 bg-ozy-light rounded-tr-full opacity-30"></div>
       
-      {/* Straight divider replacing the wave */}
-      <div className="absolute bottom-0 left-0 w-full h-8 bg-white"></div>
+      {/* Straight divider for smoother transition */}
+      <div className="absolute bottom-0 left-0 w-full h-12 bg-white rounded-t-3xl transform translate-y-6"></div>
     </div>
   );
 };

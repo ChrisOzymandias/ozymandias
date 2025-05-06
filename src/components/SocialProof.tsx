@@ -79,33 +79,28 @@ const SocialProof = () => {
     }
   ];
 
+  // Si on est sur mobile, on ne rend pas ce composant
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <section className="py-8 md:py-12 bg-blue-600 text-white overflow-hidden mt-[-1px] mb-[-1px]">
-      <div className={`${isMobile ? "px-4" : ""} relative`}>
+      <div className="relative">
         <div 
           ref={containerRef}
-          className={`
-            ${isMobile 
-              ? "flex flex-col space-y-4" 
-              : "flex overflow-x-auto scrollbar-hide pb-4"
-            }
-          `}
+          className="flex overflow-x-auto scrollbar-hide pb-4"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <div 
             ref={contentRef}
-            className={isMobile ? "" : "flex whitespace-nowrap"}
+            className="flex whitespace-nowrap"
           >
-            {/* Afficher les métriques une seule fois sur mobile */}
+            {/* Afficher les métriques */}
             {metrics.map((metric, index) => (
               <div 
                 key={index} 
-                className={`
-                  ${isMobile 
-                    ? "bg-blue-700/30 rounded-lg p-4" 
-                    : "transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
-                  }
-                `}
+                className="transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
               >
                 <div className="flex flex-col items-center text-center w-full">
                   <div className="flex items-center justify-center mb-2">
@@ -117,8 +112,8 @@ const SocialProof = () => {
               </div>
             ))}
             
-            {/* Afficher les duplications uniquement sur desktop */}
-            {!isMobile && metrics.map((metric, index) => (
+            {/* Dupliquer les métriques pour l'effet de défilement infini */}
+            {metrics.map((metric, index) => (
               <div 
                 key={`desktop-${index}`} 
                 className="transform rotate-3 hover:rotate-0 transition-transform duration-300 bg-blue-700/30 rounded-lg p-6 mx-4 inline-flex min-w-[250px] whitespace-normal shadow-lg hover:shadow-xl"
@@ -135,13 +130,9 @@ const SocialProof = () => {
           </div>
         </div>
         
-        {/* Effet de dégradé sur les côtés pour indiquer le défilement sur desktop */}
-        {!isMobile && (
-          <>
-            <div className="absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-blue-600 to-transparent pointer-events-none"></div>
-            <div className="absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-blue-600 to-transparent pointer-events-none"></div>
-          </>
-        )}
+        {/* Effet de dégradé sur les côtés pour indiquer le défilement */}
+        <div className="absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-blue-600 to-transparent pointer-events-none"></div>
+        <div className="absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-blue-600 to-transparent pointer-events-none"></div>
       </div>
     </section>
   );

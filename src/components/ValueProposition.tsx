@@ -1,5 +1,5 @@
 
-import { Clock, Award, ShieldCheck } from 'lucide-react';
+import { Clock, Award, ShieldCheck, Mail } from 'lucide-react';
 
 const ValueProposition = () => {
   return (
@@ -35,10 +35,10 @@ const ValueProposition = () => {
           
           <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg">
             <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100">
-              <ShieldCheck className="h-10 w-10 text-ozy" />
+              <Mail className="h-10 w-10 text-ozy" />
             </div>
             <h3 className="text-xl font-bold mb-3">Tout Compris</h3>
-            <p className="text-gray-600">Création, hébergement, domaine et maintenance sans frais cachés. Un prix transparent et fixe.</p>
+            <p className="text-gray-600">Hébergement, domaine, maintenance et <span className="font-bold">email professionnel</span> inclus sans frais cachés.</p>
             <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg">
               <span className="font-medium text-blue-700 text-sm">✓ Sans frais supplémentaires</span>
             </div>
