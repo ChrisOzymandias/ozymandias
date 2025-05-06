@@ -23,7 +23,7 @@ const Hero = () => {
             <p className="text-lg text-gray-700 mb-4 max-w-lg mx-auto md:mx-0 animate-fade-in" style={{
             animationDelay: "0.3s"
           }}>
-              Forfait tout compris avec <span className="font-bold">adresse email professionnelle</span>.
+              Forfait tout compris pour seulement 99€ : <span className="font-bold">hébergement, domaine, maintenance et email professionnel</span>.
               <br className="hidden sm:block" /> 
               <span className="font-bold text-ozy">Satisfaction garantie ou remboursé !</span>
             </p>
