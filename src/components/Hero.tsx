@@ -1,4 +1,3 @@
-
 import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 const Hero = () => {
@@ -25,7 +24,7 @@ const Hero = () => {
           }}>
               Forfait tout compris pour seulement 99€ : <span className="font-bold">hébergement, domaine, maintenance et email professionnel</span>.
               <br className="hidden sm:block" /> 
-              <span className="font-bold text-ozy">Satisfaction garantie ou remboursé !</span>
+              
             </p>
             
             <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-6 text-blue-700 max-w-lg mx-auto md:mx-0 animate-fade-in" style={{
