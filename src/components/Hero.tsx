@@ -1,3 +1,4 @@
+
 import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 const Hero = () => {
@@ -62,9 +63,6 @@ const Hero = () => {
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-1/3 h-96 bg-ozy-light rounded-bl-full opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-64 bg-ozy-light rounded-tr-full opacity-30"></div>
-      
-      {/* Straight divider for smoother transition */}
-      <div className="absolute bottom-0 left-0 w-full h-12 rounded-t-3xl transform translate-y-6 bg-blue-600"></div>
     </div>;
 };
 export default Hero;
