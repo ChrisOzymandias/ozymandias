@@ -26,13 +26,13 @@ const Index = () => {
       {/* Social Proof - Building immediate credibility (desktop only) */}
       <SocialProof />
       
+      {/* Formulaire mis en avant - Primary conversion element - Placé après le Social Proof */}
+      <WebsiteForm />
+      
       {/* Value Proposition - Core benefits */}
       <div className={isMobile ? "mt-[-40px] relative z-10" : ""}>
         <ValueProposition />
       </div>
-      
-      {/* Formulaire mis en avant - Primary conversion element */}
-      <WebsiteForm />
       
       {/* Features - More details after basic value is established */}
       <Features />
