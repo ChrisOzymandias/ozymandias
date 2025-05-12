@@ -26,8 +26,9 @@ function App() {
       }
     }, [location]);
     
-    // If we're trying to access /merci directly, redirect to homepage
+    // If we're trying to access /merci directly (without state from form), redirect to homepage
     if (location.pathname === '/merci' && !location.state?.fromForm) {
+      console.log('Redirecting from /merci to / because there is no state from form');
       return <Navigate to="/" />;
     }
     
