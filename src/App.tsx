@@ -10,7 +10,7 @@ import Dashboard from './pages/admin/Dashboard';
 import Requests from './pages/admin/Requests';
 import Clients from './pages/admin/Clients';
 import Settings from './pages/admin/Settings';
-import { trackPixelEvent } from './utils/pixelEvents';
+import { trackLeadEvent } from './utils/pixelEvents';
 
 function App() {
   // Use a custom component to handle the redirect based on location
@@ -20,7 +20,9 @@ function App() {
     // Track PageView for thank you page
     React.useEffect(() => {
       if (location.pathname === '/merci' && location.state?.fromForm) {
-        trackPixelEvent('Lead');
+        // Déclenche l'événement Lead quand l'utilisateur arrive sur la page de remerciement
+        trackLeadEvent();
+        console.log('Lead event tracked on thank you page');
       }
     }, [location]);
     

@@ -15,6 +15,10 @@ export const trackLeadEvent = () => {
   trackPixelEvent('Lead');
 };
 
+export const trackCompleteRegistration = () => {
+  trackPixelEvent('CompleteRegistration');
+};
+
 export const trackFormSubmit = (formType: string) => {
   trackPixelEvent('SubmitApplication', { form_type: formType });
 };

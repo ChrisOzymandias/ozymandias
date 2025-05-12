@@ -1,11 +1,18 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckCircle, ArrowLeft, Home } from 'lucide-react';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
+import { trackCompleteRegistration } from '../utils/pixelEvents';
 
 const ThankYouPage = () => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Déclenche l'événement CompleteRegistration lorsque la page est montée
+    trackCompleteRegistration();
+    console.log('CompleteRegistration event tracked');
+  }, []);
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-ozy-light py-20">
