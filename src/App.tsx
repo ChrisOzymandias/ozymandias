@@ -10,11 +10,19 @@ import Dashboard from './pages/admin/Dashboard';
 import Requests from './pages/admin/Requests';
 import Clients from './pages/admin/Clients';
 import Settings from './pages/admin/Settings';
+import { trackPixelEvent } from './utils/pixelEvents';
 
 function App() {
   // Use a custom component to handle the redirect based on location
   const RedirectComponent = () => {
     const location = useLocation();
+    
+    // Track PageView for thank you page
+    React.useEffect(() => {
+      if (location.pathname === '/merci' && location.state?.fromForm) {
+        trackPixelEvent('Lead');
+      }
+    }, [location]);
     
     // If we're trying to access /merci directly, redirect to homepage
     if (location.pathname === '/merci' && !location.state?.fromForm) {
