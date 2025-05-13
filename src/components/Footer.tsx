@@ -1,5 +1,5 @@
 
-import { Mail, MapPin, Phone, Facebook, Twitter, Instagram, Linkedin, ShieldCheck } from 'lucide-react';
+import { Mail, MapPin, Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -23,17 +23,19 @@ const Footer = () => {
               Création de sites web professionnels avec un service tout compris pour tous vos besoins digitaux.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.facebook.com/people/Ozymandias-Agency/61566502696408/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.instagram.com/ozymandias_agency/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Linkedin size={20} />
+              <a href="https://www.tiktok.com/@ozymandias.agency?lang=fr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                  <path d="M15 8c0-2.21-1.79-4-4-4H9v12" />
+                  <line x1="12" y1="16" x2="12" y2="8" />
+                  <line x1="15" y1="12" x2="9" y2="12" />
+                </svg>
               </a>
             </div>
           </div>
@@ -91,15 +93,11 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex">
                 <MapPin className="h-5 w-5 mr-3 text-ozy" />
-                <span className="text-gray-400">123 Rue de l'Innovation, 75000 Paris</span>
-              </li>
-              <li className="flex">
-                <Phone className="h-5 w-5 mr-3 text-ozy" />
-                <span className="text-gray-400">+33 1 23 45 67 89</span>
+                <span className="text-gray-400">3 Place Karine Ruby, 27000 EVREUX</span>
               </li>
               <li className="flex">
                 <Mail className="h-5 w-5 mr-3 text-ozy" />
-                <span className="text-gray-400">contact@ozymandias.fr</span>
+                <span className="text-gray-400">contact@ozymandias.agency</span>
               </li>
             </ul>
           </div>
