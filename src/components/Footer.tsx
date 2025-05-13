@@ -1,5 +1,5 @@
 
-import { Mail, MapPin, Facebook, Instagram } from 'lucide-react';
+import { Mail, MapPin, Facebook, Instagram, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -80,7 +80,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/admin/login" className="flex items-center text-gray-400 hover:text-ozy transition-colors">
-                  <ShieldCheck className="h-4 w-4 mr-2" />
+                  <Shield className="h-4 w-4 mr-2" />
                   Espace Admin
                 </Link>
               </li>
