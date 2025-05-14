@@ -38,7 +38,7 @@ const Index = () => {
       </div>
       
       {/* Value Proposition - Core benefits */}
-      <div className={isMobile ? "mt-[-40px] relative z-10" : ""} data-aos="fade-up" data-aos-delay="100" className="section-transition">
+      <div className={isMobile ? "mt-[-40px] relative z-10 section-transition" : "section-transition"} data-aos="fade-up" data-aos-delay="100">
         <ValueProposition />
       </div>
       
