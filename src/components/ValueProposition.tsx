@@ -11,42 +11,42 @@ const ValueProposition = () => {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg">
-            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100">
+          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100 hover-float hover-glow">
               <Clock className="h-10 w-10 text-ozy" />
             </div>
             <h3 className="text-xl font-bold mb-3">Livraison en 7 jours</h3>
             <p className="text-gray-600">Votre site web prêt en moins d'une semaine ou remboursé ! Nous respectons nos délais.</p>
-            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg">
+            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-100">
               <span className="font-medium text-blue-700 text-sm">✓ Délai garanti par contrat</span>
             </div>
           </div>
           
-          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg">
-            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100">
+          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg" data-aos="fade-up" data-aos-delay="100">
+            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100 hover-float hover-glow">
               <Award className="h-10 w-10 text-ozy" />
             </div>
             <h3 className="text-xl font-bold mb-3">Qualité Premium</h3>
             <p className="text-gray-600">Des sites professionnels optimisés pour tous les appareils, qui convertissent vos visiteurs en clients.</p>
-            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg">
+            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-100">
               <span className="font-medium text-blue-700 text-sm">✓ Satisfait ou remboursé</span>
             </div>
           </div>
           
-          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg">
-            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100">
+          <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg" data-aos="fade-up" data-aos-delay="200">
+            <div className="p-4 bg-blue-50 rounded-full mb-4 border-2 border-blue-100 hover-float hover-glow">
               <Mail className="h-10 w-10 text-ozy" />
             </div>
             <h3 className="text-xl font-bold mb-3">Tout Compris</h3>
             <p className="text-gray-600">Hébergement, domaine, maintenance et <span className="font-bold">email professionnel</span> inclus sans frais cachés.</p>
-            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg">
+            <div className="mt-4 bg-blue-50 w-full py-2 px-3 rounded-lg transition-all duration-300 hover:bg-blue-100">
               <span className="font-medium text-blue-700 text-sm">✓ Sans frais supplémentaires</span>
             </div>
           </div>
         </div>
         
         <div className="mt-12 text-center">
-          <a href="#form" className="btn-primary inline-flex items-center">
+          <a href="#form" className="btn-primary inline-flex items-center micro-bounce">
             Obtenir Ma Maquette Gratuite
           </a>
         </div>

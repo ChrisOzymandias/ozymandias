@@ -75,6 +75,7 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    scroll-behavior: smooth; /* Smooth scrolling for page navigation */
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -84,15 +85,31 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-ozy text-white hover:bg-ozy-dark transition-colors px-6 py-3 rounded-full font-medium;
+    @apply bg-ozy text-white hover:bg-ozy-dark transition-colors px-6 py-3 rounded-full font-medium relative overflow-hidden transition-all duration-300;
+  }
+  
+  .btn-primary::after {
+    @apply content-[''] absolute inset-0 rounded-full scale-0 bg-white/20 transition-transform duration-500 ease-out;
+  }
+  
+  .btn-primary:hover::after {
+    @apply scale-100 transform-gpu;
   }
   
   .btn-secondary {
-    @apply bg-white text-ozy border border-ozy hover:bg-ozy-light transition-colors px-6 py-3 rounded-full font-medium;
+    @apply bg-white text-ozy border border-ozy hover:bg-ozy-light transition-colors px-6 py-3 rounded-full font-medium relative overflow-hidden;
   }
   
   .btn-blue {
-    @apply bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium;
+    @apply bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium relative overflow-hidden transition-all duration-300;
+  }
+  
+  .btn-blue::after {
+    @apply content-[''] absolute inset-0 rounded-full scale-0 bg-white/20 transition-transform duration-500 ease-out;
+  }
+  
+  .btn-blue:hover::after {
+    @apply scale-100 transform-gpu;
   }
   
   .container-custom {
@@ -137,4 +154,54 @@
   .portfolio-card:hover img {
     @apply scale-105;
   }
+  
+  /* Nouvelles classes pour animations sophistiquées */
+  .section-transition {
+    @apply transition-all duration-500 ease-in-out;
+  }
+  
+  .hover-float {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    @apply shadow-md shadow-primary/20;
+  }
+  
+  .micro-bounce {
+    @apply transition-transform hover:scale-105;
+  }
+  
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(176, 23, 66, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(176, 23, 66, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(176, 23, 66, 0); }
+  }
+  
+  .pulse-border {
+    @apply animate-[pulse-border_2s_infinite];
+  }
+}
+
+/* Animation pour le défilement entre sections */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Styles pour effets de parallaxe */
+.parallax-container {
+  @apply overflow-hidden relative;
+}
+
+.parallax {
+  @apply will-change-transform;
+}
+
+/* Transition douce entre les sections */
+section {
+  @apply transition-opacity duration-500 ease-in-out;
 }
