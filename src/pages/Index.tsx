@@ -14,9 +14,12 @@ import FaqSection from '../components/FaqSection';
 import CtaSection from '../components/CtaSection';
 import SocialProof from '../components/SocialProof';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAOS } from '@/hooks/use-aos';
 
 const Index = () => {
   const isMobile = useIsMobile();
+  // Initialisation d'AOS
+  useAOS();
   
   return (
     <div className="min-h-screen">
@@ -27,36 +30,54 @@ const Index = () => {
       <SocialProof />
       
       {/* Formulaire mis en avant - Primary conversion element - Placé après le Social Proof */}
-      <WebsiteForm />
+      <div data-aos="fade-up">
+        <WebsiteForm />
+      </div>
       
       {/* Value Proposition - Core benefits */}
-      <div className={isMobile ? "mt-[-40px] relative z-10" : ""}>
+      <div className={isMobile ? "mt-[-40px] relative z-10" : ""} data-aos="fade-up" data-aos-delay="100">
         <ValueProposition />
       </div>
       
       {/* Features - More details after basic value is established */}
-      <Features />
+      <div data-aos="fade-up">
+        <Features />
+      </div>
       
       {/* Process Section - Show simplicity */}
-      <ProcessSection />
+      <div data-aos="fade-up">
+        <ProcessSection />
+      </div>
       
       {/* Portfolio Carousel - Visual proof */}
-      <PortfolioCarousel />
+      <div data-aos="fade-up" data-aos-delay="100">
+        <PortfolioCarousel />
+      </div>
       
       {/* Testimonials - Social validation */}
-      <TestimonialsSection />
+      <div data-aos="fade-up">
+        <TestimonialsSection />
+      </div>
       
       {/* Nouvelle section SEO pour PME et artisans */}
-      <SeoSection />
+      <div data-aos="fade-up" data-aos-delay="100">
+        <SeoSection />
+      </div>
       
       {/* Pricing information */}
-      <Pricing />
+      <div data-aos="fade-up">
+        <Pricing />
+      </div>
       
       {/* FAQ Section - Address remaining objections */}
-      <FaqSection />
+      <div data-aos="fade-up">
+        <FaqSection />
+      </div>
       
       {/* CTA Section - Final conversion opportunity */}
-      <CtaSection />
+      <div data-aos="fade-up" data-aos-delay="100">
+        <CtaSection />
+      </div>
       
       <Footer />
     </div>
