@@ -22,6 +22,10 @@ import { preloadCriticalImages } from '@/lib/utils';
 const Index = () => {
   const isMobile = useIsMobile();
   
+  // Utiliser les hooks à l'intérieur du composant
+  useAOS();
+  useParallax();
+  
   // Préchargement des images critiques pour améliorer le CLS
   useEffect(() => {
     // Précharger les images les plus importantes (logo, hero, etc.)
@@ -38,17 +42,6 @@ const Index = () => {
         linkEl.setAttribute('rel', 'prefetch');
       }
     });
-  }, []);
-  
-  // Initialisation d'AOS et des effets de parallaxe seulement après le premier rendu
-  useEffect(() => {
-    // Différer l'initialisation pour améliorer les performances au chargement
-    const timer = setTimeout(() => {
-      useAOS();
-      useParallax();
-    }, 100);
-    
-    return () => clearTimeout(timer);
   }, []);
   
   return (
