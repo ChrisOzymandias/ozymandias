@@ -1,4 +1,5 @@
 
+import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
@@ -16,13 +17,39 @@ import SocialProof from '../components/SocialProof';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAOS } from '@/hooks/use-aos';
 import { useParallax } from '@/hooks/use-parallax';
+import { preloadCriticalImages } from '@/lib/utils';
 
 const Index = () => {
   const isMobile = useIsMobile();
-  // Initialisation d'AOS
-  useAOS();
-  // Initialisation des effets de parallaxe
-  useParallax();
+  
+  // Préchargement des images critiques pour améliorer le CLS
+  useEffect(() => {
+    // Précharger les images les plus importantes (logo, hero, etc.)
+    preloadCriticalImages([
+      '/lovable-uploads/a24f34e6-5866-4fb8-bda3-f4e10c503450.png', // Logo
+      '/lovable-uploads/533761ab-ccad-46b7-abc3-6f4e5519206b.png'  // Image hero principale
+    ]);
+    
+    // Prefetching des sections importantes
+    const prefetchLinks = ['#form', '#process', '#pricing'];
+    prefetchLinks.forEach(link => {
+      const linkEl = document.querySelector(`a[href="${link}"]`);
+      if (linkEl) {
+        linkEl.setAttribute('rel', 'prefetch');
+      }
+    });
+  }, []);
+  
+  // Initialisation d'AOS et des effets de parallaxe seulement après le premier rendu
+  useEffect(() => {
+    // Différer l'initialisation pour améliorer les performances au chargement
+    const timer = setTimeout(() => {
+      useAOS();
+      useParallax();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   return (
     <div className="min-h-screen">

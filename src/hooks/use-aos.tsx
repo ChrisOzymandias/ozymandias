@@ -5,23 +5,26 @@ import 'aos/dist/aos.css';
 
 export const useAOS = () => {
   useEffect(() => {
-    // Initialisation d'AOS avec des paramètres par défaut
+    // Configuration optimisée d'AOS
     AOS.init({
-      duration: 800, // durée des animations
-      once: true, // les animations ne se joueront qu'une seule fois
-      easing: 'ease-out-cubic', // type d'easing
-      offset: 50 // offset (en px) depuis le point de déclenchement original
+      duration: 800,
+      once: true, // les animations ne se joueront qu'une seule fois (économie de ressources)
+      easing: 'ease-out-cubic',
+      offset: 50,
+      disable: window.innerWidth < 768 ? true : false // désactiver sur mobile pour meilleure performance
     });
     
-    // Rafraîchir AOS lors du redimensionnement de la fenêtre
-    window.addEventListener('resize', () => {
-      AOS.refresh();
-    });
-    
-    return () => {
-      window.removeEventListener('resize', () => {
+    // Utilisation de requestAnimationFrame pour optimiser le refresh
+    const handleResize = () => {
+      window.requestAnimationFrame(() => {
         AOS.refresh();
       });
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 };
