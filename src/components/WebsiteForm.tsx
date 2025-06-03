@@ -31,7 +31,8 @@ const WebsiteForm = () => {
       <div className="container-custom">
         <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
         
-        <div className="flex justify-center mb-6">
+        {/* Masquer ces éléments sur mobile uniquement */}
+        <div className="hidden md:flex justify-center mb-6">
           <div className="flex flex-col md:flex-row items-center bg-blue-50 p-4 rounded-lg border border-blue-200 text-blue-700 max-w-2xl">
             <div className="flex-shrink-0 bg-blue-600 text-white p-3 rounded-full mr-4 mb-3 md:mb-0">
               <Check className="h-6 w-6" />
@@ -43,11 +44,13 @@ const WebsiteForm = () => {
           </div>
         </div>
         
-        <p className="section-subtitle text-center mb-6">
+        {/* Masquer le texte "Demandez la maquette..." sur mobile uniquement */}
+        <p className="section-subtitle text-center mb-6 hidden md:block">
           <span className="font-bold text-blue-600 text-lg">Demandez la maquette de votre site gratuitement !!</span>
         </p>
         
-        <div className="flex items-center justify-center mb-10">
+        {/* Masquer les badges de confiance sur mobile uniquement */}
+        <div className="hidden md:flex items-center justify-center mb-10">
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex items-center bg-white px-4 py-2 rounded-full shadow">
               <img src="/lovable-uploads/a24f34e6-5866-4fb8-bda3-f4e10c503450.png" alt="Ozymandias Logo" className="h-6 mr-2" />
@@ -64,8 +67,8 @@ const WebsiteForm = () => {
         </div>
 
         <div className="max-w-3xl mx-auto mt-4 bg-white rounded-2xl shadow-xl p-6 md:p-8 relative">
-          {/* Étiquette "Gratuit" */}
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-1 rounded-full font-semibold text-sm">
+          {/* Masquer l'étiquette "Gratuit" sur mobile uniquement */}
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-1 rounded-full font-semibold text-sm hidden md:block">
             Maquette gratuite
           </div>
           
