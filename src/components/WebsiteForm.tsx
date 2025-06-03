@@ -74,7 +74,8 @@ const WebsiteForm = () => {
           
           {/* Progress bar with animation */}
           <div className="mb-8">
-            <div className="flex justify-between mb-2 flex-wrap gap-2 md:gap-0">
+            {/* Masquer les titres des étapes sur mobile uniquement */}
+            <div className="hidden md:flex justify-between mb-2 flex-wrap gap-2 md:gap-0">
               {formSteps.map((step, index) => <div key={index} className={`text-xs md:text-sm px-1.5 ${currentStep >= index ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>
                   {step.title}
                 </div>)}
