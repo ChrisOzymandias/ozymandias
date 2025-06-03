@@ -1,4 +1,3 @@
-
 // Define the form steps
 export const formSteps = [
   {
@@ -26,7 +25,6 @@ export const formSteps = [
 // Website themes
 export const websiteThemes = [
   { id: 'business', name: 'Site vitrine entreprise', icon: '🏢' },
-  { id: 'ecommerce', name: 'Boutique en ligne', icon: '🛒' },
   { id: 'portfolio', name: 'Portfolio/CV', icon: '📁' },
   { id: 'blog', name: 'Blog/Magazine', icon: '📝' },
   { id: 'landing', name: 'Landing page', icon: '🚀' },
