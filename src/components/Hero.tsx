@@ -40,6 +40,22 @@ const Hero = () => {
                 Comment ça marche ?
               </a>
             </div>
+
+            {/* Preuve sociale mobile uniquement */}
+            {isMobile && (
+              <div className="mt-8 flex flex-col items-center space-y-4" data-aos="fade-up" data-aos-delay="600">
+                <div className="flex items-center bg-white px-4 py-3 rounded-lg shadow-md">
+                  <span className="text-yellow-500 mr-2 text-lg">★★★★★</span>
+                  <span className="text-sm font-medium text-gray-800">4.9/5 (125 avis)</span>
+                </div>
+                <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-md">
+                  <span className="text-sm font-medium text-blue-600">98% clients satisfaits</span>
+                </div>
+                <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-md">
+                  <span className="text-sm font-medium text-green-600">Livraison en 7 jours garantie</span>
+                </div>
+              </div>
+            )}
           </div>
           
           {!isMobile && (
