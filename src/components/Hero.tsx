@@ -32,7 +32,7 @@ const Hero = () => {
               <p className="font-medium">Obtenez une <span className="font-bold">maquette gratuite</span> de votre site en 48h, sans engagement</p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start" data-aos="fade-up" data-aos-delay="500">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-6" data-aos="fade-up" data-aos-delay="500">
               <a href="#form" className="btn-primary flex items-center justify-center micro-bounce">
                 Obtenir Ma Maquette Gratuite <ArrowRight size={16} className="ml-2" />
               </a>
@@ -41,9 +41,9 @@ const Hero = () => {
               </a>
             </div>
 
-            {/* Preuve sociale mobile uniquement */}
+            {/* Preuve sociale mobile uniquement - directement après les boutons */}
             {isMobile && (
-              <div className="mt-8 flex flex-col items-center space-y-4" data-aos="fade-up" data-aos-delay="600">
+              <div className="flex flex-col items-center space-y-3" data-aos="fade-up" data-aos-delay="600">
                 <div className="flex items-center bg-white px-4 py-3 rounded-lg shadow-md">
                   <span className="text-yellow-500 mr-2 text-lg">★★★★★</span>
                   <span className="text-sm font-medium text-gray-800">4.9/5 (125 avis)</span>
