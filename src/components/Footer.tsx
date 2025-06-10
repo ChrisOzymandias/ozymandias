@@ -67,16 +67,16 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Informations Légales</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Mentions Légales</a>
+                <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors">Mentions Légales</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Politique de Confidentialité</a>
+                <Link to="/politique-confidentialite" className="text-gray-400 hover:text-white transition-colors">Politique de Confidentialité</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Conditions Générales</a>
+                <Link to="/conditions-generales" className="text-gray-400 hover:text-white transition-colors">Conditions Générales</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Politique des Cookies</a>
+                <Link to="/politique-cookies" className="text-gray-400 hover:text-white transition-colors">Politique des Cookies</Link>
               </li>
               <li>
                 <Link to="/admin/login" className="flex items-center text-gray-400 hover:text-ozy transition-colors">

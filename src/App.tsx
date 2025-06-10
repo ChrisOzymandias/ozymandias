@@ -4,6 +4,10 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Index from './pages/Index';
 import ThankYouPage from './components/ThankYouPage';
 import NotFound from './pages/NotFound';
+import MentionsLegales from './pages/legal/MentionsLegales';
+import PolitiqueConfidentialite from './pages/legal/PolitiqueConfidentialite';
+import ConditionsGenerales from './pages/legal/ConditionsGenerales';
+import PolitiqueCookies from './pages/legal/PolitiqueCookies';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './pages/admin/AdminLogin';
 import Dashboard from './pages/admin/Dashboard';
@@ -36,6 +40,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/merci" element={<ThankYouPageWrapper />} />
+      <Route path="/mentions-legales" element={<MentionsLegales />} />
+      <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+      <Route path="/conditions-generales" element={<ConditionsGenerales />} />
+      <Route path="/politique-cookies" element={<PolitiqueCookies />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
