@@ -27,6 +27,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       website_requests: {
         Row: {
           company_name: string | null
@@ -86,6 +107,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_role: {
+        Args: { user_id: string; role_name: string }
+        Returns: boolean
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean

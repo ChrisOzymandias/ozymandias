@@ -1,11 +1,11 @@
-
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useOutgoingWebhook } from '@/hooks/use-webhook';
+import { validateAndSanitizeFormData } from '@/utils/validation';
 
-// URL du webhook Make - maintenant la même pour toutes les fonctionnalités
+// URL du webhook Make - maintenant sécurisé
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 export const useWebsiteForm = () => {
@@ -16,7 +16,7 @@ export const useWebsiteForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   
-  // Utiliser notre hook personnalisé pour le webhook sortant
+  // Utiliser notre hook sécurisé pour le webhook
   const { sendToWebhook, isLoading: isSendingToWebhook } = useOutgoingWebhook(WEBHOOK_URL);
 
   const handleThemeSelect = (themeId: string) => {
@@ -86,36 +86,39 @@ export const useWebsiteForm = () => {
     setIsSubmitting(true);
     setSubmissionError(null);
     
-    console.log("Soumission du formulaire avec les données:", formData);
+    console.log("Starting form submission with validation");
     
     try {
-      // Préparer les données pour l'envoi au webhook Make
+      // Validate and sanitize form data
+      const validatedData = validateAndSanitizeFormData(formData);
+      console.log("Form data validated successfully:", validatedData);
+      
+      // Préparer les données sécurisées pour l'envoi
       const requestData = {
-        theme: formData.theme,
-        profession: formData.profession,
-        features: formData.features,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company_name: formData.companyName || null,
-        has_existing_website: formData.hasExistingWebsite || null,
-        website_expectation: formData.websiteExpectation || null,
-        launch_timeline: formData.launchTimeline || null,
+        theme: validatedData.theme,
+        profession: validatedData.profession,
+        features: validatedData.features,
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        company_name: validatedData.companyName || null,
+        has_existing_website: validatedData.hasExistingWebsite || null,
+        website_expectation: validatedData.websiteExpectation || null,
+        launch_timeline: validatedData.launchTimeline || null,
         status: 'new',
-        submission_date: new Date().toISOString(),
-        source: window.location.href
+        submission_date: new Date().toISOString()
       };
       
-      console.log("Données formatées pour l'envoi au webhook:", requestData);
+      console.log("Sending validated data to secure webhook");
       
-      // Envoyer les données au webhook en utilisant notre hook personnalisé
+      // Envoyer les données via le webhook sécurisé
       const webhookResult = await sendToWebhook(requestData);
       
       if (!webhookResult) {
-        throw new Error("Échec de l'envoi des données au webhook");
+        throw new Error("Failed to submit form data");
       }
       
-      console.log("Données envoyées avec succès");
+      console.log("Form submitted successfully");
       
       // Afficher un message de succès
       toast({
@@ -128,19 +131,25 @@ export const useWebsiteForm = () => {
       setCurrentStep(0);
       setProgress(25);
       
-      // Redirection vers la page de remerciement avec un state pour éviter le problème de rafraîchissement
+      // Redirection sécurisée vers la page de remerciement
       setTimeout(() => {
-        console.log("Redirection vers /merci");
+        console.log("Redirecting to thank you page");
         navigate('/merci', { state: { fromForm: true } });
       }, 500);
       
     } catch (error) {
-      console.error("Erreur lors de la soumission:", error);
-      setSubmissionError("Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer.");
+      console.error("Form submission error:", error);
+      
+      // Message d'erreur générique pour éviter l'exposition d'informations
+      const errorMessage = error instanceof Error && error.message.includes('validation') 
+        ? "Please check your information and try again."
+        : "An error occurred while submitting the form. Please try again.";
+        
+      setSubmissionError(errorMessage);
       
       toast({
-        title: "Erreur",
-        description: "Problème lors de l'envoi du formulaire. Veuillez réessayer ultérieurement.",
+        title: "Submission Error",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
