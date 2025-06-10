@@ -1,10 +1,10 @@
 
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
-// URL du webhook Make - envoi direct simple
+// URL du webhook Make
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 export const useWebsiteForm = () => {
@@ -79,14 +79,14 @@ export const useWebsiteForm = () => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
-    console.log("Starting simple form submission to Make.com");
+    console.log("Démarrage de l'envoi du formulaire vers Make.com");
     
     try {
-      // Préparer les données pour Make.com
-      const requestData = {
+      // Préparer les données JSON pour Make.com
+      const jsonData = {
         theme: formData.theme,
         profession: formData.profession,
-        features: formData.features,
+        features: formData.features.join(', '), // Convertir le tableau en string
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -98,26 +98,30 @@ export const useWebsiteForm = () => {
         source: 'ozymandias-website'
       };
       
-      console.log("Sending data to Make.com:", requestData);
+      console.log("Données à envoyer:", jsonData);
       
-      // Envoi direct vers Make.com
+      // Envoi vers Make.com avec le paramètre 'json' requis
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify({
+          json: jsonData // Make.com attend un paramètre 'json'
+        })
       });
       
-      console.log("Make.com response status:", response.status);
+      console.log("Statut de la réponse Make.com:", response.status);
       
       if (!response.ok) {
-        throw new Error(`Webhook failed with status: ${response.status}`);
+        const errorText = await response.text().catch(() => 'Erreur inconnue');
+        console.error("Erreur de la réponse:", errorText);
+        throw new Error(`Erreur webhook: ${response.status}`);
       }
       
-      console.log("Form submitted successfully to Make.com");
+      console.log("Formulaire envoyé avec succès vers Make.com");
       
-      // Afficher un message de succès
+      // Message de succès
       toast({
         title: "Demande envoyée !",
         description: "Nous avons bien reçu votre demande et vous contacterons dans les plus brefs délais.",
@@ -129,13 +133,11 @@ export const useWebsiteForm = () => {
       setProgress(25);
       
       // Redirection vers la page de remerciement
-      setTimeout(() => {
-        console.log("Redirecting to thank you page");
-        navigate('/merci', { state: { fromForm: true } });
-      }, 500);
+      console.log("Redirection vers la page de remerciement");
+      navigate('/merci', { state: { fromForm: true } });
       
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("Erreur lors de l'envoi du formulaire:", error);
       
       toast({
         title: "Erreur d'envoi",
