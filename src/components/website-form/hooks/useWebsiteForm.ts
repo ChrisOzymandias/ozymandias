@@ -1,11 +1,10 @@
+
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useOutgoingWebhook } from '@/hooks/use-webhook';
-import { validateAndSanitizeFormData } from '@/utils/validation';
 
-// URL du webhook Make - maintenant sécurisé
+// URL du webhook Make - envoi direct simple
 const WEBHOOK_URL = 'https://hook.eu2.make.com/siguy1hwro8e64oo0v8r4wv89vkv3npu';
 
 export const useWebsiteForm = () => {
@@ -14,10 +13,6 @@ export const useWebsiteForm = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [progress, setProgress] = useState(25);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionError, setSubmissionError] = useState<string | null>(null);
-  
-  // Utiliser notre hook sécurisé pour le webhook
-  const { sendToWebhook, isLoading: isSendingToWebhook, error: webhookError } = useOutgoingWebhook(WEBHOOK_URL);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
@@ -84,42 +79,43 @@ export const useWebsiteForm = () => {
     if (isSubmitting) return;
     
     setIsSubmitting(true);
-    setSubmissionError(null);
-    
-    console.log("Starting form submission with validation");
+    console.log("Starting simple form submission to Make.com");
     
     try {
-      // Validate and sanitize form data
-      const validatedData = validateAndSanitizeFormData(formData);
-      console.log("Form data validated successfully:", validatedData);
-      
-      // Préparer les données sécurisées pour l'envoi
+      // Préparer les données pour Make.com
       const requestData = {
-        theme: validatedData.theme,
-        profession: validatedData.profession,
-        features: validatedData.features,
-        name: validatedData.name,
-        email: validatedData.email,
-        phone: validatedData.phone || null,
-        company_name: validatedData.companyName || null,
-        has_existing_website: validatedData.hasExistingWebsite || null,
-        website_expectation: validatedData.websiteExpectation || null,
-        launch_timeline: validatedData.launchTimeline || null,
-        status: 'new',
-        submission_date: new Date().toISOString()
+        theme: formData.theme,
+        profession: formData.profession,
+        features: formData.features,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company_name: formData.companyName || '',
+        has_existing_website: formData.hasExistingWebsite || '',
+        website_expectation: formData.websiteExpectation || '',
+        launch_timeline: formData.launchTimeline || '',
+        submission_date: new Date().toISOString(),
+        source: 'ozymandias-website'
       };
       
-      console.log("Sending validated data to secure webhook");
+      console.log("Sending data to Make.com:", requestData);
       
-      // Envoyer les données via le webhook sécurisé
-      const webhookResult = await sendToWebhook(requestData);
+      // Envoi direct vers Make.com
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+      });
       
-      if (!webhookResult) {
-        console.error("Webhook failed, error from hook:", webhookError);
-        throw new Error("Failed to submit form data");
+      console.log("Make.com response status:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`Webhook failed with status: ${response.status}`);
       }
       
-      console.log("Form submitted successfully");
+      console.log("Form submitted successfully to Make.com");
       
       // Afficher un message de succès
       toast({
@@ -132,7 +128,7 @@ export const useWebsiteForm = () => {
       setCurrentStep(0);
       setProgress(25);
       
-      // Redirection sécurisée vers la page de remerciement
+      // Redirection vers la page de remerciement
       setTimeout(() => {
         console.log("Redirecting to thank you page");
         navigate('/merci', { state: { fromForm: true } });
@@ -141,22 +137,9 @@ export const useWebsiteForm = () => {
     } catch (error) {
       console.error("Form submission error:", error);
       
-      // Message d'erreur plus spécifique
-      let errorMessage = "Une erreur s'est produite lors de l'envoi du formulaire.";
-      
-      if (error instanceof Error) {
-        if (error.message.includes('validation')) {
-          errorMessage = "Veuillez vérifier vos informations et réessayer.";
-        } else if (error.message.includes('Failed to submit')) {
-          errorMessage = "Problème de connexion. Veuillez réessayer dans quelques instants.";
-        }
-      }
-        
-      setSubmissionError(errorMessage);
-      
       toast({
         title: "Erreur d'envoi",
-        description: errorMessage,
+        description: "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer.",
         variant: "destructive"
       });
     } finally {
@@ -168,8 +151,7 @@ export const useWebsiteForm = () => {
     currentStep,
     formData,
     progress,
-    isSubmitting: isSubmitting || isSendingToWebhook,
-    submissionError,
+    isSubmitting,
     formSteps,
     handleThemeSelect,
     handleProfessionSelect,
