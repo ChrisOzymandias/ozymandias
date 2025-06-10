@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/hooks/use-toast';
@@ -82,8 +81,8 @@ export const useWebsiteForm = () => {
     console.log("Démarrage de l'envoi du formulaire vers Make.com");
     
     try {
-      // Préparer les données directement pour Make.com
-      const formDataToSend = {
+      // Préparer les données pour Make.com
+      const formDataValues = {
         theme: formData.theme,
         profession: formData.profession,
         features: formData.features.join(', '), // Convertir le tableau en string
@@ -98,15 +97,20 @@ export const useWebsiteForm = () => {
         source: 'ozymandias-website'
       };
       
-      console.log("Données à envoyer:", formDataToSend);
+      // Envoyer avec un wrapper 'json' pour Make.com comme requis par le module Parse JSON
+      const payloadForMake = {
+        json: formDataValues
+      };
       
-      // Envoi direct vers Make.com - votre module Parse JSON s'occupera du parsing
+      console.log("Données à envoyer:", payloadForMake);
+      
+      // Envoi vers Make.com avec le paramètre 'json' comme attendu par le module Parse JSON
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formDataToSend)
+        body: JSON.stringify(payloadForMake)
       });
       
       console.log("Statut de la réponse Make.com:", response.status);
