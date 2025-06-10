@@ -82,8 +82,8 @@ export const useWebsiteForm = () => {
     console.log("Démarrage de l'envoi du formulaire vers Make.com");
     
     try {
-      // Préparer les données JSON pour le module Parse JSON de Make.com
-      const jsonData = {
+      // Préparer les données directement pour Make.com
+      const formDataToSend = {
         theme: formData.theme,
         profession: formData.profession,
         features: formData.features.join(', '), // Convertir le tableau en string
@@ -98,17 +98,15 @@ export const useWebsiteForm = () => {
         source: 'ozymandias-website'
       };
       
-      console.log("Données à envoyer:", jsonData);
+      console.log("Données à envoyer:", formDataToSend);
       
-      // Envoi vers Make.com avec le paramètre 'json' requis pour le module Parse JSON
+      // Envoi direct vers Make.com - votre module Parse JSON s'occupera du parsing
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          json: jsonData // Le module Parse JSON de Make.com attend spécifiquement ce paramètre
-        })
+        body: JSON.stringify(formDataToSend)
       });
       
       console.log("Statut de la réponse Make.com:", response.status);
