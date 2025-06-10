@@ -1,13 +1,12 @@
 
 import React from 'react';
 import { Progress } from './ui/progress';
-import { ArrowRight, ArrowLeft, AlertCircle, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check } from 'lucide-react';
 import ThemeSelection from './website-form/ThemeSelection';
 import ProfessionSelection from './website-form/ProfessionSelection';
 import FeaturesSelection from './website-form/FeaturesSelection';
 import InfoForm from './website-form/InfoForm';
 import { useWebsiteForm } from './website-form/hooks/useWebsiteForm';
-import { Alert, AlertDescription } from './ui/alert';
 
 const WebsiteForm = () => {
   const {
@@ -15,7 +14,6 @@ const WebsiteForm = () => {
     formData,
     progress,
     isSubmitting,
-    submissionError,
     formSteps,
     handleThemeSelect,
     handleProfessionSelect,
@@ -85,14 +83,6 @@ const WebsiteForm = () => {
               <span className="text-sm text-blue-600 font-medium">{progress}% complété</span>
             </div>
           </div>
-
-          {/* Afficher les erreurs de soumission */}
-          {submissionError && <Alert variant="destructive" className="mb-4">
-              <AlertCircle className="h-4 w-4 mr-2" />
-              <AlertDescription>
-                Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer ultérieurement ou nous contacter directement.
-              </AlertDescription>
-            </Alert>}
 
           <form onSubmit={handleSubmit}>
             {/* Step 1: Theme Selection */}
