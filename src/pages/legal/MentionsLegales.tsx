@@ -25,18 +25,22 @@ const MentionsLegales = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Informations sur l'éditeur</h2>
               <p className="text-gray-700 mb-4">
                 <strong>Raison sociale :</strong> Ozymandias<br />
+                <strong>Forme juridique :</strong> Entrepreneur individuel<br />
                 <strong>Adresse :</strong> 3 Place Karine Ruby, 27000 EVREUX<br />
                 <strong>Email :</strong> contact@ozymandias.agency<br />
-                <strong>Téléphone :</strong> [À compléter]<br />
-                <strong>SIRET :</strong> [À compléter]<br />
-                <strong>Code APE :</strong> [À compléter]
+                <strong>Téléphone :</strong> 06 95 45 23 64<br />
+                <strong>SIREN :</strong> 851 675 025<br />
+                <strong>SIRET (siège) :</strong> 851 675 025 00015<br />
+                <strong>Numéro de TVA :</strong> FR79851675025<br />
+                <strong>Inscription au RCS :</strong> 851 675 025 R.C.S. Evreux (inscrit au greffe d'EVREUX le 18/06/2019)<br />
+                <strong>Inscription au RNE :</strong> Inscrit le 10/05/2019
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Directeur de la publication</h2>
               <p className="text-gray-700 mb-4">
-                Le directeur de la publication est [Nom du directeur].
+                Le directeur de la publication est Christian ELOUNDOU.
               </p>
             </section>
 
@@ -44,9 +48,11 @@ const MentionsLegales = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Hébergement</h2>
               <p className="text-gray-700 mb-4">
                 Ce site est hébergé par :<br />
-                <strong>Lovable</strong><br />
-                [Adresse de l'hébergeur]<br />
-                Site web : https://lovable.dev
+                <strong>Hostinger International Ltd.</strong><br />
+                61 Lordou Vironos Street<br />
+                6023 Larnaca, Chypre<br />
+                Site web : https://www.hostinger.fr<br />
+                Email : support@hostinger.com
               </p>
             </section>
 
