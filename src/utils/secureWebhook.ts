@@ -46,13 +46,15 @@ export const sendSecureWebhook = async ({
   secret,
   identifier = 'default'
 }: SecureWebhookOptions): Promise<boolean> => {
+  console.log("SecureWebhook: Starting send process");
+  
   try {
     // Rate limiting check
     if (!checkRateLimit(identifier)) {
       console.error('Rate limit exceeded for webhook requests');
       toast({
-        title: "Too many requests",
-        description: "Please wait before submitting again.",
+        title: "Trop de demandes",
+        description: "Veuillez attendre avant d'envoyer une nouvelle demande.",
         variant: "destructive"
       });
       return false;
@@ -60,6 +62,7 @@ export const sendSecureWebhook = async ({
 
     // Validate required data
     if (!url || !data) {
+      console.error('SecureWebhook: Missing URL or data');
       throw new Error('URL and data are required');
     }
 
@@ -79,7 +82,8 @@ export const sendSecureWebhook = async ({
       user_agent: navigator.userAgent.substring(0, 200) // Limit length
     };
 
-    console.log("Sending secure webhook with data:", sanitizedData);
+    console.log("SecureWebhook: Sending data to:", url);
+    console.log("SecureWebhook: Data being sent:", sanitizedData);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -90,22 +94,27 @@ export const sendSecureWebhook = async ({
       body: JSON.stringify(sanitizedData)
     });
 
+    console.log("SecureWebhook: Response status:", response.status);
+    console.log("SecureWebhook: Response ok:", response.ok);
+
     if (!response.ok) {
-      throw new Error(`Webhook failed with status: ${response.status}`);
+      const responseText = await response.text().catch(() => 'Unable to read response');
+      console.error("SecureWebhook: Response error:", responseText);
+      throw new Error(`Webhook failed with status: ${response.status} - ${responseText}`);
     }
 
-    console.log("Webhook sent successfully");
+    const responseData = await response.text().catch(() => 'Success');
+    console.log("SecureWebhook: Response data:", responseData);
+    console.log("SecureWebhook: Webhook sent successfully");
     return true;
 
   } catch (error) {
-    console.error("Secure webhook error:", error);
+    console.error("SecureWebhook: Error details:", error);
     
-    // Don't expose internal errors to users
-    toast({
-      title: "Submission Error",
-      description: "There was a problem submitting your request. Please try again.",
-      variant: "destructive"
-    });
+    // Don't expose internal errors to users but log them for debugging
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error("SecureWebhook: Network error - possible CORS or connectivity issue");
+    }
     
     return false;
   }

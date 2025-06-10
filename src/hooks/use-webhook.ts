@@ -10,6 +10,8 @@ export const useOutgoingWebhook = (webhookUrl: string) => {
     setIsLoading(true);
     setError(null);
     
+    console.log("Hook: Starting webhook send to:", webhookUrl);
+    
     try {
       const success = await sendSecureWebhook({
         url: webhookUrl,
@@ -19,11 +21,18 @@ export const useOutgoingWebhook = (webhookUrl: string) => {
         identifier: `webhook_${Date.now()}`
       });
       
-      return success;
+      console.log("Hook: Webhook result:", success);
+      
+      if (!success) {
+        setError("Webhook failed to send");
+        return false;
+      }
+      
+      return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(errorMessage);
-      console.error('Webhook error:', err);
+      console.error('Hook: Webhook error:', err);
       return false;
     } finally {
       setIsLoading(false);

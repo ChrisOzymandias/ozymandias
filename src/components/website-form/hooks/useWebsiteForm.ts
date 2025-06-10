@@ -17,7 +17,7 @@ export const useWebsiteForm = () => {
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   
   // Utiliser notre hook sécurisé pour le webhook
-  const { sendToWebhook, isLoading: isSendingToWebhook } = useOutgoingWebhook(WEBHOOK_URL);
+  const { sendToWebhook, isLoading: isSendingToWebhook, error: webhookError } = useOutgoingWebhook(WEBHOOK_URL);
 
   const handleThemeSelect = (themeId: string) => {
     setFormData({ ...formData, theme: themeId });
@@ -115,6 +115,7 @@ export const useWebsiteForm = () => {
       const webhookResult = await sendToWebhook(requestData);
       
       if (!webhookResult) {
+        console.error("Webhook failed, error from hook:", webhookError);
         throw new Error("Failed to submit form data");
       }
       
@@ -140,15 +141,21 @@ export const useWebsiteForm = () => {
     } catch (error) {
       console.error("Form submission error:", error);
       
-      // Message d'erreur générique pour éviter l'exposition d'informations
-      const errorMessage = error instanceof Error && error.message.includes('validation') 
-        ? "Please check your information and try again."
-        : "An error occurred while submitting the form. Please try again.";
+      // Message d'erreur plus spécifique
+      let errorMessage = "Une erreur s'est produite lors de l'envoi du formulaire.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes('validation')) {
+          errorMessage = "Veuillez vérifier vos informations et réessayer.";
+        } else if (error.message.includes('Failed to submit')) {
+          errorMessage = "Problème de connexion. Veuillez réessayer dans quelques instants.";
+        }
+      }
         
       setSubmissionError(errorMessage);
       
       toast({
-        title: "Submission Error",
+        title: "Erreur d'envoi",
         description: errorMessage,
         variant: "destructive"
       });
