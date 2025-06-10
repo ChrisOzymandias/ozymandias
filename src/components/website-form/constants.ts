@@ -1,9 +1,10 @@
+
 // Define the form steps
 export const formSteps = [
   {
     id: 'theme',
     title: 'Thématique du site',
-    description: 'Quel type de site souhaitez-vous créer ?',
+    description: 'Quel type de site souhaitez-vous créer gratuitement ?',
   },
   {
     id: 'profession',
@@ -18,7 +19,7 @@ export const formSteps = [
   {
     id: 'info',
     title: 'Vos informations',
-    description: 'Vos coordonnées pour recevoir votre maquette gratuite',
+    description: 'Vos coordonnées pour recevoir votre site gratuit',
   },
 ];
 

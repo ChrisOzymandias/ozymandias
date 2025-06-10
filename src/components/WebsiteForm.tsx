@@ -29,24 +29,24 @@ const WebsiteForm = () => {
   
   return <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30 relative">
       <div className="container-custom">
-        <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Web</span></h2>
+        <h2 className="section-title text-center">Créez Votre <span className="text-gradient">Site Gratuit</span></h2>
         
         {/* Masquer ces éléments sur mobile uniquement */}
         <div className="hidden md:flex justify-center mb-6">
-          <div className="flex flex-col md:flex-row items-center bg-blue-50 p-4 rounded-lg border border-blue-200 text-blue-700 max-w-2xl">
-            <div className="flex-shrink-0 bg-blue-600 text-white p-3 rounded-full mr-4 mb-3 md:mb-0">
+          <div className="flex flex-col md:flex-row items-center bg-green-50 p-4 rounded-lg border border-green-200 text-green-700 max-w-2xl">
+            <div className="flex-shrink-0 bg-green-600 text-white p-3 rounded-full mr-4 mb-3 md:mb-0">
               <Check className="h-6 w-6" />
             </div>
             <p className="text-center md:text-left">
-              <span className="font-bold">Plus de 700 artisans et PME</span> ont déjà créé leur site avec nous. 
+              <span className="font-bold">Plus de 700 artisans et PME</span> ont déjà créé leur site gratuitement avec nous. 
               Découvrez pourquoi ils nous font confiance !
             </p>
           </div>
         </div>
         
-        {/* Masquer le texte "Demandez la maquette..." sur mobile uniquement */}
+        {/* Masquer le texte "Demandez..." sur mobile uniquement */}
         <p className="section-subtitle text-center mb-6 hidden md:block">
-          <span className="font-bold text-blue-600 text-lg">Demandez la maquette de votre site gratuitement !!</span>
+          <span className="font-bold text-green-600 text-lg">Obtenez votre site web professionnel GRATUITEMENT !</span>
         </p>
         
         {/* Masquer les badges de confiance sur mobile uniquement */}
@@ -61,15 +61,15 @@ const WebsiteForm = () => {
               <span className="text-sm font-medium">4.9/5 (125 avis)</span>
             </div>
             <div className="flex items-center bg-white px-4 py-2 rounded-full shadow">
-              <span className="text-sm font-medium">Livraison en 7 jours garantie</span>
+              <span className="text-sm font-medium">Création 100% gratuite</span>
             </div>
           </div>
         </div>
 
         <div className="max-w-3xl mx-auto mt-4 bg-white rounded-2xl shadow-xl p-6 md:p-8 relative">
-          {/* Masquer l'étiquette "Gratuit" sur mobile uniquement */}
+          {/* Masquer l'étiquette sur mobile uniquement */}
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-1 rounded-full font-semibold text-sm hidden md:block">
-            Maquette gratuite
+            100% Gratuit
           </div>
           
           {/* Progress bar with animation */}
@@ -117,8 +117,8 @@ const WebsiteForm = () => {
               {currentStep < formSteps.length - 1 ? <button type="button" onClick={nextStep} disabled={!isStepValid()} className={`inline-flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium ${!isStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}>
                   Suivant
                   <ArrowRight className="h-4 w-4 ml-2" />
-                </button> : <button type="submit" disabled={!isStepValid() || isSubmitting} className={`inline-flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-colors px-6 py-3 rounded-full font-medium ${!isStepValid() || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                  {isSubmitting ? 'Envoi en cours...' : 'Obtenir ma maquette gratuite'}
+                </button> : <button type="submit" disabled={!isStepValid() || isSubmitting} className={`inline-flex items-center bg-green-600 text-white hover:bg-green-700 transition-colors px-6 py-3 rounded-full font-medium ${!isStepValid() || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                  {isSubmitting ? 'Envoi en cours...' : 'Créer mon site gratuit'}
                 </button>}
             </div>
           </form>
@@ -130,19 +130,19 @@ const WebsiteForm = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1 text-green-500">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
+                Création 100% gratuite
+              </div>
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1 text-green-500">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
                 Sans engagement
               </div>
               <div className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1 text-green-500">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Confidentialité garantie
-              </div>
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1 text-green-500">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Réponse en 48h maximum
+                Livraison en 7 jours
               </div>
             </div>
           </div>
