@@ -1,6 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 export interface UserRole {
   id: string;
@@ -9,8 +9,8 @@ export interface UserRole {
   created_at: string;
 }
 
-// Add admin role to a user (only existing admins can do this)
-export const addAdminRole = async (userEmail: string): Promise<boolean> => {
+// Add admin role to a user by their user ID (only existing admins can do this)
+export const addAdminRole = async (userId: string): Promise<boolean> => {
   try {
     // First, check if the current user is an admin
     const { data: isCurrentUserAdmin, error: adminCheckError } = await supabase
@@ -25,30 +25,11 @@ export const addAdminRole = async (userEmail: string): Promise<boolean> => {
       return false;
     }
 
-    // Find the user by email (note: this requires the user to exist in auth.users)
-    // In production, you might want to invite users first
-    const { data: users, error: userError } = await supabase.auth.admin.listUsers();
-    
-    if (userError) {
-      console.error("Error fetching users:", userError);
-      return false;
-    }
-
-    const targetUser = users.users.find(u => u.email === userEmail);
-    if (!targetUser) {
-      toast({
-        title: "User Not Found",
-        description: `No user found with email: ${userEmail}`,
-        variant: "destructive"
-      });
-      return false;
-    }
-
     // Add admin role
     const { error: roleError } = await supabase
       .from('user_roles')
       .insert({
-        user_id: targetUser.id,
+        user_id: userId,
         role: 'admin'
       });
 
@@ -64,7 +45,7 @@ export const addAdminRole = async (userEmail: string): Promise<boolean> => {
 
     toast({
       title: "Success",
-      description: `Admin role added to ${userEmail}`,
+      description: `Admin role added successfully`,
     });
 
     return true;
@@ -96,10 +77,16 @@ export const checkUserRole = async (userId: string, role: string): Promise<boole
 // Get all roles for the current user
 export const getCurrentUserRoles = async (): Promise<UserRole[]> => {
   try {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      return [];
+    }
+
     const { data, error } = await supabase
       .from('user_roles')
       .select('*')
-      .eq('user_id', (await supabase.auth.getUser()).data.user?.id);
+      .eq('user_id', user.id);
 
     if (error) {
       console.error("Error fetching user roles:", error);
@@ -109,6 +96,38 @@ export const getCurrentUserRoles = async (): Promise<UserRole[]> => {
     return data || [];
   } catch (error) {
     console.error("Unexpected error fetching user roles:", error);
+    return [];
+  }
+};
+
+// Get all users with their roles (admin only)
+export const getAllUsersWithRoles = async (): Promise<any[]> => {
+  try {
+    // Check if the current user is an admin
+    const { data: isCurrentUserAdmin, error: adminCheckError } = await supabase
+      .rpc('is_admin');
+
+    if (adminCheckError || !isCurrentUserAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "Only administrators can view user roles.",
+        variant: "destructive"
+      });
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from('user_roles')
+      .select('*');
+
+    if (error) {
+      console.error("Error fetching all user roles:", error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Unexpected error fetching all user roles:", error);
     return [];
   }
 };
