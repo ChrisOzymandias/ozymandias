@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Progress } from './ui/progress';
 import { ArrowRight, ArrowLeft, AlertCircle, Check } from 'lucide-react';
@@ -9,7 +8,11 @@ import InfoForm from './website-form/InfoForm';
 import { useWebsiteForm } from './website-form/hooks/useWebsiteForm';
 import { Alert, AlertDescription } from './ui/alert';
 
-const WebsiteForm = () => {
+interface WebsiteFormProps {
+  defaultProfession?: string;
+}
+
+const WebsiteForm: React.FC<WebsiteFormProps> = ({ defaultProfession }) => {
   const {
     currentStep,
     formData,
@@ -25,7 +28,7 @@ const WebsiteForm = () => {
     prevStep,
     isStepValid,
     handleSubmit
-  } = useWebsiteForm();
+  } = useWebsiteForm(defaultProfession);
   
   return <section id="form" className="py-20 bg-gradient-to-b from-white to-ozy-light/30 relative">
       <div className="container-custom">
