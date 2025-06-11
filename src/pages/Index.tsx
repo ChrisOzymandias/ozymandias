@@ -2,18 +2,12 @@
 import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import Features from '../components/Features';
-import Pricing from '../components/Pricing';
 import WebsiteForm from '../components/WebsiteForm';
-import Footer from '../components/Footer';
-import SeoSection from '../components/SeoSection';
-import PortfolioCarousel from '../components/PortfolioCarousel';
 import ValueProposition from '../components/ValueProposition';
 import ProcessSection from '../components/ProcessSection';
-import TestimonialsSection from '../components/TestimonialsSection';
+import Pricing from '../components/Pricing';
 import FaqSection from '../components/FaqSection';
-import CtaSection from '../components/CtaSection';
-import SocialProof from '../components/SocialProof';
+import Footer from '../components/Footer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAOS } from '@/hooks/use-aos';
 import { useParallax } from '@/hooks/use-parallax';
@@ -49,57 +43,29 @@ const Index = () => {
       <Navbar />
       <Hero />
       
-      {/* Social Proof - Building immediate credibility (desktop only) */}
-      <SocialProof />
-      
-      {/* Formulaire mis en avant - Primary conversion element - Placé après le Social Proof */}
+      {/* Formulaire - Action principale */}
       <div data-aos="fade-up" className="section-transition">
         <WebsiteForm />
       </div>
       
-      {/* Value Proposition - Core benefits */}
+      {/* Value Proposition - Pourquoi nous choisir */}
       <div className={isMobile ? "mt-[-40px] relative z-10 section-transition" : "section-transition"} data-aos="fade-up" data-aos-delay="100">
         <ValueProposition />
       </div>
       
-      {/* Features - More details after basic value is established */}
-      <div data-aos="fade-up" className="section-transition">
-        <Features />
-      </div>
-      
-      {/* Process Section - Show simplicity */}
+      {/* Process Section - Comment ça marche */}
       <div data-aos="fade-up" className="section-transition">
         <ProcessSection />
       </div>
       
-      {/* Portfolio Carousel - Visual proof */}
-      <div data-aos="fade-up" data-aos-delay="100" className="section-transition">
-        <PortfolioCarousel />
-      </div>
-      
-      {/* Testimonials - Social validation */}
-      <div data-aos="fade-up" className="section-transition">
-        <TestimonialsSection />
-      </div>
-      
-      {/* Nouvelle section SEO pour PME et artisans */}
-      <div data-aos="fade-up" data-aos-delay="100" className="section-transition">
-        <SeoSection />
-      </div>
-      
-      {/* Pricing information */}
+      {/* Pricing - Tarifs */}
       <div data-aos="fade-up" className="section-transition">
         <Pricing />
       </div>
       
-      {/* FAQ Section - Address remaining objections */}
+      {/* FAQ Section avec Portfolio intégré - Objections */}
       <div data-aos="fade-up" className="section-transition">
         <FaqSection />
-      </div>
-      
-      {/* CTA Section - Final conversion opportunity */}
-      <div data-aos="fade-up" data-aos-delay="100" className="section-transition">
-        <CtaSection />
       </div>
       
       <Footer />
