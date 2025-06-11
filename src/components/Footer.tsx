@@ -17,9 +17,9 @@ const Footer = () => {
                 alt="Ozymandias" 
                 className="h-10 w-10 mr-2" 
               />
-              <span className="text-xl font-bold">Ozymandias</span>
+              <span className="text-xl md:text-2xl font-bold">Ozymandias</span>
             </div>
-            <p className="text-gray-400 mb-6 text-sm md:text-base">
+            <p className="text-gray-400 mb-6 text-sm md:text-base leading-relaxed">
               Création de sites web professionnels avec un service tout compris pour tous vos besoins digitaux.
             </p>
             <div className="flex space-x-4">
@@ -42,7 +42,7 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Liens Rapides</h3>
+            <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-6">Liens Rapides</h3>
             <ul className="space-y-3">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Accueil</a>
@@ -64,7 +64,7 @@ const Footer = () => {
           
           {/* Legal */}
           <div>
-            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Informations Légales</h3>
+            <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-6">Informations Légales</h3>
             <ul className="space-y-3">
               <li>
                 <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Mentions Légales</Link>
@@ -89,7 +89,7 @@ const Footer = () => {
           
           {/* Contact */}
           <div>
-            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Contactez-nous</h3>
+            <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-6">Contactez-nous</h3>
             <ul className="space-y-4">
               <li className="flex">
                 <MapPin className="h-5 w-5 mr-3 text-ozy flex-shrink-0 mt-0.5" />
