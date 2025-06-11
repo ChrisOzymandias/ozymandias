@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white pt-16 pb-8">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
           {/* Company Info */}
           <div>
             <div className="flex items-center mb-6">
@@ -19,7 +19,7 @@ const Footer = () => {
               />
               <span className="text-xl font-bold">Ozymandias</span>
             </div>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-6 text-sm md:text-base">
               Création de sites web professionnels avec un service tout compris pour tous vos besoins digitaux.
             </p>
             <div className="flex space-x-4">
@@ -42,44 +42,44 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Liens Rapides</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Liens Rapides</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Accueil</a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Accueil</a>
               </li>
               <li>
-                <a href="#services" className="text-gray-400 hover:text-white transition-colors">Services</a>
+                <a href="#services" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Services</a>
               </li>
               <li>
-                <a href="#pricing" className="text-gray-400 hover:text-white transition-colors">Tarifs</a>
+                <a href="#pricing" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Tarifs</a>
               </li>
               <li>
-                <a href="#form" className="text-gray-400 hover:text-white transition-colors">Créer mon site</a>
+                <a href="#form" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Créer mon site</a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Blog</a>
               </li>
             </ul>
           </div>
           
           {/* Legal */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Informations Légales</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Informations Légales</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors">Mentions Légales</Link>
+                <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Mentions Légales</Link>
               </li>
               <li>
-                <Link to="/politique-confidentialite" className="text-gray-400 hover:text-white transition-colors">Politique de Confidentialité</Link>
+                <Link to="/politique-confidentialite" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Politique de Confidentialité</Link>
               </li>
               <li>
-                <Link to="/conditions-generales" className="text-gray-400 hover:text-white transition-colors">Conditions Générales</Link>
+                <Link to="/conditions-generales" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Conditions Générales</Link>
               </li>
               <li>
-                <Link to="/politique-cookies" className="text-gray-400 hover:text-white transition-colors">Politique des Cookies</Link>
+                <Link to="/politique-cookies" className="text-gray-400 hover:text-white transition-colors text-sm md:text-base">Politique des Cookies</Link>
               </li>
               <li>
-                <Link to="/admin/login" className="flex items-center text-gray-400 hover:text-ozy transition-colors">
+                <Link to="/admin/login" className="flex items-center text-gray-400 hover:text-ozy transition-colors text-sm md:text-base">
                   <Shield className="h-4 w-4 mr-2" />
                   Espace Admin
                 </Link>
@@ -89,15 +89,15 @@ const Footer = () => {
           
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Contactez-nous</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">Contactez-nous</h3>
             <ul className="space-y-4">
               <li className="flex">
-                <MapPin className="h-5 w-5 mr-3 text-ozy" />
-                <span className="text-gray-400">3 Place Karine Ruby, 27000 EVREUX</span>
+                <MapPin className="h-5 w-5 mr-3 text-ozy flex-shrink-0 mt-0.5" />
+                <span className="text-gray-400 text-sm md:text-base">3 Place Karine Ruby, 27000 EVREUX</span>
               </li>
               <li className="flex">
-                <Mail className="h-5 w-5 mr-3 text-ozy" />
-                <span className="text-gray-400">contact@ozymandias.agency</span>
+                <Mail className="h-5 w-5 mr-3 text-ozy flex-shrink-0 mt-0.5" />
+                <span className="text-gray-400 text-sm md:text-base">contact@ozymandias.agency</span>
               </li>
             </ul>
           </div>
