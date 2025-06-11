@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import SocialProof from '../components/SocialProof';
 import WebsiteForm from '../components/WebsiteForm';
 import ValueProposition from '../components/ValueProposition';
 import ProcessSection from '../components/ProcessSection';
@@ -42,6 +43,9 @@ const Index = () => {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      
+      {/* Social Proof - Bandeau défilant */}
+      <SocialProof />
       
       {/* Formulaire - Action principale */}
       <div data-aos="fade-up" className="section-transition">

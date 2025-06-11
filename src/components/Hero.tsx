@@ -23,15 +23,9 @@ const Hero = () => {
               en 7 jours
             </h1>
             
-            <p className="text-lg text-gray-700 mb-4 max-w-lg mx-auto md:mx-0" data-aos="fade-up" data-aos-delay="300">
-              <span className="font-bold text-green-600">Création 100% gratuite</span> puis seulement 49€/mois : 
-              <span className="font-bold"> hébergement, domaine, maintenance et email professionnel</span> inclus.
-              <br className="hidden sm:block" /> 
+            <p className="text-lg text-gray-700 mb-6 max-w-lg mx-auto md:mx-0" data-aos="fade-up" data-aos-delay="300">
+              <span className="font-bold text-green-600">Création 100% gratuite</span> puis seulement 49€/mois pour l'hébergement, domaine et maintenance inclus.
             </p>
-            
-            <div className="bg-green-50 border-l-4 border-green-500 p-3 mb-6 text-green-700 max-w-lg mx-auto md:mx-0" data-aos="fade-up" data-aos-delay="400">
-              <p className="font-medium">Obtenez votre <span className="font-bold">site complet GRATUIT</span> en 48h, sans engagement ni frais cachés</p>
-            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start" data-aos="fade-up" data-aos-delay="500">
               <a href="#form" className="btn-primary flex items-center justify-center micro-bounce">
@@ -41,26 +35,6 @@ const Hero = () => {
                 Comment ça marche ?
               </a>
             </div>
-
-            {/* Social proof pour mobile */}
-            {isMobile && (
-              <div className="mt-8 flex flex-col items-center gap-3" data-aos="fade-up" data-aos-delay="600">
-                <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-md">
-                  <span className="text-yellow-500 mr-1">★★★★★</span>
-                  <span className="text-sm font-medium">4.9/5 (125 avis)</span>
-                </div>
-                <div className="flex flex-wrap justify-center gap-2">
-                  <div className="flex items-center bg-white px-3 py-1 rounded-full shadow text-xs">
-                    <span className="text-green-500 mr-1">✓</span>
-                    <span>Création gratuite</span>
-                  </div>
-                  <div className="flex items-center bg-white px-3 py-1 rounded-full shadow text-xs">
-                    <span className="text-green-500 mr-1">✓</span>
-                    <span>Livraison 7 jours</span>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
           
           {!isMobile && (
