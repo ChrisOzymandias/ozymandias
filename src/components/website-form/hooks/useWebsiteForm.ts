@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { FormData, initialFormData, formSteps } from '../constants';
 import { toast } from '@/hooks/use-toast';
@@ -81,11 +82,11 @@ export const useWebsiteForm = () => {
     console.log("Démarrage de l'envoi du formulaire vers Make.com");
     
     try {
-      // Préparer les données pour Make.com
-      const formDataValues = {
+      // Préparer les données exactement comme attendu par votre module JSON Make.com
+      const payloadForMake = {
         theme: formData.theme,
         profession: formData.profession,
-        features: formData.features.join(', '), // Convertir le tableau en string
+        features: formData.features.join(', '), // String comme défini dans Make
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -93,18 +94,14 @@ export const useWebsiteForm = () => {
         has_existing_website: formData.hasExistingWebsite || '',
         website_expectation: formData.websiteExpectation || '',
         launch_timeline: formData.launchTimeline || '',
+        status: 'new', // Ajout du champ status
         submission_date: new Date().toISOString(),
         source: 'ozymandias-website'
       };
       
-      // Envoyer avec un wrapper 'json' pour Make.com comme requis par le module Parse JSON
-      const payloadForMake = {
-        json: formDataValues
-      };
-      
       console.log("Données à envoyer:", payloadForMake);
       
-      // Envoi vers Make.com avec le paramètre 'json' comme attendu par le module Parse JSON
+      // Envoi direct sans wrapper 'json' puisque Make.com gère déjà la structure
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
