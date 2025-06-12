@@ -9,6 +9,7 @@ import ProcessSection from '../components/ProcessSection';
 import Pricing from '../components/Pricing';
 import FaqSection from '../components/FaqSection';
 import Footer from '../components/Footer';
+import ScrollCTAPopup from '../components/ScrollCTAPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAOS } from '@/hooks/use-aos';
 import { useParallax } from '@/hooks/use-parallax';
@@ -73,6 +74,9 @@ const Index = () => {
       </div>
       
       <Footer />
+      
+      {/* Popup CTA basée sur le scroll */}
+      <ScrollCTAPopup />
     </div>
   );
 };
