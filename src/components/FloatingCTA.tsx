@@ -47,10 +47,10 @@ const FloatingCTA = () => {
         </div>
       </button>
 
-      {/* Tooltip pour mobile */}
+      {/* Tooltip amélioré pour mobile - toujours visible avec animation */}
       {isMobile && (
-        <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          <div className="bg-gray-800 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap">
+        <div className="absolute bottom-full right-0 mb-2 animate-fade-in">
+          <div className="bg-gray-800 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
             Site Gratuit !
             <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
           </div>
