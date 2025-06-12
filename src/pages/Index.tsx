@@ -10,6 +10,7 @@ import Pricing from '../components/Pricing';
 import FaqSection from '../components/FaqSection';
 import Footer from '../components/Footer';
 import ScrollCTAPopup from '../components/ScrollCTAPopup';
+import FloatingCTA from '../components/FloatingCTA';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAOS } from '@/hooks/use-aos';
 import { useParallax } from '@/hooks/use-parallax';
