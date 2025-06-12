@@ -9,22 +9,34 @@ const ScrollCTAPopup = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Ne pas afficher si l'utilisateur a fermé la popup
-      if (isClosedByUser) return;
+    // Ne pas ajouter les listeners si l'utilisateur a déjà fermé la popup
+    if (isClosedByUser) return;
 
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const documentHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollPercent = (scrollTop / documentHeight) * 100;
-
-      // Afficher la popup après 30% de scroll
-      if (scrollPercent > 30 && !isVisible) {
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Détecter si la souris sort par le haut de la page (intention de fermer/changer d'onglet)
+      if (e.clientY <= 0 && !isVisible && !isClosedByUser) {
         setIsVisible(true);
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Afficher la popup avant que l'utilisateur quitte la page
+      if (!isVisible && !isClosedByUser) {
+        setIsVisible(true);
+        // Empêcher la fermeture immédiate pour laisser le temps à la popup d'apparaître
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    // Ajouter les event listeners
+    document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, [isVisible, isClosedByUser]);
 
   const handleClose = () => {
@@ -58,18 +70,18 @@ const ScrollCTAPopup = () => {
         <div className="text-center">
           {/* Badge d'urgence */}
           <div className="inline-flex items-center px-3 py-1 bg-ozy/10 text-ozy rounded-full text-sm font-medium mb-4">
-            🔥 Offre limitée
+            ⚠️ Attendez !
           </div>
 
           {/* Titre principal */}
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
-            Votre Site Web
-            <span className="block text-ozy">100% Gratuit</span>
+            Avant de partir...
+            <span className="block text-ozy">Votre Site Gratuit vous attend !</span>
           </h3>
 
           {/* Description */}
           <p className="text-gray-600 mb-6 leading-relaxed">
-            Création gratuite puis seulement <span className="font-bold text-green-600">49€/mois</span> tout compris.
+            Ne ratez pas cette opportunité ! Création <span className="font-bold text-green-600">100% gratuite</span> puis seulement 49€/mois.
           </p>
 
           {/* Boutons d'action */}
@@ -78,7 +90,7 @@ const ScrollCTAPopup = () => {
               onClick={handleCTAClick}
               className="w-full bg-ozy hover:bg-ozy-dark text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              Créer Mon Site Gratuit
+              Oui, je veux mon site gratuit !
               <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
             
@@ -86,7 +98,7 @@ const ScrollCTAPopup = () => {
               onClick={handleClose}
               className="w-full text-gray-500 hover:text-gray-700 font-medium py-2 transition-colors"
             >
-              Plus tard
+              Non merci, je pars
             </button>
           </div>
 
