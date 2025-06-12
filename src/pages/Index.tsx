@@ -77,6 +77,9 @@ const Index = () => {
       
       {/* Popup CTA basée sur le scroll */}
       <ScrollCTAPopup />
+      
+      {/* Bulle CTA flottante */}
+      <FloatingCTA />
     </div>
   );
 };
