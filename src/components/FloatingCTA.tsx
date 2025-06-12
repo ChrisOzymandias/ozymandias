@@ -22,7 +22,6 @@ const FloatingCTA = () => {
           ${isMobile ? 'w-14 h-14' : 'px-6 py-4'} 
           rounded-full shadow-lg hover:shadow-xl 
           transition-all duration-300 transform hover:-translate-y-1
-          animate-pulse-slow
         `}
         aria-label="Créer mon site gratuit"
       >
@@ -42,13 +41,10 @@ const FloatingCTA = () => {
           </div>
         )}
 
-        {/* Badge de notification animé */}
+        {/* Badge de notification simple */}
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-          <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
+          <div className="w-2 h-2 bg-white rounded-full"></div>
         </div>
-
-        {/* Effet de pulsation en arrière-plan */}
-        <div className="absolute inset-0 rounded-full bg-ozy opacity-20 animate-ping"></div>
       </button>
 
       {/* Tooltip pour mobile */}
