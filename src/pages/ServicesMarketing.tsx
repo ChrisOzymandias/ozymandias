@@ -4,7 +4,9 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MarketingHero from '../components/marketing/MarketingHero';
 import ServicesGrid from '../components/marketing/ServicesGrid';
+import MarketingProcessSection from '../components/marketing/MarketingProcessSection';
 import SuperPackSection from '../components/marketing/SuperPackSection';
+import MarketingFaqSection from '../components/marketing/MarketingFaqSection';
 
 const ServicesMarketing = () => {
   return (
@@ -12,7 +14,9 @@ const ServicesMarketing = () => {
       <Navbar />
       <MarketingHero />
       <ServicesGrid />
+      <MarketingProcessSection />
       <SuperPackSection />
+      <MarketingFaqSection />
       <Footer />
     </div>
   );
