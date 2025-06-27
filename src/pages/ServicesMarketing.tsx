@@ -14,8 +14,8 @@ const ServicesMarketing = () => {
       <Navbar />
       <MarketingHero />
       <ServicesGrid />
-      <MarketingProcessSection />
       <SuperPackSection />
+      <MarketingProcessSection />
       <MarketingFaqSection />
       <Footer />
     </div>
