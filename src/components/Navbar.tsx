@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +40,17 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="#services" className="text-gray-700 hover:text-ozy transition-colors">Services</a>
-          <Link to="/services-marketing" className="text-gray-700 hover:text-ozy transition-colors">Marketing</Link>
+          <Link 
+            to="/services-marketing" 
+            className={`text-gray-700 hover:text-ozy transition-colors relative ${
+              location.pathname === '/services-marketing' ? 'text-ozy' : ''
+            }`}
+          >
+            Marketing
+            {location.pathname === '/services-marketing' && (
+              <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-ozy rounded-full"></div>
+            )}
+          </Link>
           <a href="#process" className="text-gray-700 hover:text-ozy transition-colors">Notre Approche</a>
           <a href="#pricing" className="text-gray-700 hover:text-ozy transition-colors">Tarifs</a>
           <a href="#form" className="btn-primary">Créer Mon Site</a>
@@ -67,10 +78,15 @@ const Navbar = () => {
             </a>
             <Link 
               to="/services-marketing" 
-              className="text-gray-700 hover:text-ozy py-2 transition-colors"
+              className={`text-gray-700 hover:text-ozy py-2 transition-colors relative ${
+                location.pathname === '/services-marketing' ? 'text-ozy font-medium' : ''
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
               Marketing
+              {location.pathname === '/services-marketing' && (
+                <div className="absolute -bottom-1 left-0 w-8 h-0.5 bg-ozy rounded-full"></div>
+              )}
             </Link>
             <a 
               href="#process" 
