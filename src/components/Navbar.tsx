@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -39,14 +40,14 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="#services" className="text-gray-700 hover:text-ozy transition-colors">Services</a>
+          <a href="#process" className="text-gray-700 hover:text-ozy transition-colors">Notre Approche</a>
+          <a href="#pricing" className="text-gray-700 hover:text-ozy transition-colors">Tarifs</a>
           <Link 
             to="/services-marketing" 
             className="text-gray-700 hover:text-ozy transition-colors relative border-b-2 border-ozy/30 pb-1"
           >
             Marketing
           </Link>
-          <a href="#process" className="text-gray-700 hover:text-ozy transition-colors">Notre Approche</a>
-          <a href="#pricing" className="text-gray-700 hover:text-ozy transition-colors">Tarifs</a>
           <a href="#form" className="btn-primary">Créer Mon Site</a>
         </div>
 
@@ -70,13 +71,6 @@ const Navbar = () => {
             >
               Services
             </a>
-            <Link 
-              to="/services-marketing" 
-              className="text-gray-700 hover:text-ozy py-2 transition-colors border-l-2 border-ozy/30 pl-3"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Marketing
-            </Link>
             <a 
               href="#process" 
               className="text-gray-700 hover:text-ozy py-2 transition-colors"
@@ -91,6 +85,13 @@ const Navbar = () => {
             >
               Tarifs
             </a>
+            <Link 
+              to="/services-marketing" 
+              className="text-gray-700 hover:text-ozy py-2 transition-colors border-l-2 border-ozy/30 pl-3"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Marketing
+            </Link>
             <a 
               href="#form" 
               className="btn-primary text-center"
