@@ -19,7 +19,7 @@ const MarketingProcessSection = () => {
     {
       icon: TrendingUp,
       title: "3. Lancement & Optimisation",
-      description = "Activation de vos campagnes avec suivi et optimisation en temps réel",
+      description: "Activation de vos campagnes avec suivi et optimisation en temps réel",
       details: ["Lancement des campagnes", "Suivi des performances", "Optimisation continue pendant 7 jours"]
     },
     {
