@@ -20,27 +20,27 @@ const TestimonialsSection = () => {
         </div>
         
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Testimonial 1 */}
+          {/* Testimonial 1 - DestrucBusigny */}
           <div className="bg-white p-8 rounded-xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg">
             <div className="flex items-center mb-4">
               <div className="w-16 h-16 bg-gray-200 rounded-full mr-4 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&q=80&w=50&h=50" 
-                  alt="Sophie Martin" 
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=50&h=50" 
+                  alt="Marc Destruc" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
-                <h4 className="font-bold">Sophie Martin</h4>
-                <p className="text-sm text-gray-600">Fleuriste</p>
+                <h4 className="font-bold">Marc Destruc</h4>
+                <p className="text-sm text-gray-600">Expert Désinsectisation</p>
                 <div className="text-yellow-400 text-sm">★★★★★</div>
               </div>
             </div>
-            <p className="text-gray-600">"Rapide, efficace et professionnel ! Mon site est exactement comme je le voulais et a été livré en seulement 5 jours. Je recommande !"</p>
-            <div className="mt-4 text-sm text-gray-500">Client depuis mai 2023</div>
+            <p className="text-gray-600">"Site moderne et professionnel qui reflète parfaitement mon expertise. Les clients me trouvent facilement grâce au référencement local optimisé !"</p>
+            <div className="mt-4 text-sm text-gray-500">Client depuis janvier 2024</div>
             <div className="mt-3 flex gap-2">
-              <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Site vitrine</span>
-              <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Livré en 5 jours</span>
+              <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Site professionnel</span>
+              <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">SEO local</span>
             </div>
           </div>
           

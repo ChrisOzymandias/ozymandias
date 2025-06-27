@@ -8,6 +8,7 @@ import ValueProposition from '../components/ValueProposition';
 import ProcessSection from '../components/ProcessSection';
 import Pricing from '../components/Pricing';
 import FaqSection from '../components/FaqSection';
+import TestimonialsSection from '../components/TestimonialsSection';
 import Footer from '../components/Footer';
 import ScrollCTAPopup from '../components/ScrollCTAPopup';
 import FloatingCTA from '../components/FloatingCTA';
@@ -62,6 +63,11 @@ const Index = () => {
       {/* Process Section - Comment ça marche */}
       <div data-aos="fade-up" className="section-transition">
         <ProcessSection />
+      </div>
+      
+      {/* Testimonials Section - Témoignages clients */}
+      <div data-aos="fade-up" className="section-transition">
+        <TestimonialsSection />
       </div>
       
       {/* Pricing - Tarifs */}

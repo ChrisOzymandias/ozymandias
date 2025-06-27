@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { 
   Carousel, 
@@ -32,27 +31,34 @@ const projects = [
   },
   {
     id: 4,
+    title: "DestrucBusigny",
+    type: "Site de désinsectisation",
+    description: "Expert en désinsectisation et dératisation dans le Nord",
+    image: "/lovable-uploads/beba34e6-02d0-453b-83eb-2efd86d53196.png"
+  },
+  {
+    id: 5,
     title: "LC Sport Santé",
     type: "Site de coach sportif",
     description: "Sport, Santé & Bien-être personnalisé",
     image: "/lovable-uploads/6cf823c5-2749-4e3f-a059-8991ec8ccf4c.png"
   },
   {
-    id: 5,
+    id: 6,
     title: "Julien Frery",
     type: "Site de plombier",
     description: "Votre plombier chauffagiste qualifié",
     image: "/lovable-uploads/1d68fa9d-13e7-4907-93af-faead2526bfe.png"
   },
   {
-    id: 6,
+    id: 7,
     title: "Innovations Électriques",
     type: "Site d'électricien",
     description: "L'Innovation Électrique à Votre Service",
     image: "/lovable-uploads/34369910-3449-43d9-92f1-62e3bc6946e1.png"
   },
   {
-    id: 7,
+    id: 8,
     title: "Cabinet Clément Brulin",
     type: "Site de bien-être",
     description: "Retrouvez votre équilibre physique et émotionnel",
