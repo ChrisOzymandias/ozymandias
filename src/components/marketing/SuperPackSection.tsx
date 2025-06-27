@@ -9,6 +9,10 @@ const SuperPackSection = () => {
   const packPrice = 499;
   const savings = totalPrice - packPrice;
 
+  const handlePayment = () => {
+    window.open('https://buy.stripe.com/7sYaEXdcZbGH0dC93Pgfu0d', '_blank');
+  };
+
   return (
     <section className="pb-20">
       <div className="container-custom">
@@ -80,7 +84,11 @@ const SuperPackSection = () => {
                 </div>
               </div>
               
-              <Button size="lg" className="bg-gradient-to-r from-ozy to-ozy-dark hover:from-ozy-dark hover:to-ozy text-white px-8 py-4 text-lg">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-ozy to-ozy-dark hover:from-ozy-dark hover:to-ozy text-white px-8 py-4 text-lg"
+                onClick={handlePayment}
+              >
                 Commander le Super Pack à {packPrice}€
                 <ArrowRight size={20} className="ml-2" />
               </Button>
