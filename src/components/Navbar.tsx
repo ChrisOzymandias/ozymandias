@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -42,14 +41,9 @@ const Navbar = () => {
           <a href="#services" className="text-gray-700 hover:text-ozy transition-colors">Services</a>
           <Link 
             to="/services-marketing" 
-            className={`text-gray-700 hover:text-ozy transition-colors relative ${
-              location.pathname === '/services-marketing' ? 'text-ozy' : ''
-            }`}
+            className="text-gray-700 hover:text-ozy transition-colors relative border-b-2 border-ozy/30 pb-1"
           >
             Marketing
-            {location.pathname === '/services-marketing' && (
-              <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-ozy rounded-full"></div>
-            )}
           </Link>
           <a href="#process" className="text-gray-700 hover:text-ozy transition-colors">Notre Approche</a>
           <a href="#pricing" className="text-gray-700 hover:text-ozy transition-colors">Tarifs</a>
@@ -78,15 +72,10 @@ const Navbar = () => {
             </a>
             <Link 
               to="/services-marketing" 
-              className={`text-gray-700 hover:text-ozy py-2 transition-colors relative ${
-                location.pathname === '/services-marketing' ? 'text-ozy font-medium' : ''
-              }`}
+              className="text-gray-700 hover:text-ozy py-2 transition-colors border-l-2 border-ozy/30 pl-3"
               onClick={() => setIsMenuOpen(false)}
             >
               Marketing
-              {location.pathname === '/services-marketing' && (
-                <div className="absolute -bottom-1 left-0 w-8 h-0.5 bg-ozy rounded-full"></div>
-              )}
             </Link>
             <a 
               href="#process" 
