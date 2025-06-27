@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { 
   Carousel, 
@@ -33,7 +34,7 @@ const projects = [
     id: 4,
     title: "DestrucBusigny",
     type: "Site de désinsectisation",
-    description: "Expert en désinsectisation et dératisation dans le Nord",
+    description: "Expert en désinsectisation et dératisation dans le Nord - https://destrucbusigny.fr/",
     image: "/lovable-uploads/beba34e6-02d0-453b-83eb-2efd86d53196.png"
   },
   {
@@ -102,6 +103,10 @@ const PortfolioCarousel = () => {
                         src={project.image} 
                         alt={project.title} 
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        onError={(e) => {
+                          console.log(`Erreur de chargement pour l'image: ${project.image}`);
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     </div>
                     
