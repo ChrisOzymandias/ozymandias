@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Index from './pages/Index';
+import ServicesMarketing from './pages/ServicesMarketing';
 import ThankYouPage from './components/ThankYouPage';
 import NotFound from './pages/NotFound';
 import MentionsLegales from './pages/legal/MentionsLegales';
@@ -39,6 +40,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/services-marketing" element={<ServicesMarketing />} />
       <Route path="/merci" element={<ThankYouPageWrapper />} />
       <Route path="/mentions-legales" element={<MentionsLegales />} />
       <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />

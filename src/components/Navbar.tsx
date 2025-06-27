@@ -39,6 +39,7 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="#services" className="text-gray-700 hover:text-ozy transition-colors">Services</a>
+          <Link to="/services-marketing" className="text-gray-700 hover:text-ozy transition-colors">Marketing</Link>
           <a href="#process" className="text-gray-700 hover:text-ozy transition-colors">Notre Approche</a>
           <a href="#pricing" className="text-gray-700 hover:text-ozy transition-colors">Tarifs</a>
           <a href="#form" className="btn-primary">Créer Mon Site</a>
@@ -64,6 +65,13 @@ const Navbar = () => {
             >
               Services
             </a>
+            <Link 
+              to="/services-marketing" 
+              className="text-gray-700 hover:text-ozy py-2 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Marketing
+            </Link>
             <a 
               href="#process" 
               className="text-gray-700 hover:text-ozy py-2 transition-colors"
