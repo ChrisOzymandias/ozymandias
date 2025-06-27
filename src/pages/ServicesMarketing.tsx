@@ -13,28 +13,28 @@ const ServicesMarketing = () => {
       title: 'Fiche Google My Business',
       price: '149€',
       icon: MapPin,
-      description: 'Optimisation complète de votre présence locale',
+      description: 'Création et optimisation de votre présence locale',
       features: [
-        'Création et optimisation de votre fiche',
+        'Création complète de votre fiche',
         'Ajout de photos professionnelles',
-        'Gestion des avis clients',
-        'Mise à jour des informations'
+        'Configuration des informations essentielles',
+        'Optimisation pour le référencement local'
       ],
       why: 'Essentiel pour être trouvé localement par vos clients. 76% des recherches locales aboutissent à une visite en magasin dans les 24h.'
     },
     {
       id: 'google-ads',
       title: 'Campagnes Google Ads',
-      price: '249€/mois',
+      price: '249€',
       icon: Megaphone,
-      description: 'Gestion professionnelle de vos campagnes publicitaires',
+      description: 'Création et lancement de vos campagnes publicitaires',
       features: [
-        'Création et optimisation des campagnes',
+        'Création et configuration des campagnes',
         'Ciblage précis de votre audience',
-        'Suivi et rapports mensuels',
-        'Optimisation continue des performances'
+        'Suivi et optimisation pendant 7 jours',
+        'Formation pour la gestion autonome'
       ],
-      why: 'Générez des leads qualifiés immédiatement. Les entreprises gagnent en moyenne 2€ pour chaque 1€ investi en Google Ads.',
+      why: 'Générez des leads qualifiés immédiatement. Une campagne bien configurée peut transformer votre visibilité en ligne dès le premier jour.',
       note: '+ Budget publicitaire à la charge du client'
     },
     {
